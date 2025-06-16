@@ -18,16 +18,16 @@ public class PlayerSkill : MonoBehaviour
     void Update()
     {
 
-        //if (Input.GetKey(KeyCode.T))
-        //{
-        //    animatorControl.SetBool("SkillKick", true);
-        //}
-        //if ( animatorControl.GetBool("SkillKick") && Input.GetKeyUp(KeyCode.T))
-        //{
-        //    animatorControl.SetBool("SkillKick", false);
-        //}
+        if (Input.GetKey(KeyCode.T))
+        {
+            animatorControl.SetBool("SkillKick", true);
+        }
+        if (animatorControl.GetBool("SkillKick") && Input.GetKeyUp(KeyCode.T))
+        {
+            animatorControl.SetBool("SkillKick", false);
+        }
+        
 
-      
 
 
     }
