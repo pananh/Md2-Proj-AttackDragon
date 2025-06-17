@@ -18,9 +18,9 @@ public abstract class MageState
     {
     }
 
-    public virtual float MaxUpdateTime()
+    public virtual bool NeedToUpdate()
     {
-        return 10f;
+        return true;
     }
 
     public virtual void Exit()

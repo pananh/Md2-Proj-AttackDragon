@@ -7,10 +7,13 @@ public class MageStateWalk : MageState
 {
     private CharacterController thisCharacterController;
     private Vector3 thisDestination;
-    private const float MAX_UPDATE_STATE_TIME = 3f;
+    private bool needToUpdate = false;
+    private float verticalVelocity = 0f;
 
-    public override float MaxUpdateTime()
-    { return MAX_UPDATE_STATE_TIME; }
+    public override bool NeedToUpdate()
+    { return needToUpdate;
+    }
+
 
     LineRenderer lineRenderer;
     Animator animator;
@@ -26,43 +29,29 @@ public class MageStateWalk : MageState
         thisDestination.y = 0;
         thisCharacterController = characterController;
 
-
-
-        Vector3 lockDirection = thisDestination - thisCharacterController.transform.position;
-        lockDirection.y = 0;
-        Quaternion rotation = Quaternion.LookRotation(lockDirection);
-        thisCharacterController.transform.rotation = rotation;
-
-
-
-
-
         animator = MageController.instance.GetComponent<Animator>();
         animator.SetBool("walking", true);
 
-        
-        
-        
-        
+        needToUpdate = true;
+
+
+
         lineRenderer = MageController.instance.GetComponent<LineRenderer>();
         lineRenderer.positionCount = 1;
         lineRenderer.SetPosition(0, thisCharacterController.transform.position);
 
 
-
+        RotateCharacter();
 
     }
 
     public override void Update()
     {
-        if ( !IsDestinationReached() )
+        if ( needToUpdate )
         {
             MoveCharacter();
             lineRenderer.positionCount++;
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, thisCharacterController.transform.position);
-
-
-
 
         }
 
@@ -77,28 +66,50 @@ public class MageStateWalk : MageState
 
     }
 
+    private void RotateCharacter()
+    {
+        Vector3 direction = thisDestination - thisCharacterController.transform.position;
+        direction.y = 0;
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        thisCharacterController.transform.rotation = targetRotation;
+    }
+
     private void MoveCharacter()
     {
         Vector3 direction = thisDestination - thisCharacterController.transform.position;
-        Vector3 lockDirection = direction;
-        lockDirection.y = 0;
-        Quaternion rotation = Quaternion.LookRotation(lockDirection);
-        //thisCharacterController.transform.rotation = Quaternion.Slerp(thisCharacterController.transform.rotation, rotation, GM.instance.SpeedGame * Time.deltaTime);
-        //thisCharacterController.transform.rotation = rotation;
-        
-        thisCharacterController.Move(direction.normalized * GM.instance.SpeedGame * Time.deltaTime);
-    }
+        direction.y = 0;
 
-    private bool IsDestinationReached()
-    {
-        Vector3 distanceVector = thisCharacterController.transform.position - thisDestination;
-        distanceVector.y = 0;
-        if (distanceVector.sqrMagnitude < GM.MIN_MOVE_SQR_DISTANCE)
+        // Kiem tra neu da den dich
+        if (direction.sqrMagnitude < GM.MIN_MOVE_SQR_DISTANCE)
         {
-            return true;
+            Debug.Log("Reached destination: " + thisDestination);
+            needToUpdate = false;
+            return;
         }
-        return false;
+
+        // Xu ly gravity
+        if (thisCharacterController.isGrounded)
+        {
+            verticalVelocity = -1f; // Dam bao dinh mat dat
+        }
+        else
+        {
+            verticalVelocity += GM.GRAVITY * Time.deltaTime;
+        }
+
+        Vector3 oldPosition = thisCharacterController.transform.position;
+        thisCharacterController.Move(direction.normalized * GM.instance.SpeedGame* 0.55f *Time.deltaTime);
+
+        // Neu bi ket o doc cao thi dung lai
+        if ((thisCharacterController.transform.position - oldPosition).sqrMagnitude < GM.MIN_STUCK_DISTANCE)
+        {
+            needToUpdate = false;
+            Debug.Log("Stuck at: " + thisCharacterController.transform.position);
+        }
+
 
     }
+
+
 
 }

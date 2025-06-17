@@ -18,16 +18,22 @@ public class GM : MonoBehaviour
         get { return 100f; }
     }
     public static float MIN_MOVE_DISTANCE
-    {   get { return 0.1f; }
+    {   get { return 0.01f; }
     }
     public static float MIN_MOVE_SQR_DISTANCE
-    {   get { return 0.1f; }
+    {   get { return 0.01f; }
+    }
+    public static float MIN_STUCK_DISTANCE
+    {   get { return 0.001f; }
     }
     public static float MAX_MOVE_DISTANCE
     {   get { return 15f; }
     }
     public static float MAX_MOVE_SQR_DISTANCE
     {   get { return 200f; }
+    }
+    public static float GRAVITY
+    {   get { return -9.81f; }
     }
 
 

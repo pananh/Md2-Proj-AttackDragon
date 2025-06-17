@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -150,12 +150,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 293825298}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13052616, y: 0, z: 0, w: 0.9914449}
-  m_LocalPosition: {x: 0, y: 5, z: -8}
+  m_LocalRotation: {x: 0.13052616, y: -0, z: -0, w: 0.9914449}
+  m_LocalPosition: {x: 20, y: 6, z: 22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3895404286530890983}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 15, y: 0, z: 0}
 --- !u!114 &293825300
 MonoBehaviour:
@@ -669,13 +669,14 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: e5e76fced6ed4754da5b927001de8e59, type: 2}
+    - target: {fileID: 5198966814453227063, guid: 88e381c5517a89f4aa65d7c68bc1640f,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 2217561095617021005, guid: 88e381c5517a89f4aa65d7c68bc1640f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 293825299}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1553052192595435255, guid: 88e381c5517a89f4aa65d7c68bc1640f,
         type: 3}
@@ -722,12 +723,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!4 &3895404286530890983 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2217561095617021005, guid: 88e381c5517a89f4aa65d7c68bc1640f,
-    type: 3}
-  m_PrefabInstance: {fileID: 3895404286530890979}
-  m_PrefabAsset: {fileID: 0}
 --- !u!120 &3895404286530890984
 LineRenderer:
   serializedVersion: 2
@@ -851,4 +846,5 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 2005961263}
   - {fileID: 1279876567}
+  - {fileID: 293825299}
   - {fileID: 3895404286530890979}

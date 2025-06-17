@@ -7,9 +7,7 @@ public class MonsterMove : MonoBehaviour
 
     CharacterController controller;
     float speed = 5f;
-    float rotationSpeed = 1f;
     float gravity = -9.81f;
-    float jumpSpeed = 8f;
     Vector3 moveDirection  = Vector3.zero;
 
     void Start()

@@ -9,7 +9,6 @@ public class MageController : MonoBehaviour
 {
     public static MageController instance { get; private set; }
     private MageState currentSate;
-    private float startStateTime = 0f;
 
     private CharacterController characterController;
 
@@ -37,24 +36,35 @@ public class MageController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
+            destination = GetDestination();
+            if (destination == transform.position)
+            {
+                return;
+            }
             currentSate.Exit();
             currentSate = new MageStateWalk();
-            destination = GetDestination();
+
+
+            //LineRenderer lineRenderer = GetComponent<LineRenderer>();
+            //lineRenderer.positionCount = 2;
+            //lineRenderer.SetPosition(0, transform.position);
+            //lineRenderer.SetPosition(1, destination);
+
             currentSate.Enter(destination, characterController);
-            startStateTime = Time.time;
+            Debug.Log("Dang chuyen sang trang thai di chuyen toi " + destination);
 
         }
-        if (Time.time - startStateTime < currentSate.MaxUpdateTime())
+        if (currentSate.NeedToUpdate())
         {
             currentSate.Update();
         }
-        else
+        else if (currentSate is MageStateWalk)
         {
             currentSate.Exit();
             currentSate = new MageStateIdle();
-            currentSate.Enter();
+            Debug.Log("Da den dich: " + destination);
         }
-
+        
 
 
 
