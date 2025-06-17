@@ -20,10 +20,13 @@ public class InputHanle : MonoBehaviour
     void Update()
     {
         Vector2 moveVector = moveAction.ReadValue<Vector2>();
+        if (moveVector.sqrMagnitude < GM.MIN_MOVE_SQR_DISTANCE)
+            return; 
+        Debug.Log(moveVector);
         playerController.Move(moveVector);
 
-        Vector2 lookVector = lookAction.ReadValue<Vector2>();
-        Debug.Log(lookVector);
-        playerController.Rotate(lookVector);
+        //Vector2 lookVector = lookAction.ReadValue<Vector2>();
+        //Debug.Log(lookVector);
+        //playerController.Rotate(lookVector);
     }
 }

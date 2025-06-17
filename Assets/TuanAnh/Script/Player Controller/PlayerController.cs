@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         Vector2 moveVector = moveAction.ReadValue<Vector2>();
+        Debug.Log(moveVector);
         Move(moveVector);
 
         Vector2 lookVector = lookAction.ReadValue<Vector2>();

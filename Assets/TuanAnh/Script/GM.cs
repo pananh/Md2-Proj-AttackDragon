@@ -6,19 +6,41 @@ public class GM : MonoBehaviour
 {
     public static GM instance { get; private set; }
 
-    private int speedGame = 20;
+    [SerializeField] private int gameSpeed = 5;
     public int SpeedGame
     {
-        get { return speedGame; }
-        set { speedGame = value; }
+        get { return gameSpeed; }
+        set { gameSpeed = value; }
+    }
+
+    public static float RAYCAST_DISTANCE
+    {
+        get { return 100f; }
+    }
+    public static float MIN_MOVE_DISTANCE
+    {   get { return 0.1f; }
+    }
+    public static float MIN_MOVE_SQR_DISTANCE
+    {   get { return 0.1f; }
+    }
+    public static float MAX_MOVE_DISTANCE
+    {   get { return 15f; }
+    }
+    public static float MAX_MOVE_SQR_DISTANCE
+    {   get { return 200f; }
+    }
+
+
+    void Awake()
+    {
+        instance = this;
     }
 
 
 
     void Start()
     {
-        instance = this;
-
+        MageController.instance.Init();
     }
 
     void Update()
