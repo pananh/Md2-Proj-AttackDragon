@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class GM : MonoBehaviour
 {
-    public static GM instance { get; private set; }
+    public static GM Instance { get; private set; }
 
     [SerializeField] private int gameSpeed = 5;
-    public int SpeedGame
+    public int GAME_SPEED
     {
         get { return gameSpeed; }
         set { gameSpeed = value; }
@@ -39,14 +39,14 @@ public class GM : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
 
 
     void Start()
     {
-        MageController.instance.Init();
+        MageController.Instance.Init();
     }
 
     void Update()

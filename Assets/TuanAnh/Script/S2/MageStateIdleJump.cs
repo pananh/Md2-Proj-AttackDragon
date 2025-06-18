@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
 
-public class MageStateFall : MageState
+public class MageStateIdleJump : MageState
 {
     private bool needUpdateState = false;
     private MageController mageController;
     private CharacterController characterController;
     private Animator animator;
+    float verticalVelocity;
 
     public override bool NeedUpdateState()
     {
@@ -20,36 +21,48 @@ public class MageStateFall : MageState
         characterController = mageController.GetComponent<CharacterController>();
         animator = mageController.GetComponent<Animator>();
         needUpdateState = true;
-
+        verticalVelocity = GM.Instance.GAME_SPEED/2;
+        animator.SetBool("Jump", true);
+        // Tu dong huyen sang trang thai InAir tren animator
     }
 
     public override void Update()
     {
-        if (needUpdateState)
+        if (!needUpdateState) 
         {
-            Fall();
+            return;
         }
+        JumpCharacter();
+
     }
 
     public override void Exit()
     {
+        animator.SetBool("Jump", false);
         animator.SetBool("InAir", false);
-        needUpdateState = false;
     }
 
-    private void Fall()
+
+    private void JumpCharacter()
     {
+        verticalVelocity += GM.GRAVITY * Time.deltaTime;
+        characterController.Move(Vector3.up * (verticalVelocity * Time.deltaTime));
         if (characterController.isGrounded)
         {
+            animator.SetBool("InAir", false);
+            // Khi nhay xong thi nhay sang trang thai Idle, Dat InAir = false
             needUpdateState = false;
-        }
-        else
-        {
-            Vector3 gravity = Vector3.up * (GM.GRAVITY * Time.deltaTime); 
-            characterController.Move(gravity);
-            animator.SetBool("InAir", true);
         }
 
     }
+
+
+
+
+
+
+
+
+
 
 }

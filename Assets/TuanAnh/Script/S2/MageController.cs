@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class MageController : MonoBehaviour
 {
-    public static MageController instance { get; private set; }
+    public static MageController Instance { get; private set; }
     private MageState currentState;
 
 
@@ -24,7 +24,7 @@ public class MageController : MonoBehaviour
 
     public void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
 
@@ -41,7 +41,7 @@ public class MageController : MonoBehaviour
         {
             currentState = new MageStateIdle();
         }
-        currentState.Enter(instance);
+        currentState.Enter(Instance);
 
     }
 
@@ -67,23 +67,22 @@ public class MageController : MonoBehaviour
     private static Vector3 GetDestination()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, GM.RAYCAST_DISTANCE))
+        if (Physics.Raycast(ray, out RaycastHit hit, GM.RAYCAST_DISTANCE))
         {
-            Vector3 vector3 = hit.point - instance.transform.position;
+            Vector3 vector3 = hit.point - Instance.transform.position;
             if (vector3.sqrMagnitude < GM.MIN_MOVE_SQR_DISTANCE)
             {
-                return instance.transform.position;
+                return Instance.transform.position;
             }
             else if (vector3.sqrMagnitude > GM.MAX_MOVE_SQR_DISTANCE)
             {
-                return instance.transform.position + vector3.normalized * GM.MAX_MOVE_DISTANCE;
+                return Instance.transform.position + vector3.normalized * GM.MAX_MOVE_DISTANCE;
             }
             else return hit.point;
         }
         else
         {
-            return instance.transform.position;
+            return Instance.transform.position;
         }
 
     }
@@ -94,6 +93,12 @@ public class MageController : MonoBehaviour
         {
             IdleToRun();
         }
+
+        if ( (currentState is MageStateRun) && Input.GetMouseButtonDown(1) )
+        {
+            RunToRun();
+        }
+
 
         if ( (currentState is MageStateIdle) && Input.GetKeyDown(KeyCode.Space) )
         {
@@ -111,6 +116,9 @@ public class MageController : MonoBehaviour
 
     private void IdleToJump()
     { 
+        currentState.Exit();
+        currentState = new MageStateIdleJump();
+        currentState.Enter(Instance);
     }
 
     private void RunToJump()
@@ -125,12 +133,21 @@ public class MageController : MonoBehaviour
         }
         destination = GetDestination();
         currentState.Exit();
-        if (currentState is not MageStateRun) 
-        {
-            currentState = new MageStateRun();
-        }
-        currentState.Enter(instance);
+        currentState = new MageStateRun();
+        currentState.Enter(Instance);
     }
+
+    private void RunToRun()
+    {
+        if (destination == transform.position)
+        {
+            return;
+        }
+        destination = GetDestination();
+        currentState.Exit();
+        currentState.Enter(Instance);
+    }
+
 
     private void AutomaticChangeStage()
     {

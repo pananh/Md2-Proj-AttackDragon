@@ -28,7 +28,7 @@ public class MageStateRun : MageState
         runDestination.y = 0;
 
         RotateCharacter();
-        animator.SetBool("run", true);
+        animator.SetBool("Run", true);
         needUpdateState = true;
        
         lineRenderer = mageController.GetComponent<LineRenderer>();
@@ -51,7 +51,7 @@ public class MageStateRun : MageState
 
     public override void Exit()
     {
-        animator.SetBool("run", false);
+        animator.SetBool("Run", false);
     }
 
     private void RotateCharacter()
@@ -70,14 +70,13 @@ public class MageStateRun : MageState
         // Kiem tra neu da den dich
         if (direction.sqrMagnitude < GM.MIN_MOVE_SQR_DISTANCE)
         {
-            Debug.Log("Reached destination: " + runDestination);
             needUpdateState = false;
             return;
         }
 
      
         Vector3 oldPosition = mageController.transform.position;
-        direction = direction.normalized * GM.instance.SpeedGame * Time.deltaTime;
+        direction = direction.normalized * ( GM.Instance.GAME_SPEED * Time.deltaTime);
         if (characterController.isGrounded == false)
         {
             direction.y = GM.GRAVITY * Time.deltaTime; 

@@ -9,6 +9,7 @@ public class MageStateIdle : MageState
     private MageController mageController;
     private CharacterController characterController;
     private Animator animator;
+    
 
     public override bool NeedUpdateState()
     {
@@ -20,14 +21,14 @@ public class MageStateIdle : MageState
         characterController = mageController.GetComponent<CharacterController>();
         animator = mageController.GetComponent<Animator>();
         needUpdateState = true;
-
+        
     }
 
     public override void Update()
     {
         if (needUpdateState)
         {
-
+           
         }
 
 
@@ -38,6 +39,5 @@ public class MageStateIdle : MageState
 
     }
 
-
-
+    
 }
