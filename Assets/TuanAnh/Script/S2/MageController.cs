@@ -8,13 +8,18 @@ using UnityEngine;
 public class MageController : MonoBehaviour
 {
     public static MageController instance { get; private set; }
-    private MageState currentSate;
+    private MageState currentState;
+
 
     private CharacterController characterController;
-
     Vector3 destination;
 
-
+    public Vector3 Destination
+    {
+        get { return destination; }
+        set
+        { destination = value; }
+    }
 
 
     public void Awake()
@@ -26,45 +31,34 @@ public class MageController : MonoBehaviour
     public void Init()
     {
         characterController = GetComponent<CharacterController>();
-        currentSate = new MageStateIdle();
-        
         destination = transform.position;
+
+        if (characterController.isGrounded == false)
+        {
+            currentState = new MageStateFall();
+        }
+        else
+        {
+            currentState = new MageStateIdle();
+        }
+        currentState.Enter(instance);
+
     }
 
     void Update()
     {
 
-        if (Input.GetMouseButtonDown(1))
+        GetInputAndChangeStage();
+
+        if (currentState.NeedUpdateState())
         {
-            destination = GetDestination();
-            if (destination == transform.position)
-            {
-                return;
-            }
-            currentSate.Exit();
-            currentSate = new MageStateWalk();
-
-
-            //LineRenderer lineRenderer = GetComponent<LineRenderer>();
-            //lineRenderer.positionCount = 2;
-            //lineRenderer.SetPosition(0, transform.position);
-            //lineRenderer.SetPosition(1, destination);
-
-            currentSate.Enter(destination, characterController);
-            Debug.Log("Dang chuyen sang trang thai di chuyen toi " + destination);
-
+            currentState.Update();
         }
-        if (currentSate.NeedToUpdate())
+        else
         {
-            currentSate.Update();
+            currentState.Exit();
+            AutomaticChangeStage();
         }
-        else if (currentSate is MageStateWalk)
-        {
-            currentSate.Exit();
-            currentSate = new MageStateIdle();
-            Debug.Log("Da den dich: " + destination);
-        }
-        
 
 
 
@@ -89,10 +83,70 @@ public class MageController : MonoBehaviour
         }
         else
         {
-            return instance.transform.position;  
+            return instance.transform.position;
         }
 
     }
 
+    private void GetInputAndChangeStage()
+    {
+        if ( (currentState is MageStateIdle) && Input.GetMouseButtonDown(1) )
+        {
+            IdleToRun();
+        }
+
+        if ( (currentState is MageStateIdle) && Input.GetKeyDown(KeyCode.Space) )
+        {
+            IdleToJump();
+        }
+
+        if ((currentState is MageStateRun) && Input.GetKeyDown(KeyCode.Space))
+        {
+            RunToJump();
+        }
+
+
+    }
+
+
+    private void IdleToJump()
+    { 
+    }
+
+    private void RunToJump()
+    {
+    }
+
+    private void IdleToRun()
+    {
+        if (destination == transform.position)
+        {
+            return;
+        }
+        destination = GetDestination();
+        currentState.Exit();
+        if (currentState is not MageStateRun) 
+        {
+            currentState = new MageStateRun();
+        }
+        currentState.Enter(instance);
+    }
+
+    private void AutomaticChangeStage()
+    {
+        switch (currentState)
+        {
+            case MageStateRunJump: 
+                currentState = new MageStateFall();
+                break;
+
+            default:
+                currentState = new MageStateIdle();
+                break; 
+        }
+
+        
+    }
 
 }
+

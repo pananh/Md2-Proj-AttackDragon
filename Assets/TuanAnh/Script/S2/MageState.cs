@@ -5,11 +5,7 @@ using Unity.VisualScripting;
 
 public abstract class MageState
 {
-    public virtual void Enter()
-    {
-    }
-
-    public virtual void Enter(Vector3 Destination, CharacterController characterController)
+    public virtual void Enter (MageController player)
     {
 
     }
@@ -18,7 +14,7 @@ public abstract class MageState
     {
     }
 
-    public virtual bool NeedToUpdate()
+    public virtual bool NeedUpdateState()
     {
         return true;
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
 
-public class MageStateIdle : MageState
+public class MageStateStandJump : MageState
 {
     private bool needUpdateState = false;
     private MageController mageController;
@@ -37,6 +37,16 @@ public class MageStateIdle : MageState
     {
 
     }
+
+
+
+
+
+
+
+
+
+
 
 
 
