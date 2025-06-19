@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
 
-public class MageStateFall : MageState
+public class UnitIdle : UnitState
 {
     private bool needUpdateState = false;
     private MageController mageController;
     private CharacterController characterController;
     private Animator animator;
+    
 
     public override bool NeedUpdateState()
     {
@@ -20,36 +21,23 @@ public class MageStateFall : MageState
         characterController = mageController.GetComponent<CharacterController>();
         animator = mageController.GetComponent<Animator>();
         needUpdateState = true;
-
+        animator.SetBool("Idle", true);
     }
 
     public override void Update()
     {
-        if (needUpdateState)
-        {
-            Fall();
-        }
+        //if (needUpdateState)
+        //{
+           
+        //}
+
+
     }
 
     public override void Exit()
     {
-        animator.SetBool("InAir", false);
-        needUpdateState = false;
+        animator.SetBool("Idle", false);
     }
 
-    private void Fall()
-    {
-        if (characterController.isGrounded)
-        {
-            needUpdateState = false;
-        }
-        else
-        {
-            Vector3 gravity = Vector3.up * (GM.GRAVITY * Time.deltaTime); 
-            characterController.Move(gravity);
-            animator.SetBool("InAir", true);
-        }
-
-    }
-
+    
 }

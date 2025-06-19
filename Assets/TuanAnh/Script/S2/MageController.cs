@@ -3,16 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MageController : MonoBehaviour
 {
     public static MageController Instance { get; private set; }
-    private MageState currentState;
+    private UnitState currentState;
 
 
     private CharacterController characterController;
-    Vector3 destination;
+    private Vector3 destination;
+    private float jumpForwardSpeed;
 
     public Vector3 Destination
     {
@@ -20,6 +22,11 @@ public class MageController : MonoBehaviour
         set
         { destination = value; }
     }
+    public float JumpForwardSpeed
+    {
+        get { return jumpForwardSpeed; }
+        set { jumpForwardSpeed = value; }
+    }    
 
 
     public void Awake()
@@ -33,13 +40,13 @@ public class MageController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         destination = transform.position;
 
-        if (characterController.isGrounded == false)
+        if (characterController.isGrounded)
         {
-            currentState = new MageStateFall();
+            currentState = new UnitIdle();
         }
         else
         {
-            currentState = new MageStateIdle();
+            currentState = new UnitFall();
         }
         currentState.Enter(Instance);
 
@@ -89,27 +96,40 @@ public class MageController : MonoBehaviour
 
     private void GetInputAndChangeStage()
     {
-        if ( (currentState is MageStateIdle) && Input.GetMouseButtonDown(1) )
+        switch (currentState)
         {
-            IdleToRun();
+            case UnitIdle:
+                if (Input.GetMouseButtonDown(1))
+                {   IdleToRun(); }
+
+                if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Space))
+                {
+                    jumpForwardSpeed = GM.Instance.GAME_SPEED / 3;
+                    IdleToJump();
+                }
+                else if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    jumpForwardSpeed = 0;
+                    IdleToJump();
+                }
+                break;
+
+            case UnitRun:
+                if (Input.GetMouseButtonDown(1))
+                {
+                    RunToRun();
+                }
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    RunToJump();
+                }
+
+                break;
+
         }
 
-        if ( (currentState is MageStateRun) && Input.GetMouseButtonDown(1) )
-        {
-            RunToRun();
-        }
-
-
-        if ( (currentState is MageStateIdle) && Input.GetKeyDown(KeyCode.Space) )
-        {
-            IdleToJump();
-        }
-
-        if ((currentState is MageStateRun) && Input.GetKeyDown(KeyCode.Space))
-        {
-            RunToJump();
-        }
-
+      
 
     }
 
@@ -117,7 +137,7 @@ public class MageController : MonoBehaviour
     private void IdleToJump()
     { 
         currentState.Exit();
-        currentState = new MageStateIdleJump();
+        currentState = new UnitIdleJump();
         currentState.Enter(Instance);
     }
 
@@ -133,7 +153,7 @@ public class MageController : MonoBehaviour
         }
         destination = GetDestination();
         currentState.Exit();
-        currentState = new MageStateRun();
+        currentState = new UnitRun();
         currentState.Enter(Instance);
     }
 
@@ -153,12 +173,12 @@ public class MageController : MonoBehaviour
     {
         switch (currentState)
         {
-            case MageStateRunJump: 
-                currentState = new MageStateFall();
+            case UnitRunJump: 
+                currentState = new UnitFall();
                 break;
 
             default:
-                currentState = new MageStateIdle();
+                currentState = new UnitIdle();
                 break; 
         }
 

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
 
-public class MageStateRun : MageState
+public class UnitRun : UnitState
 {
     private MageController mageController;
     CharacterController characterController;
     private Vector3 runDestination;
     private bool needUpdateState = false;
+    private float verticalVelocityForJump;
+    private bool isJumpedInRunning;
 
-    public override bool NeedUpdateState()
-    { return needUpdateState;
-    }
+    public override bool NeedUpdateState() => needUpdateState;
 
 
     LineRenderer lineRenderer;
@@ -30,7 +30,9 @@ public class MageStateRun : MageState
         RotateCharacter();
         animator.SetBool("Run", true);
         needUpdateState = true;
-       
+        verticalVelocityForJump = 0;
+        isJumpedInRunning = false;
+
         lineRenderer = mageController.GetComponent<LineRenderer>();
         lineRenderer.positionCount = 1;
         lineRenderer.SetPosition(0, mageController.transform.position);
@@ -38,13 +40,10 @@ public class MageStateRun : MageState
 
     public override void Update()
     {
-        if ( needUpdateState )
-        {
-            MoveCharacter();
+        MoveCharacter();
 
-            lineRenderer.positionCount++;
-            lineRenderer.SetPosition(lineRenderer.positionCount - 1, mageController.transform.position);
-        }
+        lineRenderer.positionCount++;
+        lineRenderer.SetPosition(lineRenderer.positionCount - 1, mageController.transform.position);
 
     }
 
@@ -66,22 +65,40 @@ public class MageStateRun : MageState
     {
         Vector3 direction = runDestination - mageController.transform.position;
         direction.y = 0;
-
-        // Kiem tra neu da den dich
         if (direction.sqrMagnitude < GM.MIN_MOVE_SQR_DISTANCE)
         {
             needUpdateState = false;
             return;
         }
 
-     
+        ProcessJumpInRunning();
+        
         Vector3 oldPosition = mageController.transform.position;
         direction = direction.normalized * ( GM.Instance.GAME_SPEED * Time.deltaTime);
-        if (characterController.isGrounded == false)
+
+        //Xu ly neu dang chay ma bi roi xuong thap, thi ha do cao y : Luc nay khong phai nhay.
+        if ( (!isJumpedInRunning) && (characterController.isGrounded == false)) 
         {
             direction.y = GM.GRAVITY * Time.deltaTime; 
         }
+
+        if ( (isJumpedInRunning && characterController.isGrounded == false) )
+        {
+            verticalVelocityForJump += GM.GRAVITY*Time.deltaTime;
+            direction.y = verticalVelocityForJump * Time.deltaTime;
+        }
+        
+        
         characterController.Move(direction);
+
+
+        // Xu ly khi cham dat
+        if (characterController.isGrounded)
+        {
+            isJumpedInRunning = false;
+            animator.SetBool("InAir", false);
+            animator.SetBool("Jump",false);
+        }
 
         
         // Neu bi ket o doc cao do ham Move thi dung lai
@@ -93,8 +110,17 @@ public class MageStateRun : MageState
 
     }
 
-    
+    private void ProcessJumpInRunning()
+    {
+        if (Input.GetKeyDown (KeyCode.Space) && (!isJumpedInRunning) && (characterController.isGrounded) )
+        {
+            verticalVelocityForJump = GM.Instance.GAME_SPEED / 2;
+            animator.SetBool("Jump", true);
+            animator.SetBool("InAir", true);
+            isJumpedInRunning = true;
+        }    
+    }
 
 
-
+  
 }

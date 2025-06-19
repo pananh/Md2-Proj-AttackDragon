@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
 
-public abstract class MageState
+public abstract class UnitState: State
 {
     public virtual void Enter (MageController player)
     {

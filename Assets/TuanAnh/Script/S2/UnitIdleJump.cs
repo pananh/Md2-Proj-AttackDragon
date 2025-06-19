@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
 
-public class MageStateIdleJump : MageState
+public class UnitIdleJump : UnitState
 {
     private bool needUpdateState = false;
     private MageController mageController;
@@ -11,10 +11,8 @@ public class MageStateIdleJump : MageState
     private Animator animator;
     float verticalVelocity;
 
-    public override bool NeedUpdateState()
-    {
-        return needUpdateState ;
-    }
+    public override bool NeedUpdateState() => needUpdateState;
+
     public override void Enter(MageController controller )
     {
         mageController = controller;
@@ -28,10 +26,6 @@ public class MageStateIdleJump : MageState
 
     public override void Update()
     {
-        if (!needUpdateState) 
-        {
-            return;
-        }
         JumpCharacter();
 
     }
@@ -46,7 +40,11 @@ public class MageStateIdleJump : MageState
     private void JumpCharacter()
     {
         verticalVelocity += GM.GRAVITY * Time.deltaTime;
-        characterController.Move(Vector3.up * (verticalVelocity * Time.deltaTime));
+
+        Vector3 jumpMove = mageController.transform.forward * (mageController.JumpForwardSpeed * Time.deltaTime) +
+                        Vector3.up * (verticalVelocity * Time.deltaTime);
+
+        characterController.Move(jumpMove);
         if (characterController.isGrounded)
         {
             animator.SetBool("InAir", false);

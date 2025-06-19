@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
 
-public class MageStateRunJump : MageState
+public class UnitRunJump : UnitState
 {
     private bool needUpdateState = false;
     private MageController mageController;
@@ -25,11 +25,7 @@ public class MageStateRunJump : MageState
 
     public override void Update()
     {
-        if (needUpdateState)
-        {
-
-        }
-
+       
 
     }
 
