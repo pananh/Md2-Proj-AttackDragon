@@ -47,6 +47,7 @@ public class MageController : MonoBehaviour
         else
         {
             currentState = new UnitFall();
+            Debug.Log(" 1 ");
         }
         currentState.Enter(Instance);
 
@@ -139,6 +140,8 @@ public class MageController : MonoBehaviour
         currentState.Exit();
         currentState = new UnitIdleJump();
         currentState.Enter(Instance);
+
+        
     }
 
     private void RunToJump()
@@ -179,6 +182,12 @@ public class MageController : MonoBehaviour
 
             default:
                 currentState = new UnitIdle();
+                Debug.Log(" x1 ");
+
+                // De tam thoi
+                currentState.Enter(Instance);
+
+
                 break; 
         }
 
