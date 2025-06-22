@@ -20,6 +20,7 @@ public class UnitFall : UnitState
         characterController = controller.GetCharacterController;
         animator = controller.GetAnimator;
         needUpdateState = true;
+        animator.SetBool("Fall", true);
         animator.SetBool("InAir", true);
     }
 
@@ -31,8 +32,8 @@ public class UnitFall : UnitState
 
     public override void Exit()
     {
+        animator.SetBool("Fall", false);
         animator.SetBool("InAir", false);
-        Debug.Log("Fall 3");
         needUpdateState = false;
     }
 
