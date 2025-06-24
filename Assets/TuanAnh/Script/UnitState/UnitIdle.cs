@@ -19,21 +19,16 @@ public class UnitIdle : UnitState
     public override void Enter(IUnitController InputController )
     {
         controller = InputController;
-        characterController = controller.GetCharacterController;
-        animator = controller.GetAnimator;
+        //characterController = controller.GetCharacterController;
+        //animator = controller.GetAnimator;
         needUpdateState = true;
-        animator.SetBool("Idle", true);
 
 
     }
 
     public override void Update()
     {
-        if (needUpdateState)
-        {
-            
-
-        }
+        if (!needUpdateState) return;
 
 
     }
@@ -41,7 +36,6 @@ public class UnitIdle : UnitState
     public override void Exit()
     {
         needUpdateState = false ;
-        animator.SetBool("Idle", false);
     }
 
     

@@ -4854,7 +4854,7 @@ GameObject:
   - component: {fileID: 7083566369546608045}
   - component: {fileID: 3547754589942380760}
   m_Layer: 0
-  m_Name: Magic fire pro yellow
+  m_Name: Yellow Fire Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

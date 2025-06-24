@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
 
-public class UnitCastSpell2 : UnitState
+public class UnitCastSpell : UnitState
 {
     private bool needUpdateState = false;
     public override bool NeedUpdateState() => needUpdateState;
     IUnitController controller;
     Animator animator;
-
+    
 
     public override void Enter(IUnitController controllerInput )
     {
@@ -17,7 +17,7 @@ public class UnitCastSpell2 : UnitState
         needUpdateState = true;
         animator = controller.GetAnimator;
 
-        animator.SetBool("Spell2", true);
+        animator.SetBool("Spell", true);
     }
 
     public override void Update()
@@ -29,7 +29,8 @@ public class UnitCastSpell2 : UnitState
     public override void Exit()
     {
         needUpdateState = false;
-        animator.SetBool("Spell1", false);
+        animator.SetBool("Spell",false);
+
     }
 
    

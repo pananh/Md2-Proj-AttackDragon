@@ -17,6 +17,10 @@ public class MageController : MonoBehaviour , IUnitController
     private Animator animator;
     public Animator GetAnimator { get => animator; }
 
+    
+    private bool notInAnimation = true;
+
+
     private Vector3 destination;
     private float towardDistance;
 
@@ -84,37 +88,42 @@ public class MageController : MonoBehaviour , IUnitController
         switch (currentState)
         {
             case UnitIdle:
-                if (Input.GetMouseButtonDown(1))
+                if (Input.GetMouseButtonDown(1) && notInAnimation )
                 {   IdleToRun(); }
 
-                if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Space) && notInAnimation)
                 {
                     towardDistance = GM.Instance.GAME_SPEED / 3;
                     ToJump();
                 }
-                else if (Input.GetKeyDown(KeyCode.Space))
+                else if (Input.GetKeyDown(KeyCode.Space) && notInAnimation)
                 {
                     towardDistance = 0;
                     ToJump();
                 }
+
+                if (Input.GetKeyDown(KeyCode.Q) && notInAnimation)
+                {
+                    currentState.Exit();
+                    currentState = new UnitCastSpell();
+                    currentState.Enter(Instance);
+                }
+
                 break;
 
             case UnitRun:
-                if (Input.GetMouseButtonDown(1))
+                if (Input.GetMouseButtonDown(1) && notInAnimation )
                 {
                     RunToRun();
                 }
-                else if (Input.GetKeyDown(KeyCode.Space))
+                else if (Input.GetKeyDown(KeyCode.Space) && notInAnimation)
                 {
                     towardDistance = GM.Instance.GAME_SPEED/2;
                     ToJump();
                 }
-
                 break;
 
         }
-
-      
 
     }
 
@@ -133,6 +142,7 @@ public class MageController : MonoBehaviour , IUnitController
         {
             return;
         }
+        
         currentState.Exit();
         currentState = new UnitRun();
         currentState.Enter(Instance, destination);  // Them bien chay den dau
@@ -145,7 +155,6 @@ public class MageController : MonoBehaviour , IUnitController
         {
             return;
         }
-        currentState.Exit();
         currentState.Enter(Instance, destination);  // Them bien chay den dau
     }
 
@@ -158,7 +167,11 @@ public class MageController : MonoBehaviour , IUnitController
                 
     }
 
-   
+    // Goi o Animation Event
+    public void AnimationTurnOnOff()
+    {
+        notInAnimation = !notInAnimation;
+    }
 
 
 }

@@ -45,6 +45,7 @@ public class GM : MonoBehaviour
     void Start()
     {
         MageController.Instance.Init();
+        
     }
 
     void Update()
