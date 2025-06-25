@@ -32,6 +32,7 @@ public class MagicBall : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("needMoving: " + needMoving);
         if (!needMoving)
         {
             return;

@@ -12,7 +12,7 @@ public interface IUnitController
 
     CharacterController GetCharacterController { get; }
 
-    bool FlagNotInAnimation { get; }
+    bool NotInFixAnimation { get; }
 
 }
 

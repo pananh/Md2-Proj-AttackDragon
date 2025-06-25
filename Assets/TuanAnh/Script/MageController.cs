@@ -18,11 +18,11 @@ public class MageController : MonoBehaviour , IUnitController
     public Animator GetAnimator { get => animator; }
     [SerializeField] GameObject magicBallPrefab;
 
-    private bool flagNotInAnimation = true;
-    public bool FlagNotInAnimation
+    private bool notInFixAnimation = true;
+    public bool NotInFixAnimation
     {
-        get => flagNotInAnimation;
-        set => flagNotInAnimation = value;
+        get => notInFixAnimation;
+        set => notInFixAnimation = value;
     }
 
     private Vector3 destination;
@@ -92,22 +92,23 @@ public class MageController : MonoBehaviour , IUnitController
         switch (currentState)
         {
             case UnitIdle:
-                if (Input.GetMouseButtonDown(1) && flagNotInAnimation )
+                if (Input.GetMouseButtonDown(1) && notInFixAnimation )
                 {   IdleToRun(); }
 
-                if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Space) && flagNotInAnimation)
+                if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Space) && notInFixAnimation)
                 {
                     towardDistance = GM.Instance.GAME_SPEED / 3;
                     ToJump();
                 }
-                else if (Input.GetKeyDown(KeyCode.Space) && flagNotInAnimation)
+                else if (Input.GetKeyDown(KeyCode.Space) && notInFixAnimation)
                 {
                     towardDistance = 0;
                     ToJump();
                 }
 
-                if (Input.GetKeyDown(KeyCode.Q) && flagNotInAnimation)
+                if (Input.GetKeyDown(KeyCode.Q) && notInFixAnimation)
                 {
+                    Debug.Log("Cast Spell with " + notInFixAnimation);
                     currentState.Exit();
                     currentState = new UnitCastSpell();
                     currentState.Enter(Instance, new Vector3 (200,2,20), magicBallPrefab);
@@ -116,11 +117,11 @@ public class MageController : MonoBehaviour , IUnitController
                 break;
 
             case UnitRun:
-                if (Input.GetMouseButtonDown(1) && flagNotInAnimation )
+                if (Input.GetMouseButtonDown(1) && notInFixAnimation )
                 {
                     RunToRun();
                 }
-                else if (Input.GetKeyDown(KeyCode.Space) && flagNotInAnimation)
+                else if (Input.GetKeyDown(KeyCode.Space) && notInFixAnimation)
                 {
                     towardDistance = GM.Instance.GAME_SPEED/2;
                     ToJump();
@@ -146,7 +147,6 @@ public class MageController : MonoBehaviour , IUnitController
         {
             return;
         }
-        Debug.Log("Destination: " + destination);
         currentState.Exit();
         currentState = new UnitRun();
         currentState.Enter(Instance, destination);  // Them bien chay den dau
@@ -159,7 +159,6 @@ public class MageController : MonoBehaviour , IUnitController
         {
             return;
         }
-        Debug.Log("Destination: " + destination);   
         currentState.Enter(Instance, destination);  // Them bien chay den dau
     }
 
@@ -175,7 +174,7 @@ public class MageController : MonoBehaviour , IUnitController
     // Goi o Animation Event
     public void FlagInAnimation()
     {
-        flagNotInAnimation = !flagNotInAnimation;
+        notInFixAnimation = !notInFixAnimation;
     }
 
 

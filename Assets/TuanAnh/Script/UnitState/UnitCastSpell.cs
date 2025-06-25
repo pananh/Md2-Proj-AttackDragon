@@ -30,6 +30,8 @@ public class UnitCastSpell : UnitState
         magicBallPrefab = magicBallPrefabInput;
         animator.SetBool("Spell", true);
         isInstated = false;
+
+        Debug.Log("In Cast Spell: " + controller.NotInFixAnimation);
     }
 
     public override void Update()
@@ -40,10 +42,13 @@ public class UnitCastSpell : UnitState
             isInstated = true;
         }
 
-        if ( !controller.FlagNotInAnimation )
-        {
-            magicBall.NeedMoving = true;
-        }
+        ////Debug.Log("Cast Spell State: " + magicBall.NeedMoving);
+        //if ( controller.NotInFixAnimation )
+        //{
+        //    //Debug.Log("Cast Spell State False: " + controller.NotInFixAnimation);
+        //    magicBall.NeedMoving = true;
+        //    //Debug.Log("Cast Spell State True: " + magicBall.NeedMoving);
+        //}
 
     }
 
@@ -62,7 +67,7 @@ public class UnitCastSpell : UnitState
         
         magicBallObject = GameObject.Instantiate(magicBallPrefab, spawnPosition, spawnRotation);
         magicBall = magicBallObject.GetComponent<MagicBall>();
-        magicBall.Init(5f, 5f, targetPosition);
+        magicBall.Init(2f, 5f, targetPosition);
 
     }
 
