@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,38 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &89530088
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 89530089}
-  m_Layer: 0
-  m_Name: Magic Ball
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &89530089
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 89530088}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20, y: 2, z: 30}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1005768280}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &293825298
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,37 +607,42 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 89530089}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3976890425288366504, guid: 291d4c1500b7a3a41a5672ea69567801,
         type: 3}
       propertyPath: m_Name
       value: Yellow Fire Ball
       objectReference: {fileID: 0}
+    - target: {fileID: 3976890425288366504, guid: 291d4c1500b7a3a41a5672ea69567801,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4853675826732475985, guid: 291d4c1500b7a3a41a5672ea69567801,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.07
+      value: 19.93
       objectReference: {fileID: 0}
     - target: {fileID: 4853675826732475985, guid: 291d4c1500b7a3a41a5672ea69567801,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.03
+      value: 2.03
       objectReference: {fileID: 0}
     - target: {fileID: 4853675826732475985, guid: 291d4c1500b7a3a41a5672ea69567801,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.9
+      value: 34.9
       objectReference: {fileID: 0}
     - target: {fileID: 4853675826732475985, guid: 291d4c1500b7a3a41a5672ea69567801,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 4853675826732475985, guid: 291d4c1500b7a3a41a5672ea69567801,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 4853675826732475985, guid: 291d4c1500b7a3a41a5672ea69567801,
         type: 3}
@@ -684,7 +657,7 @@ PrefabInstance:
     - target: {fileID: 4853675826732475985, guid: 291d4c1500b7a3a41a5672ea69567801,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 4853675826732475985, guid: 291d4c1500b7a3a41a5672ea69567801,
         type: 3}
@@ -699,18 +672,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3976890425288366504, guid: 291d4c1500b7a3a41a5672ea69567801,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1399998843}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 291d4c1500b7a3a41a5672ea69567801, type: 3}
---- !u!4 &1005768280 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4853675826732475985, guid: 291d4c1500b7a3a41a5672ea69567801,
-    type: 3}
-  m_PrefabInstance: {fileID: 1005768279}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1260464159
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,25 +821,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameSpeed: 10
---- !u!1 &1399998840 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3976890425288366504, guid: 291d4c1500b7a3a41a5672ea69567801,
-    type: 3}
-  m_PrefabInstance: {fileID: 1005768279}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1399998843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1399998840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0168c783b57af9e4ea1a36b17a6705e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetPosition: {x: 20, y: 2, z: 300}
 --- !u!1 &1471385722
 GameObject:
   m_ObjectHideFlags: 0
@@ -1141,6 +1085,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5292631466890718949, guid: 88e381c5517a89f4aa65d7c68bc1640f,
+        type: 3}
+      propertyPath: magicBallPrefab
+      value: 
+      objectReference: {fileID: 3976890425288366504, guid: 291d4c1500b7a3a41a5672ea69567801,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1176,4 +1126,4 @@ SceneRoots:
   - {fileID: 3895404286530890979}
   - {fileID: 1260464163}
   - {fileID: 473473968}
-  - {fileID: 89530089}
+  - {fileID: 1005768279}

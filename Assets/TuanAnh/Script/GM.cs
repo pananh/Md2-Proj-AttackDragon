@@ -24,7 +24,7 @@ public class GM : MonoBehaviour
     {   get => 0.01f;
     }
     public static float MIN_STUCK_DISTANCE
-    {   get => 0.001f;
+    {   get => 0.0001f;
     }
     public static float MAX_MOVE_DISTANCE
     {   get => 15f;

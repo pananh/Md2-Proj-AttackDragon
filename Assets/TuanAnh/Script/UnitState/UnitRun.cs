@@ -74,8 +74,8 @@ public class UnitRun : UnitState
         }
 
         characterController.Move(direction);
-        
-        // Neu bi ket o doc cao do ham Move thi dung lai
+
+        //Neu bi ket o doc cao do ham Move thi dung lai
         if ((characterController.transform.position - oldPosition).sqrMagnitude < GM.MIN_STUCK_DISTANCE)
         {
             needUpdateState = false;
