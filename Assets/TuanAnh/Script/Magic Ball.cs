@@ -9,7 +9,7 @@ public class MagicBall : MonoBehaviour
     private float speed;
     private float timeFly;
     private float maxTime;
-    private Vector3 targetPosition;
+    private Vector3 targetBall;
 
     private bool needMoving;
     public bool NeedMoving
@@ -20,36 +20,35 @@ public class MagicBall : MonoBehaviour
 
 
 
-    public void Init(float speed, float MaxTime, Vector3 targetPosition)
+    public void Init(float speed, float MaxTime, Vector3 targetBall)
     {
         timeFly = 0f;
         this.speed = speed;
         this.maxTime = MaxTime;
-        this.targetPosition = targetPosition;
+        this.targetBall = targetBall;
         needMoving = false;
     }
 
 
     void Update()
     {
-        Debug.Log("needMoving: " + needMoving);
         if (!needMoving)
         {
             return;
         }
-        MoveToTarget();
+        MoveForward();
     }
 
-    private void MoveToTarget()
+    private void MoveForward()
     {
         timeFly += Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
-        if ((Vector3.SqrMagnitude(transform.position - targetPosition) < GM.MIN_MOVE_SQR_DISTANCE) || (timeFly > maxTime))
+        transform.position = Vector3.MoveTowards(transform.position, targetBall, speed * Time.deltaTime);
+        if (timeFly > maxTime)
         {
             Destroy(gameObject);
         }
     }
 
-
    
+
 }

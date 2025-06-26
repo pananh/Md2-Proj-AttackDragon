@@ -22,13 +22,7 @@ public class UnitIdle : UnitState
         //characterController = controller.GetCharacterController;
         //animator = controller.GetAnimator;
         needUpdateState = true;
-
-
-    }
-
-    public override void Update()
-    {
-        if (!needUpdateState) return;
+        //UnityEngine.Debug.Log("UnitIdle Enter");
 
 
     }
@@ -36,6 +30,7 @@ public class UnitIdle : UnitState
     public override void Exit()
     {
         needUpdateState = false ;
+        //UnityEngine.Debug.Log("UnitIdle Exit");
     }
 
     

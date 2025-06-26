@@ -15,7 +15,7 @@ public class GM : MonoBehaviour
 
     public static float RAYCAST_DISTANCE
     {
-        get => 100f;
+        get => 200f;
     }
     public static float MIN_MOVE_DISTANCE
     {   get => 0.01f; 
@@ -27,13 +27,23 @@ public class GM : MonoBehaviour
     {   get => 0.0001f;
     }
     public static float MAX_MOVE_DISTANCE
-    {   get => 15f;
+    {   get => 20f;
     }
     public static float MAX_MOVE_SQR_DISTANCE
-    {   get => 200f;
+    {   get => 400f;
     }
     public static float GRAVITY
     {   get => -9.81f; 
+    }
+
+    public static Vector3 MAGIC_BALL_LOCAL_OFFSET
+    {
+        get => new Vector3(0, 1, 2);
+    }
+
+    public static float TIME_DURATION_FOR_SPELL_TARGET
+    {
+        get => 10f;
     }
 
 

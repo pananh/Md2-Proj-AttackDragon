@@ -16,7 +16,8 @@ public class UnitCastSpell : UnitState
     MagicBall magicBall;
 
     private Vector3 targetPosition;
-    private bool isInstated = false;
+    private bool isInstated;
+    private int isCastingStage; 
 
 
     public override void Enter(IUnitController controllerInput, Vector3 targetPosInput, GameObject magicBallPrefabInput)
@@ -30,8 +31,7 @@ public class UnitCastSpell : UnitState
         magicBallPrefab = magicBallPrefabInput;
         animator.SetBool("Spell", true);
         isInstated = false;
-
-        Debug.Log("In Cast Spell: " + controller.NotInFixAnimation);
+        isCastingStage = 0;
     }
 
     public override void Update()
@@ -42,32 +42,40 @@ public class UnitCastSpell : UnitState
             isInstated = true;
         }
 
-        ////Debug.Log("Cast Spell State: " + magicBall.NeedMoving);
-        //if ( controller.NotInFixAnimation )
-        //{
-        //    //Debug.Log("Cast Spell State False: " + controller.NotInFixAnimation);
-        //    magicBall.NeedMoving = true;
-        //    //Debug.Log("Cast Spell State True: " + magicBall.NeedMoving);
-        //}
+        if ( (isCastingStage == 0) && !controller.NotInFixAnimation)
+        {
+            isCastingStage = 1;
+        }
+        else if (isCastingStage == 1 && controller.NotInFixAnimation)
+        {
+            magicBall.NeedMoving = true;
+            isCastingStage = 2;
+        }
+        else if (isCastingStage == 2 && !controller.NotInFixAnimation)
+        {
+            isCastingStage = 3;
+        }
+        else if (isCastingStage == 3 && controller.NotInFixAnimation)
+        {
+            needUpdateState = false;
+        }
 
     }
 
     public override void Exit()
     {
         needUpdateState = false;
-        animator.SetBool("Spell",false);
-
+        animator.SetBool("Spell", false);
     }
 
     private void SpawnFireBall()
     {
-        Vector3 localOffset = new Vector3(0, 1, 2); 
-        Vector3 spawnPosition = characterController.transform.TransformPoint(localOffset);
+        Vector3 spawnPosition = characterController.transform.TransformPoint(GM.MAGIC_BALL_LOCAL_OFFSET);
         Quaternion spawnRotation = Quaternion.LookRotation(targetPosition - spawnPosition);
         
         magicBallObject = GameObject.Instantiate(magicBallPrefab, spawnPosition, spawnRotation);
         magicBall = magicBallObject.GetComponent<MagicBall>();
-        magicBall.Init(2f, 5f, targetPosition);
+        magicBall.Init(GM.Instance.GAME_SPEED, GM.Instance.GAME_SPEED*2, targetPosition);
 
     }
 

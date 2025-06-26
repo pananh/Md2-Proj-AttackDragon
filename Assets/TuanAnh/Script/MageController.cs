@@ -64,7 +64,7 @@ public class MageController : MonoBehaviour , IUnitController
             BackToIdle();
     }
 
-    private static Vector3 GetDestination()
+    private static Vector3 GetDestinationForMove()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, GM.RAYCAST_DISTANCE))
@@ -84,7 +84,10 @@ public class MageController : MonoBehaviour , IUnitController
         {
             return Instance.transform.position;
         }
-
+    }
+    private static Vector3 GetDestinationForSpell(float distance)
+    {
+        return Instance.transform.position + Instance.transform.forward * distance;
     }
 
     private void GetInputAndChangeStage()
@@ -108,10 +111,7 @@ public class MageController : MonoBehaviour , IUnitController
 
                 if (Input.GetKeyDown(KeyCode.Q) && notInFixAnimation)
                 {
-                    Debug.Log("Cast Spell with " + notInFixAnimation);
-                    currentState.Exit();
-                    currentState = new UnitCastSpell();
-                    currentState.Enter(Instance, new Vector3 (200,2,20), magicBallPrefab);
+                    IdleToCastSpell();
                 }
 
                 break;
@@ -127,7 +127,6 @@ public class MageController : MonoBehaviour , IUnitController
                     ToJump();
                 }
                 break;
-
         }
 
     }
@@ -142,7 +141,7 @@ public class MageController : MonoBehaviour , IUnitController
 
     private void IdleToRun()
     {
-        destination = GetDestination();
+        destination = GetDestinationForMove();
         if (destination == transform.position)
         {
             return;
@@ -154,7 +153,7 @@ public class MageController : MonoBehaviour , IUnitController
 
     private void RunToRun()
     {
-        destination = GetDestination();
+        destination = GetDestinationForMove();
         if (destination == transform.position)
         {
             return;
@@ -162,6 +161,13 @@ public class MageController : MonoBehaviour , IUnitController
         currentState.Enter(Instance, destination);  // Them bien chay den dau
     }
 
+    private void IdleToCastSpell()
+    {
+        currentState.Exit();
+        currentState = new UnitCastSpell();
+        destination = GetDestinationForSpell(GM.RAYCAST_DISTANCE);
+        currentState.Enter(Instance, destination, magicBallPrefab);
+    }
 
     private void BackToIdle()
     {
@@ -172,11 +178,12 @@ public class MageController : MonoBehaviour , IUnitController
     }
 
     // Goi o Animation Event
-    public void FlagInAnimation()
+    public void CheckInFixedAnimation()
     {
+        //Debug.Log(" CheckInFixedAnimation: " + notInFixAnimation);  
         notInFixAnimation = !notInFixAnimation;
     }
 
-
+   
 }
 

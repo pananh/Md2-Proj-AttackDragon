@@ -154228,14 +154228,28 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: FlagInAnimation
+    functionName: CheckInFixedAnimation
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 2.1666667
-    functionName: FlagInAnimation
+    functionName: CheckInFixedAnimation
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 2.2
+    functionName: CheckInFixedAnimation
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 3.5333333
+    functionName: CheckInFixedAnimation
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
