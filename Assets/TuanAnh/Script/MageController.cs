@@ -29,6 +29,7 @@ public class MageController : MonoBehaviour , IUnitController
     private float towardDistance;
 
 
+
     public void Awake()
     {
         Instance = this;
@@ -184,6 +185,11 @@ public class MageController : MonoBehaviour , IUnitController
         notInFixAnimation = !notInFixAnimation;
     }
 
-   
+    public void TakeDamage(int damage)
+    {
+       
+        Debug.Log($"MageController took {damage} damage.");
+    }
+
 }
 
