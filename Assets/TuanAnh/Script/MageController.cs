@@ -29,7 +29,6 @@ public class MageController : MonoBehaviour , IUnitController
     private float towardDistance;
 
 
-
     public void Awake()
     {
         Instance = this;

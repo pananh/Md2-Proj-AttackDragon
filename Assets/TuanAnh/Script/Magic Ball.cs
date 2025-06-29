@@ -14,6 +14,10 @@ public class MagicBall : MonoBehaviour
     private Vector3 direction;
     private float castDistance;
     private RaycastHit hit;
+    [SerializeField] private LayerMask layerMask;
+    [SerializeField] private AudioClip magicBallSound;
+    [SerializeField] private AudioClip hitSound;
+
 
     private bool needMoving;
     public bool NeedMoving
@@ -32,6 +36,8 @@ public class MagicBall : MonoBehaviour
         this.targetBall = targetBall;
         needMoving = false;
         direction = (targetBall - transform.position).normalized;
+
+        AudioSource.PlayClipAtPoint(magicBallSound, Camera.main.transform.position);
     }
 
 
@@ -48,8 +54,11 @@ public class MagicBall : MonoBehaviour
     {
         timeFly += Time.deltaTime;
         castDistance = speed * Time.deltaTime;
-        if (Physics.SphereCast(transform.position, ballRadius, direction, out RaycastHit hit, castDistance))
+        if (Physics.SphereCast(transform.position, ballRadius, direction, out RaycastHit hit, castDistance, layerMask))
         {
+            Debug.Log("Hit something: " + hit.collider.name);
+            AudioSource.PlayClipAtPoint(hitSound, Camera.main.transform.position);
+
             if (hit.collider.CompareTag("Player"))
             {
                 hit.collider.GetComponent<MageController>().TakeDamage(1);
@@ -63,22 +72,17 @@ public class MagicBall : MonoBehaviour
                 return;
             }
         }
-
-
-
-
-
-
         transform.position = Vector3.MoveTowards(transform.position, targetBall, speed * Time.deltaTime);
         if (timeFly > maxTime)
         {
             Destroy(gameObject);
         }
-
-
-
     }
 
-   
+
+    private void playSound( AudioClip clip)
+    {
+        
+     }
 
 }
