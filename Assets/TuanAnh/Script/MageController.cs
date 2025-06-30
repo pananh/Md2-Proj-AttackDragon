@@ -28,12 +28,17 @@ public class MageController : MonoBehaviour , IUnitController
     private Vector3 destination;
     private float towardDistance;
 
+    [SerializeField] private PlayerData playerData;
+    private float health;
+
 
     public void Awake()
     {
         Instance = this;
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
+        health = playerData.health;
+
     }
 
 

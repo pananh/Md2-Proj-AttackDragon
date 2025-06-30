@@ -56,7 +56,6 @@ public class MagicBall : MonoBehaviour
         castDistance = speed * Time.deltaTime;
         if (Physics.SphereCast(transform.position, ballRadius, direction, out RaycastHit hit, castDistance, layerMask))
         {
-            Debug.Log("Hit something: " + hit.collider.name);
             AudioSource.PlayClipAtPoint(hitSound, Camera.main.transform.position);
 
             if (hit.collider.CompareTag("Player"))
@@ -67,7 +66,6 @@ public class MagicBall : MonoBehaviour
             }
             else if (hit.collider.CompareTag("Ground"))
             {   
-                Debug.Log("Hit the ground");
                 Destroy(gameObject);
                 return;
             }
