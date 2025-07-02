@@ -28,8 +28,13 @@ public class MageController : MonoBehaviour , IUnitController
     private Vector3 destination;
     private float towardDistance;
 
+
+
+
     [SerializeField] private PlayerData playerData;
     private float health;
+
+
 
 
     public void Awake()
@@ -63,10 +68,26 @@ public class MageController : MonoBehaviour , IUnitController
     {
         GetInputAndChangeStage();
 
+        HandleRotatePlayer();
+
         if (currentState.NeedUpdateState())
             currentState.Update();
         else 
             BackToIdle();
+    }
+
+    private void HandleRotatePlayer()
+    {
+        if (Input.GetKey(KeyCode.LeftShift) && (currentState is UnitIdle))
+        {
+            float rotateInput = Input.GetAxis("Mouse X");
+            if (Mathf.Abs(rotateInput) > 0.01f)
+            {
+                transform.Rotate(0, rotateInput * GM.Instance.GAME_SPEED, 0);
+            }
+           
+        }
+
     }
 
     private static Vector3 GetDestinationForMove()

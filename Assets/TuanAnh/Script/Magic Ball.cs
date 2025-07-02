@@ -64,8 +64,14 @@ public class MagicBall : MonoBehaviour
                 Destroy(gameObject);
                 return;
             }
+            else if (hit.collider.CompareTag("Monster"))
+            {
+                Debug.Log("Hit Monster");
+                Destroy(gameObject);
+                return;
+            }
             else if (hit.collider.CompareTag("Ground"))
-            {   
+            {
                 Destroy(gameObject);
                 return;
             }
