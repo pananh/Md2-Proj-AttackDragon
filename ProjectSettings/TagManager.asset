@@ -8,6 +8,9 @@ TagManager:
   - Ground
   - Dragon
   - Monster
+  - BombArea
+  - TrueButton
+  - FalseButton
   layers:
   - Default
   - TransparentFX
