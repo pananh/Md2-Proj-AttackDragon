@@ -36,21 +36,29 @@ public class Bomb : MonoBehaviour
            SpawnButtons();
            countDown = true;
            CanvasBomb.instance.ShowGameState(true, "Left click to remove bomb!");
-            CanvasBomb.instance.ShowTrueButton(true, trueButtonNumber);
-
+           CanvasBomb.instance.ShowTrueButton(true, trueButtonNumber);
+           StartCoroutine(BombCountDown());
         }
         if (countDown)
         {
             timer -= Time.deltaTime;
             CanvasBomb.instance.ShowCountDown(true, timer);
-            if (timer <= 0f)
-            {
-                EndGame();
-            }
+            //if (timer <= 0f)
+            //{
+            //    EndGame();
+            //}
+            
             ClickToRemoveBomb();
         }
 
 
+    }
+
+    private IEnumerator BombCountDown()
+    {
+        yield return new WaitForSeconds(10f);
+        Debug.Log("Bomb exploded!");
+        EndGame();
     }
 
     private void ClickToRemoveBomb()
