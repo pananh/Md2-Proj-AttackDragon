@@ -7,14 +7,13 @@ public class BombArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (Bomb.instance.ActiveBomb)
+        if (Bomb.instance.countDown)
         {
             return;
         }
         if (other.CompareTag("Player"))
         {
-            Bomb.instance.ActiveBomb = true;
-            Debug.Log("Bomb Triggered: " + Bomb.instance.ActiveBomb);
+            Bomb.instance.Activate();
         }
 
 

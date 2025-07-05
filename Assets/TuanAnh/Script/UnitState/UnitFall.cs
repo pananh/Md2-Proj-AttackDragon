@@ -12,7 +12,6 @@ public class UnitFall : UnitState
     private CharacterController characterController;
     private Animator animator;
 
-    
 
     public override void Enter(IUnitController controllerInput )
     {
@@ -45,7 +44,7 @@ public class UnitFall : UnitState
         }
         else
         {
-            Vector3 gravityVector = Vector3.up * (GM.GRAVITY * Time.deltaTime); 
+            Vector3 gravityVector = Vector3.up * (GMData.Instance.GRAVITY * Time.deltaTime); 
             characterController.Move(gravityVector);
         }
 

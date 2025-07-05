@@ -25,11 +25,15 @@ public class CanvasBomb : MonoBehaviour
         gameState.gameObject.SetActive(active);
         gameState.text = state;
     }
-
-    public void ShowCountDown(bool active, float time)
+    public void UpdateCountDown(float time)
+    {
+       // countDown.gameObject.SetActive(active);
+        countDown.text = "Time: " + time.ToString("F2");
+    }
+    public void ShowCountDown(bool active)
     {
         countDown.gameObject.SetActive(active);
-        countDown.text = "Time: " + time.ToString("F2");
+       // countDown.text = "Time: " + time.ToString("F2");
     }
 
     public void ShowTrueButton(bool active, int number)

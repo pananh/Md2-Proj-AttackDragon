@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e03f4f3106761a4484f12d9e0c8d312, type: 3}
+  m_Name: GameSetting
+  m_EditorClassIdentifier: 
+  gameSpeed: 5
+  raycastDistance: 200
+  minMoveDistance: 0.01
+  minMoveSqrDistance: 0.01
+  minStuckDistance: 0.0001
+  maxMoveDistance: 20
+  maxMoveSqrDistance: 400
+  gravity: -9.81
+  magicBallLocalOffset: {x: 0, y: 1, z: 2}
+  timeDurationForSpellTarget: 10
+  magicBallSpeed: 10
+  magicBallMaxTime: 5
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  magicBallSound: {fileID: 0}
+  hitSound: {fileID: 0}
+  magicBallRadius: 0.5
+  magicBallCastDistance: 10
+  magicBallTimeFly: 0
+  magicBallCastDistanceSpeed: 10
+  magicBallCastDistanceMaxTime: 5

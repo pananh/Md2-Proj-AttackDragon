@@ -21,7 +21,7 @@ public class UnitJump : UnitState
         characterController = controller.GetCharacterController;
         animator = controller.GetAnimator;
         needUpdateState = true;
-        verticalVelocity = GM.Instance.GAME_SPEED/2;
+        verticalVelocity = GMData.Instance.GAME_SPEED/2;
         horizontalVelocity = towardDistance;
         animator.SetBool("Jump", true);
         animator.SetBool("InAir", true);
@@ -43,7 +43,7 @@ public class UnitJump : UnitState
 
     private void JumpCharacter()
     {
-        verticalVelocity += GM.GRAVITY * Time.deltaTime;
+        verticalVelocity += GMData.Instance.GRAVITY * Time.deltaTime;
 
         Vector3 jumpMove = characterController.transform.forward * (horizontalVelocity * Time.deltaTime) +
                         Vector3.up * (verticalVelocity * Time.deltaTime);

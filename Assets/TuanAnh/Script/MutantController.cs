@@ -16,16 +16,9 @@ public class MutantScript : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         agent.stoppingDistance = stoppingDistance;
-   
         animator = GetComponent<Animator>();
-        Debug.Log(animator.name + " is the animator of " + gameObject.name);
-        if (animator == null)
-        Debug.LogError("Animator component is missing!");
-       
-
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Time.time > nextTimeThink)
@@ -35,9 +28,8 @@ public class MutantScript : MonoBehaviour
         }
 
         
-        if (agent.velocity.magnitude > 0.1f)
+        if (agent.velocity.magnitude > 0.2f)
         {
-            Debug.Log("Mutant is running");
             animator.SetBool("Run", true);
         }
         else
@@ -45,15 +37,7 @@ public class MutantScript : MonoBehaviour
             animator.SetBool("Run", false);
         }
 
-        // Nếu Mutant đã đến gần MageController, dừng lại
-        //if (Vector3.Distance(transform.position, MageController.Instance.transform.position) <= stoppingDistance)
-        //{
-        //    agent.isStopped = true;
-        //}
-        //else
-        //{
-        //    agent.isStopped = false;
-        //}
+        
     }
 
 

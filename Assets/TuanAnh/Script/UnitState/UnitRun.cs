@@ -59,24 +59,24 @@ public class UnitRun : UnitState
         Vector3 direction = runDestination - characterController.transform.position;
         direction.y = 0;
 
-        if (direction.sqrMagnitude < GM.MIN_MOVE_SQR_DISTANCE) 
+        if (direction.sqrMagnitude < GMData.Instance.MIN_MOVE_SQR_DISTANCE) 
         {   needUpdateState = false;
             return;
         }
 
         Vector3 oldPosition = characterController.transform.position;
-        direction = direction.normalized * ( GM.Instance.GAME_SPEED * Time.deltaTime);
+        direction = direction.normalized * ( GMData.Instance.GAME_SPEED * Time.deltaTime);
 
         //Xu ly neu dang chay ma bi roi xuong thap, thi ha do cao y : Luc nay khong phai nhay.
         if ( characterController.isGrounded == false ) 
         {
-            direction.y = GM.GRAVITY * Time.deltaTime;
+            direction.y = GMData.Instance.GRAVITY * Time.deltaTime;
         }
 
         characterController.Move(direction);
 
         //Neu bi ket o doc cao do ham Move thi dung lai
-        if ((characterController.transform.position - oldPosition).sqrMagnitude < GM.MIN_STUCK_DISTANCE)
+        if ((characterController.transform.position - oldPosition).sqrMagnitude < GMData.Instance.MIN_STUCK_DISTANCE)
         {
             needUpdateState = false;
             Debug.Log("Stuck on Terrance");

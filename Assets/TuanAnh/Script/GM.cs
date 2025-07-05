@@ -5,57 +5,15 @@ using UnityEngine;
 public class GM : MonoBehaviour
 {
     public static GM Instance { get; private set; }
-
-    [SerializeField] private int gameSpeed = 5;
-    public int GAME_SPEED 
-    {
-        get => gameSpeed; 
-        set => gameSpeed = value; 
-    }
-
-    public static float RAYCAST_DISTANCE
-    {
-        get => 200f;
-    }
-    public static float MIN_MOVE_DISTANCE
-    {   get => 0.01f; 
-    }
-    public static float MIN_MOVE_SQR_DISTANCE
-    {   get => 0.01f;
-    }
-    public static float MIN_STUCK_DISTANCE
-    {   get => 0.0001f;
-    }
-    public static float MAX_MOVE_DISTANCE
-    {   get => 20f;
-    }
-    public static float MAX_MOVE_SQR_DISTANCE
-    {   get => 400f;
-    }
-    public static float GRAVITY
-    {   get => -9.81f; 
-    }
-
-    public static Vector3 MAGIC_BALL_LOCAL_OFFSET
-    {
-        get => new Vector3(0, 1, 2);
-    }
-
-    public static float TIME_DURATION_FOR_SPELL_TARGET
-    {
-        get => 10f;
-    }
-
-
+    
     void Awake()
     {
-        Instance = this;
+       Instance = this;
     }
 
     void Start()
     {
         MageController.Instance.Init();
-        
     }
 
     void Update()

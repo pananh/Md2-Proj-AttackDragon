@@ -14,6 +14,7 @@ public class MageController : MonoBehaviour , IUnitController
     private CharacterController characterController;
     public CharacterController GetCharacterController { get => characterController; }
    
+
     private Animator animator;
     public Animator GetAnimator { get => animator; }
     [SerializeField] GameObject magicBallPrefab;
@@ -83,7 +84,7 @@ public class MageController : MonoBehaviour , IUnitController
             float rotateInput = Input.GetAxis("Mouse X");
             if (Mathf.Abs(rotateInput) > 0.01f)
             {
-                transform.Rotate(0, rotateInput * GM.Instance.GAME_SPEED, 0);
+                transform.Rotate(0, rotateInput * GMData.Instance.GAME_SPEED, 0);
             }
            
         }
@@ -93,16 +94,16 @@ public class MageController : MonoBehaviour , IUnitController
     private static Vector3 GetDestinationForMove()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, GM.RAYCAST_DISTANCE))
+        if (Physics.Raycast(ray, out RaycastHit hit, GMData.Instance.RAYCAST_DISTANCE))
         {
             Vector3 vector3 = hit.point - Instance.transform.position;
-            if (vector3.sqrMagnitude < GM.MIN_MOVE_SQR_DISTANCE)
+            if (vector3.sqrMagnitude < GMData.Instance.MIN_MOVE_SQR_DISTANCE)
             {
                 return Instance.transform.position;
             }
-            else if (vector3.sqrMagnitude > GM.MAX_MOVE_SQR_DISTANCE)
+            else if (vector3.sqrMagnitude > GMData.Instance.MIN_MOVE_SQR_DISTANCE)
             {
-                return Instance.transform.position + vector3.normalized * GM.MAX_MOVE_DISTANCE;
+                return Instance.transform.position + vector3.normalized * GMData.Instance.MIN_MOVE_SQR_DISTANCE;
             }
             else return hit.point;
         }
@@ -126,7 +127,7 @@ public class MageController : MonoBehaviour , IUnitController
 
                 if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Space) && notInFixAnimation)
                 {
-                    towardDistance = GM.Instance.GAME_SPEED / 3;
+                    towardDistance = GMData.Instance.GAME_SPEED / 3;
                     ToJump();
                 }
                 else if (Input.GetKeyDown(KeyCode.Space) && notInFixAnimation)
@@ -149,7 +150,7 @@ public class MageController : MonoBehaviour , IUnitController
                 }
                 else if (Input.GetKeyDown(KeyCode.Space) && notInFixAnimation)
                 {
-                    towardDistance = GM.Instance.GAME_SPEED/2;
+                    towardDistance = GMData.Instance.GAME_SPEED/2;
                     ToJump();
                 }
                 break;
@@ -191,7 +192,7 @@ public class MageController : MonoBehaviour , IUnitController
     {
         currentState.Exit();
         currentState = new UnitCastSpell();
-        destination = GetDestinationForSpell(GM.RAYCAST_DISTANCE);
+        destination = GetDestinationForSpell(GMData.Instance.RAYCAST_DISTANCE);
         currentState.Enter(Instance, destination, magicBallPrefab);
     }
 

@@ -7,9 +7,10 @@ public class UnitCastSpell : UnitState
 {
     private bool needUpdateState = false;
     public override bool NeedUpdateState() => needUpdateState;
-    IUnitController controller;
-    CharacterController characterController;    
-    Animator animator;
+    private IUnitController controller;
+    private CharacterController characterController;    
+    private Animator animator;
+    private Vector3 magicBallLocalOffset;
 
     GameObject magicBallPrefab;
     GameObject magicBallObject;
@@ -26,6 +27,7 @@ public class UnitCastSpell : UnitState
         needUpdateState = true;
         animator = controller.GetAnimator;
         characterController = controller.GetCharacterController;
+        magicBallLocalOffset = GMData.Instance.MAGIC_BALL_LOCAL_OFFSET;
 
         targetPosition = targetPosInput;
         magicBallPrefab = magicBallPrefabInput;
@@ -70,12 +72,12 @@ public class UnitCastSpell : UnitState
 
     private void SpawnFireBall()
     {
-        Vector3 spawnPosition = characterController.transform.TransformPoint(GM.MAGIC_BALL_LOCAL_OFFSET);
+        Vector3 spawnPosition = characterController.transform.TransformPoint(magicBallLocalOffset);
         Quaternion spawnRotation = Quaternion.LookRotation(targetPosition - spawnPosition);
         
         magicBallObject = GameObject.Instantiate(magicBallPrefab, spawnPosition, spawnRotation);
         magicBall = magicBallObject.GetComponent<MagicBall>();
-        magicBall.Init(GM.Instance.GAME_SPEED, GM.Instance.GAME_SPEED*2, targetPosition);
+        magicBall.Init(GMData.Instance.GAME_SPEED, GMData.Instance.GAME_SPEED*2, targetPosition);
 
     }
 
