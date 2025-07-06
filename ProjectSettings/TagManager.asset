@@ -6,11 +6,7 @@ TagManager:
   tags:
   - CinemachineTarget
   - Ground
-  - Dragon
   - Monster
-  - BombArea
-  - TrueButton
-  - FalseButton
   - MonsterHandLeg
   layers:
   - Default

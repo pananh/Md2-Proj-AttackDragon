@@ -5,7 +5,7 @@ using UnityEngine;
 public class GMData : MonoBehaviour
 {
     public static GMData Instance { get; private set; }
-    [SerializeField] GameSetting gSetting;
+    [SerializeField] GameData gSetting;
     public int GAME_SPEED 
     {
         get => gSetting.gameSpeed; 
