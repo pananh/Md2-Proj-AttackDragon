@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour , IUnitController
 
     void Update()
     {
+
         GetInputAndChangeStage();
 
         if (currentState.NeedUpdateState())

@@ -11,7 +11,6 @@ public class MutantController : MonoBehaviour
     private NavMeshAgent agent;
     private Animator animator;
 
-
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -23,10 +22,22 @@ public class MutantController : MonoBehaviour
 
     void Update()
     {
+
+       
+
         if (PlayerController.Instance == null)
         {
             Debug.LogWarning("PlayerController.Instance is null, MutantController cannot function.");
             return;
+        }
+
+        if (agent.velocity.magnitude > GMData.Instance.MIN_MOVE_DISTANCE)
+        {
+            animator.SetBool("Run", true);
+        }
+        else
+        {
+            animator.SetBool("Run", false);
         }
 
         if ((Time.time < nextTimeThink) || !IsTargetOnNavMesh(PlayerController.Instance.transform.position))
@@ -37,15 +48,7 @@ public class MutantController : MonoBehaviour
         agent.SetDestination(PlayerController.Instance.transform.position);
 
 
-
-        if (agent.velocity.magnitude > GMData.Instance.MIN_MOVE_DISTANCE)
-        {
-            animator.SetBool("Run", true);
-        }
-        else
-        {
-            animator.SetBool("Run", false);
-        }
+      // xem lai
 
         if (IsTargetInRange(PlayerController.Instance.transform.position))
         {

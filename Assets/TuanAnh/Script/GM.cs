@@ -13,11 +13,17 @@ public class GM : MonoBehaviour
 
     void Start()
     {
-        PlayerController.Instance.Init();
+        EnterGame();
     }
 
     void Update()
     {
         
     }
+
+    private void EnterGame()
+    {
+        PlayerController.Instance.Init();
+    }
+
 }
