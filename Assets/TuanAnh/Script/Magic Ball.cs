@@ -60,7 +60,7 @@ public class MagicBall : MonoBehaviour
 
             if (hit.collider.CompareTag("Player"))
             {
-                hit.collider.GetComponent<MageController>().TakeDamage(1);
+                hit.collider.GetComponent<PlayerController>().TakeDamage(1);
                 Destroy(gameObject);
                 return;
             }

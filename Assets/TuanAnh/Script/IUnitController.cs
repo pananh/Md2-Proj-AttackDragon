@@ -12,7 +12,7 @@ public interface IUnitController
 
     CharacterController GetCharacterController { get; }
 
-    bool NotInFixAnimation { get; }
+    bool NotInAnimating { get; }
 
 }
 

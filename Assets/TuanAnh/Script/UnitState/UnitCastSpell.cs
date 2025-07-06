@@ -44,20 +44,20 @@ public class UnitCastSpell : UnitState
             isInstated = true;
         }
 
-        if ( (isCastingStage == 0) && !controller.NotInFixAnimation)
+        if ( (isCastingStage == 0) && !controller.NotInAnimating)
         {
             isCastingStage = 1;
         }
-        else if (isCastingStage == 1 && controller.NotInFixAnimation)
+        else if (isCastingStage == 1 && controller.NotInAnimating)
         {
             magicBall.NeedMoving = true;
             isCastingStage = 2;
         }
-        else if (isCastingStage == 2 && !controller.NotInFixAnimation)
+        else if (isCastingStage == 2 && !controller.NotInAnimating)
         {
             isCastingStage = 3;
         }
-        else if (isCastingStage == 3 && controller.NotInFixAnimation)
+        else if (isCastingStage == 3 && controller.NotInAnimating)
         {
             needUpdateState = false;
         }

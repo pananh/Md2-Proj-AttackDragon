@@ -7,9 +7,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
-public class MageController : MonoBehaviour , IUnitController
+public class PlayerController : MonoBehaviour , IUnitController
 {
-    public static MageController Instance { get; private set; }
+    public static PlayerController Instance { get; private set; }
     private UnitState currentState;
     private CharacterController characterController;
     public CharacterController GetCharacterController { get => characterController; }
@@ -19,23 +19,18 @@ public class MageController : MonoBehaviour , IUnitController
     public Animator GetAnimator { get => animator; }
     [SerializeField] GameObject magicBallPrefab;
 
-    private bool notInFixAnimation = true;
-    public bool NotInFixAnimation
+    private bool notInAnimating = true;
+    public bool NotInAnimating
     {
-        get => notInFixAnimation;
-        set => notInFixAnimation = value;
+        get => notInAnimating;
+        set => notInAnimating = value;
     }
 
     private Vector3 destination;
     private float towardDistance;
 
-
-
-
-    [SerializeField] private PlayerData playerData;
-    private float health;
-
-
+    [SerializeField] private PlayerData inputPlayerData;
+    private PlayerData playerData;
 
 
     public void Awake()
@@ -43,25 +38,15 @@ public class MageController : MonoBehaviour , IUnitController
         Instance = this;
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
-        health = playerData.health;
 
+        ClonePlayerData();
     }
 
 
     public void Init()
     {
-        
-        destination = transform.position;
+        SetEnterState();
 
-        if (characterController.isGrounded)
-        {
-            currentState = new UnitIdle();
-        }
-        else
-        {
-            currentState = new UnitFall();
-        }
-        currentState.Enter(Instance);
 
     }
 
@@ -75,6 +60,37 @@ public class MageController : MonoBehaviour , IUnitController
             currentState.Update();
         else 
             BackToIdle();
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("MonsterHandLeg"))
+        {
+            //PlayerController.Instance.GetDamage(1);
+            //animator.SetBool("Punch", false);
+            Debug.Log("This Trigger" + this.gameObject.name + " Tag " + this.gameObject.tag);
+            Debug.Log("MonsterHandleg Entered Trigger" + other.name + " Tag " + other.tag);
+
+        }
+    }
+
+
+    private void ClonePlayerData()
+    {
+        playerData = inputPlayerData.CloneData();
+    }
+
+    private void SetEnterState()
+    {
+        destination = transform.position;
+        if (characterController.isGrounded)
+        {
+            currentState = new UnitIdle();
+        }
+        else
+        {
+            currentState = new UnitFall();
+        }
+        currentState.Enter(Instance);
     }
 
     private void HandleRotatePlayer()
@@ -101,9 +117,9 @@ public class MageController : MonoBehaviour , IUnitController
             {
                 return Instance.transform.position;
             }
-            else if (vector3.sqrMagnitude > GMData.Instance.MIN_MOVE_SQR_DISTANCE)
+            else if (vector3.sqrMagnitude > GMData.Instance.MAX_MOVE_SQR_DISTANCE)
             {
-                return Instance.transform.position + vector3.normalized * GMData.Instance.MIN_MOVE_SQR_DISTANCE;
+                return Instance.transform.position + vector3.normalized * GMData.Instance.MAX_MOVE_SQR_DISTANCE;
             }
             else return hit.point;
         }
@@ -122,21 +138,21 @@ public class MageController : MonoBehaviour , IUnitController
         switch (currentState)
         {
             case UnitIdle:
-                if (Input.GetMouseButtonDown(1) && notInFixAnimation )
+                if (Input.GetMouseButtonDown(1) && notInAnimating )
                 {   IdleToRun(); }
 
-                if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Space) && notInFixAnimation)
+                if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Space) && notInAnimating)
                 {
-                    towardDistance = GMData.Instance.GAME_SPEED / 3;
+                    towardDistance = GMData.Instance.GAME_SPEED;
                     ToJump();
                 }
-                else if (Input.GetKeyDown(KeyCode.Space) && notInFixAnimation)
+                else if (Input.GetKeyDown(KeyCode.Space) && notInAnimating)
                 {
                     towardDistance = 0;
                     ToJump();
                 }
 
-                if (Input.GetKeyDown(KeyCode.Q) && notInFixAnimation)
+                if (Input.GetKeyDown(KeyCode.Q) && notInAnimating)
                 {
                     IdleToCastSpell();
                 }
@@ -144,13 +160,13 @@ public class MageController : MonoBehaviour , IUnitController
                 break;
 
             case UnitRun:
-                if (Input.GetMouseButtonDown(1) && notInFixAnimation )
+                if (Input.GetMouseButtonDown(1) && notInAnimating )
                 {
                     RunToRun();
                 }
-                else if (Input.GetKeyDown(KeyCode.Space) && notInFixAnimation)
+                else if (Input.GetKeyDown(KeyCode.Space) && notInAnimating)
                 {
-                    towardDistance = GMData.Instance.GAME_SPEED/2;
+                    towardDistance = GMData.Instance.GAME_SPEED;
                     ToJump();
                 }
                 break;
@@ -205,10 +221,9 @@ public class MageController : MonoBehaviour , IUnitController
     }
 
     // Goi o Animation Event
-    public void CheckInFixedAnimation()
+    public void FlagInOutAnimating()
     {
-        //Debug.Log(" CheckInFixedAnimation: " + notInFixAnimation);  
-        notInFixAnimation = !notInFixAnimation;
+        notInAnimating = !notInAnimating;
     }
 
     public void TakeDamage(int damage)
@@ -216,6 +231,7 @@ public class MageController : MonoBehaviour , IUnitController
        
         Debug.Log($"MageController took {damage} damage.");
     }
+
 
 }
 

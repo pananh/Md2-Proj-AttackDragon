@@ -21,7 +21,7 @@ public class UnitJump : UnitState
         characterController = controller.GetCharacterController;
         animator = controller.GetAnimator;
         needUpdateState = true;
-        verticalVelocity = GMData.Instance.GAME_SPEED/2;
+        verticalVelocity = GMData.Instance.GAME_SPEED;
         horizontalVelocity = towardDistance;
         animator.SetBool("Jump", true);
         animator.SetBool("InAir", true);

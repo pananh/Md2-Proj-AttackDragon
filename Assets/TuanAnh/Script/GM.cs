@@ -13,7 +13,7 @@ public class GM : MonoBehaviour
 
     void Start()
     {
-        MageController.Instance.Init();
+        PlayerController.Instance.Init();
     }
 
     void Update()
