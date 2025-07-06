@@ -49,7 +49,6 @@ public class MutantController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(" Trigger Entered 222 " + other.name);
         if (other.CompareTag("Player"))
         {
             //PlayerController.Instance.GetDamage(1);
