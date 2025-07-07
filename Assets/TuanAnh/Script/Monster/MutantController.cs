@@ -3,59 +3,111 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+
+enum MonsterState
+{
+    Idle,
+    Chase,
+    Attack
+}
+
 public class MutantController : MonoBehaviour
 {
-    private float nextTimeThink = 0;
-    private const float thinkTime = 2f;
-    private float stoppingDistance = 1.5f;
+  
     private NavMeshAgent agent;
     private Animator animator;
+
+    [SerializeField] private MonsterData inputMonData;
+    private MonsterData monsterData;
+    private float sqrMonsterVision;
+    private float sqrAttackRange;
+    private float sqrDistanceToTarget;
+    MonsterState state;
+    private float thinkTime;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        agent.stoppingDistance = stoppingDistance;
-        
         animator = GetComponent<Animator>();
+
+        monsterData = inputMonData.CloneData();
+        agent.stoppingDistance = monsterData.attackRange;
+        agent.speed = monsterData.speed;
+        sqrMonsterVision = monsterData.visionRange * monsterData.visionRange;
+        sqrAttackRange = monsterData.attackRange * monsterData.attackRange + 0.1f;
+        thinkTime = 2f;
 
     }
 
     void Update()
     {
+        sqrDistanceToTarget = Vector3.SqrMagnitude(PlayerController.Instance.transform.position - transform.position);
 
-       
-
-        if (PlayerController.Instance == null)
+        if (sqrDistanceToTarget > GMData.Instance.MAX_MOVE_SQR_DISTANCE)
         {
-            Debug.LogWarning("PlayerController.Instance is null, MutantController cannot function.");
+            MonsterIdle();
             return;
-        }
-
-        if (agent.velocity.magnitude > GMData.Instance.MIN_MOVE_DISTANCE)
+        } 
+        else if (sqrDistanceToTarget > GMData.Instance.MIN_MOVE_SQR_DISTANCE)
         {
-            animator.SetBool("Run", true);
+            MonsterChase();
         }
         else
         {
+            MonsterAttack();
+        }
+
+
+
+       
+
+
+
+    }
+
+    private void MonsterIdle()
+    {
+        if (state != MonsterState.Idle)
+        {
+            state = MonsterState.Idle;
+            agent.isStopped = true;
             animator.SetBool("Run", false);
+            animator.SetBool("Punch", false);
         }
+    }
 
-        if ((Time.time < nextTimeThink) || !IsTargetOnNavMesh(PlayerController.Instance.transform.position))
+    private void MonsterChase()
+    {
+        //thinkTime -= Time.deltaTime;
+        //if (thinkTime <= 0f)
+        //{
+        //    thinkTime = 2f;
+        //    if (sqrDistanceToTarget > sqrMonsterVision)
+        //    {
+        //        MonsterIdle();
+        //        return;
+        //    }
+        //}
+
+        if (state != MonsterState.Chase)
         {
-            return;
+            state = MonsterState.Chase;
+            agent.isStopped = false;
+            agent.SetDestination(PlayerController.Instance.transform.position);
+            animator.SetBool("Run", true);
+            animator.SetBool("Punch", false);
         }
-        nextTimeThink = Time.time + thinkTime;
-        agent.SetDestination(PlayerController.Instance.transform.position);
-
-
-      // xem lai
-
-        if (IsTargetInRange(PlayerController.Instance.transform.position))
+    }
+    
+    private void MonsterAttack()
+    {
+        if (state != MonsterState.Attack)
         {
-            transform.LookAt(PlayerController.Instance.transform.position);
+            state = MonsterState.Attack;
+            agent.isStopped = true;
+            animator.SetBool("Run", false);
             animator.SetBool("Punch", true);
         }
-
     }
 
     void OnTriggerEnter(Collider other)
@@ -71,19 +123,12 @@ public class MutantController : MonoBehaviour
     }
 
 
-
-    private bool IsTargetOnNavMesh(Vector3 targetPosition)
-    {
-        NavMeshHit hit;
-        float maxDistance = 0.5f; // bán kính kiểm tra, có thể điều chỉnh
-        return NavMesh.SamplePosition(targetPosition, out hit, maxDistance, NavMesh.AllAreas);
-    }
-
-    private bool IsTargetInRange(Vector3 targetPosition)
-    {
-        float distance = Vector3.Distance(transform.position, targetPosition);
-        return distance <= agent.stoppingDistance;
-    }
+    //private bool IsTargetOnNavMesh(Vector3 targetPosition)
+    //{
+    //    NavMeshHit hit;
+    //    float maxDistance = 0.5f; // bán kính kiểm tra, có thể điều chỉnh
+    //    return NavMesh.SamplePosition(targetPosition, out hit, maxDistance, NavMesh.AllAreas);
+    //}
 
 
 

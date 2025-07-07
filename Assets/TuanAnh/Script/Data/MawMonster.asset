@@ -9,15 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b613b3c00630bda4ab0de6ed3e8aa1e4, type: 3}
-  m_Name: PlayerMageData
+  m_Script: {fileID: 11500000, guid: 21df2f74528efd746b8f57cc123ef28c, type: 3}
+  m_Name: MawMonster
   m_EditorClassIdentifier: 
   id: 1
-  playerName: Mage
-  level: 0
+  monsterName: Maw
+  level: 1
   health: 100
-  mana: 100
+  attack: 5
   speed: 5
-  attack: 0
-  defense: 5
   image: {fileID: 0}
+  levelUpFactor: 1.05

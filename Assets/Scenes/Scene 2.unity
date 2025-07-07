@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -187,7 +187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AgentTypeID: 0
   m_CollectObjects: 1
-  m_Size: {x: 90, y: 1, z: 80}
+  m_Size: {x: 180, y: 0.5, z: 180}
   m_Center: {x: 0, y: 0, z: 0}
   m_LayerMask:
     serializedVersion: 2
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 18ecce251dfb3fa48a0832a7f08599a0, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 8ef587e5578d60a4285f6a61e4b0fb02, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &215541158
 Transform:
@@ -213,7 +213,7 @@ Transform:
   m_GameObject: {fileID: 215541156}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 50, y: 0, z: 39.8}
+  m_LocalPosition: {x: 100, y: 0, z: 100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -697,6 +697,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1107635099 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7820921728511371775, guid: 4c5a6bf9cf1efd54c81da09d04c57a44,
+    type: 3}
+  m_PrefabInstance: {fileID: 1050725002574666956}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1260464159
 GameObject:
   m_ObjectHideFlags: 0
@@ -1025,7 +1031,7 @@ MonoBehaviour:
   playerIcon: {fileID: 2106011933}
   playerObject: {fileID: 8659410929816416666}
   monsterIcon: {fileID: 1395639165}
-  monsterObject: {fileID: 0}
+  monsterObject: {fileID: 1107635099}
   miniMap: {fileID: 1471385723}
   worldMin: {x: 0, y: 0}
   worldMax: {x: 200, y: 200}
@@ -1205,6 +1211,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Maw J Laygo
       objectReference: {fileID: 0}
+    - target: {fileID: 9116393996264533214, guid: 4c5a6bf9cf1efd54c81da09d04c57a44,
+        type: 3}
+      propertyPath: inputMonData
+      value: 
+      objectReference: {fileID: 11400000, guid: ef738c5c09047e24192d09f68f988d18,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1271,7 +1283,7 @@ PrefabInstance:
     - target: {fileID: 7041236615765759916, guid: db34ee560fe84a341a842d6603951630,
         type: 3}
       propertyPath: m_Name
-      value: Kachujin Mage
+      value: Player Mage
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
