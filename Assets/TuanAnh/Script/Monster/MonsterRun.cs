@@ -12,11 +12,11 @@ public class MonsterRun : MonsterState
     {
         monster = inputMonster;
         monster.Animator.SetBool("Run", true);
+        monster.Agent.isStopped = false;
     }
 
     public override void Update()
     {
-        Debug.Log ("Player position: " + PlayerController.Instance.transform.position);
         monster.Agent.SetDestination(PlayerController.Instance.transform.position);
     }
 

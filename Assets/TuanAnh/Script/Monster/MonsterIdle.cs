@@ -18,7 +18,7 @@ public class MonsterIdle : MonsterState
     public override void Exit()
     {
         controller.Animator.SetBool("Idle", false);
-        
+        controller.Agent.isStopped = false;
     }
 
 

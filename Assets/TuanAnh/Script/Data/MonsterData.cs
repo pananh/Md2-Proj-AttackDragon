@@ -17,6 +17,7 @@ public class MonsterData : ScriptableObject
     
     public float attackRange = 1.5f;
     public float visionRange = 30f;
+    public float thinkTime = 1.5f;
 
     public MonsterData CloneData()
     {
@@ -33,6 +34,7 @@ public class MonsterData : ScriptableObject
 
         clone.attackRange = this.attackRange;
         clone.visionRange = this.visionRange;
+        clone.thinkTime = this.thinkTime;
         return clone;
     }
 

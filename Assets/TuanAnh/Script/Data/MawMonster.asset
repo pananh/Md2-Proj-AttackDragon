@@ -22,3 +22,4 @@ MonoBehaviour:
   levelUpFactor: 1.05
   attackRange: 1.5
   visionRange: 30
+  thinkTime: 1.5

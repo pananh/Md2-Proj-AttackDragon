@@ -37,8 +37,8 @@ public class MutantController : MonoBehaviour, IMonsterController
         agent.speed = monsterData.speed;
         sqrMonsterVision = monsterData.visionRange * monsterData.visionRange;
         sqrAttackRange = monsterData.attackRange * monsterData.attackRange + 0.1f;
-       
-        thinkTime = resetThinkThime();
+
+        resetThinkTime();
         currentState = new MonsterIdle(); 
         currentState.Enter(this);
     }
@@ -49,17 +49,14 @@ public class MutantController : MonoBehaviour, IMonsterController
 
         if (sqrDistanceToTarget > sqrMonsterVision)
         {
-            Debug.Log(" Monster is too far away, returning to idle state.");
             MonsterIdle();
         } 
         else if (sqrDistanceToTarget > sqrAttackRange)
         {
-            Debug.Log(" Monster is within chase range, chasing the player.");
             MonsterRun();
         }
         else
         {
-            Debug.Log(" Monster is close enough to attack the player.");
             MonsterAttack();
         }
 
@@ -72,16 +69,16 @@ public class MutantController : MonoBehaviour, IMonsterController
         currentState.Exit();
         currentState = new MonsterIdle();
         currentState.Enter(this);
-        thinkTime = resetThinkThime();
+        resetThinkTime();
     }
 
     private void MonsterRun()
     {
         thinkTime -= Time.deltaTime;
         if ( thinkTime > 0 )
-            return; 
-        thinkTime = resetThinkThime();
+            return;
 
+        resetThinkTime();
         if (!(currentState is MonsterRun))
         {
             currentState.Exit();
@@ -89,6 +86,7 @@ public class MutantController : MonoBehaviour, IMonsterController
             currentState.Enter(this);
         }
         currentState.Update();
+        //agent.SetDestination(PlayerController.Instance.transform.position);
 
     }
     
@@ -102,21 +100,22 @@ public class MutantController : MonoBehaviour, IMonsterController
         currentState.Update();
     }
 
-    private static float resetThinkThime()
+    private void resetThinkTime()
     {
-        return 2f;
+               thinkTime = monsterData.thinkTime;
     }
+
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            //PlayerController.Instance.GetDamage(1);
-            animator.SetBool("Attack", false);
+        
+        
+        //if (other.CompareTag("Player"))
+        //{
+     
+        //    Debug.Log("Player Entered Trigger");
 
-            Debug.Log("Player Entered Trigger");
-
-        }
+        //}
     }
 
 
