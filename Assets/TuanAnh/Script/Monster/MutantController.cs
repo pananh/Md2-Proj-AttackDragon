@@ -4,26 +4,28 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-enum MonsterState
-{
-    Idle,
-    Chase,
-    Attack
-}
 
-public class MutantController : MonoBehaviour
+
+public class MutantController : MonoBehaviour, IMonsterController
 {
   
     private NavMeshAgent agent;
+    public NavMeshAgent Agent => agent;
+
     private Animator animator;
+    public Animator Animator => animator;
+    public Transform Transform => this.transform;
 
     [SerializeField] private MonsterData inputMonData;
     private MonsterData monsterData;
     private float sqrMonsterVision;
     private float sqrAttackRange;
     private float sqrDistanceToTarget;
-    MonsterState state;
+    
     private float thinkTime;
+    private MonsterState currentState;
+    
+
 
     void Start()
     {
@@ -35,79 +37,74 @@ public class MutantController : MonoBehaviour
         agent.speed = monsterData.speed;
         sqrMonsterVision = monsterData.visionRange * monsterData.visionRange;
         sqrAttackRange = monsterData.attackRange * monsterData.attackRange + 0.1f;
-        thinkTime = 2f;
-
+       
+        thinkTime = resetThinkThime();
+        currentState = new MonsterIdle(); 
+        currentState.Enter(this);
     }
 
     void Update()
     {
         sqrDistanceToTarget = Vector3.SqrMagnitude(PlayerController.Instance.transform.position - transform.position);
 
-        if (sqrDistanceToTarget > GMData.Instance.MAX_MOVE_SQR_DISTANCE)
+        if (sqrDistanceToTarget > sqrMonsterVision)
         {
+            Debug.Log(" Monster is too far away, returning to idle state.");
             MonsterIdle();
-            return;
         } 
-        else if (sqrDistanceToTarget > GMData.Instance.MIN_MOVE_SQR_DISTANCE)
+        else if (sqrDistanceToTarget > sqrAttackRange)
         {
-            MonsterChase();
+            Debug.Log(" Monster is within chase range, chasing the player.");
+            MonsterRun();
         }
         else
         {
+            Debug.Log(" Monster is close enough to attack the player.");
             MonsterAttack();
         }
-
-
-
-       
-
-
 
     }
 
     private void MonsterIdle()
     {
-        if (state != MonsterState.Idle)
-        {
-            state = MonsterState.Idle;
-            agent.isStopped = true;
-            animator.SetBool("Run", false);
-            animator.SetBool("Punch", false);
-        }
+       if (currentState is MonsterIdle)
+            return;
+        currentState.Exit();
+        currentState = new MonsterIdle();
+        currentState.Enter(this);
+        thinkTime = resetThinkThime();
     }
 
-    private void MonsterChase()
+    private void MonsterRun()
     {
-        //thinkTime -= Time.deltaTime;
-        //if (thinkTime <= 0f)
-        //{
-        //    thinkTime = 2f;
-        //    if (sqrDistanceToTarget > sqrMonsterVision)
-        //    {
-        //        MonsterIdle();
-        //        return;
-        //    }
-        //}
+        thinkTime -= Time.deltaTime;
+        if ( thinkTime > 0 )
+            return; 
+        thinkTime = resetThinkThime();
 
-        if (state != MonsterState.Chase)
+        if (!(currentState is MonsterRun))
         {
-            state = MonsterState.Chase;
-            agent.isStopped = false;
-            agent.SetDestination(PlayerController.Instance.transform.position);
-            animator.SetBool("Run", true);
-            animator.SetBool("Punch", false);
+            currentState.Exit();
+            currentState = new MonsterRun();
+            currentState.Enter(this);
         }
+        currentState.Update();
+
     }
     
     private void MonsterAttack()
     {
-        if (state != MonsterState.Attack)
-        {
-            state = MonsterState.Attack;
-            agent.isStopped = true;
-            animator.SetBool("Run", false);
-            animator.SetBool("Punch", true);
-        }
+        if (currentState is MonsterAttack)
+            return;
+        currentState.Exit();
+        currentState = new MonsterAttack();
+        currentState.Enter(this);
+        currentState.Update();
+    }
+
+    private static float resetThinkThime()
+    {
+        return 2f;
     }
 
     void OnTriggerEnter(Collider other)
@@ -115,7 +112,7 @@ public class MutantController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             //PlayerController.Instance.GetDamage(1);
-            animator.SetBool("Punch", false);
+            animator.SetBool("Attack", false);
 
             Debug.Log("Player Entered Trigger");
 

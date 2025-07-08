@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour , IUnitController
     private float towardDistance;
 
     [SerializeField] private PlayerData inputPlayerData;
-    private PlayerData playerData;
+    private PlayerData currentPlayerData;
 
 
     public void Awake()
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour , IUnitController
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
 
-        ClonePlayerData();
+        currentPlayerData = inputPlayerData.CloneData();
     }
 
 
@@ -61,10 +61,6 @@ public class PlayerController : MonoBehaviour , IUnitController
             BackToIdle();
     }
 
-    private void ClonePlayerData()
-    {
-        playerData = inputPlayerData.CloneData();
-    }
 
     private void SetEnterState()
     {
@@ -226,8 +222,9 @@ public class PlayerController : MonoBehaviour , IUnitController
 
     public void TakeDamage(int damage)
     {
-       
-        Debug.Log($"MageController took {damage} damage.");
+        currentPlayerData.health -= damage;
+        Debug.Log($"Player took {damage} damage. Remaining health: {currentPlayerData.health}");
+
     }
 
 

@@ -16,7 +16,7 @@ public class MonsterData : ScriptableObject
     public float levelUpFactor = 1.05f;
     
     public float attackRange = 1.5f;
-    public float visionRange = 10f;
+    public float visionRange = 30f;
 
     public MonsterData CloneData()
     {

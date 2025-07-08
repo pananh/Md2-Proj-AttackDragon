@@ -20,3 +20,5 @@ MonoBehaviour:
   speed: 5
   image: {fileID: 0}
   levelUpFactor: 1.05
+  attackRange: 1.5
+  visionRange: 30
