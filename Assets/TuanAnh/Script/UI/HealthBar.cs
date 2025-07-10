@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HealthBar : MonoBehaviour
@@ -9,10 +10,10 @@ public class HealthBar : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Image hbLeft;
     [SerializeField] private UnityEngine.UI.Image hbRight;
     [SerializeField] private GameObject unit;
-    private float halfCanvasWidth = 1920f / 2; 
-    private float halfcanvasHeight = 1080f / 2;
-    private Vector2 ViewportPosition;
-    private RectTransform CanvasRect;
+    //private float halfCanvasWidth = 1920f / 2; 
+    //private float halfcanvasHeight = 1080f / 2;
+    private Vector2 viewportPos;
+    private RectTransform healthBarPos;
 
     public void ChangeHealth(int health)
     {
@@ -30,7 +31,8 @@ public class HealthBar : MonoBehaviour
 
     private void Start()
     {
-        CanvasRect = GetComponent<RectTransform>();
+        healthBarPos = GetComponent<RectTransform>();
+        Debug.Log("Canvas Rect: " + healthBarPos.name);
         UpdateHealthBar();
     }
 
@@ -45,14 +47,33 @@ public class HealthBar : MonoBehaviour
             ChangeHealth(10); // Increase health by 10 when J is pressed
         }
 
-        ViewportPosition = Camera.main.WorldToViewportPoint(unit.transform.position);
+        
 
-        //Debug.Log("Object: " + unit.name + " " + unit.transform.position + " => " + vector2);
+        Debug.Log("Unit in World: " + unit.transform.position);
 
-        this.CanvasRect.anchoredPosition = new Vector2(
-            (ViewportPosition.x * 1920f) - halfCanvasWidth,
-            (ViewportPosition.y * 1080f) - halfcanvasHeight
-        );
+        viewportPos = Camera.main.WorldToViewportPoint(unit.transform.position);
+
+        Canvas canvas = GetComponentInParent<Canvas>();
+        RectTransform canvasRectTransform = canvas.GetComponent<RectTransform>();
+
+        Vector2 screenPosition = new Vector2(
+          (viewportPos.x * canvasRectTransform.sizeDelta.x) - (canvasRectTransform.sizeDelta.x * 0.5f),
+          (viewportPos.y * canvasRectTransform.sizeDelta.y) - (canvasRectTransform.sizeDelta.y * 0.5f));
+
+        healthBarPos.anchoredPosition = screenPosition;
+
+        //Debug.Log("Unit in Viewport: " + viewportPos);
+
+
+        //Debug.Log("Screen Width: " + Screen.width + " Screen Height " + Screen.height);
+
+        //Vector2 anchoredPosition = new Vector2(viewportPos.x * Screen.width, viewportPos.y * Screen.height);
+
+        //anchoredPosition.x -= Screen.width / 2; // Centering the health bar
+        //anchoredPosition.y -= Screen.height / 2; // Centering the health bar
+        //healthBarPos.anchoredPosition = anchoredPosition;
+
+        //Debug.Log("Anchored Position: " + healthBarPos.position);
 
 
     }
