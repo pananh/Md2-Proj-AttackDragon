@@ -1,104 +1,125 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.UI.CanvasScaler;
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] private float maxHealth = 100f;
-    [SerializeField] private float currentHealth = 40f;
-    [SerializeField] private UnityEngine.UI.Image hbLeft;
-    [SerializeField] private UnityEngine.UI.Image hbRight;
-    [SerializeField] private GameObject unit;
-    private Vector3 unitLastPos;
-    private Canvas canvas;
-    private RectTransform canvasRec;
-    private RectTransform healthBarRec;
-    private const float aboveYPos = 100f; // Height of the health bar in pixels
+    private float maxHealth;
+    private float health;
+    
+    public float MaxHealth
+    {
+        set
+        {
+            maxHealth = value;
+            UpdateHBValue();
+        }
+    }
+    public float Health
+    {
+        set
+        {
+            health = Mathf.Clamp(value, 0, maxHealth);
+            UpdateHBValue();
+        }
+    }
 
+    private UnityEngine.UI.Image emptyBar;
+    private Vector3 unitPos;
+    public Vector3 UnitPos     {set { unitPos = value; } }
+    private Vector3 unitLastPos;
+    private float lastCameraOrthographicSize;
+    private RectTransform healthBarRec;
+    private float aboveYPos = 90f;
+    private float scaleFactor;
 
     private void Start()
     {
-        UpdateHealthBar();
-        canvas = GetComponentInParent<Canvas>();
-        canvasRec = canvas.GetComponent<RectTransform>();
+        emptyBar = GetComponentInChildren<UnityEngine.UI.Image>();
         healthBarRec = GetComponent<RectTransform>();
-        unitLastPos = unit.transform.position;
 
+        unitPos = PlayerController.Instance.transform.position;
 
-    }
+        unitLastPos = unitPos;
+        lastCameraOrthographicSize = Camera.main.orthographicSize;
+        UpdateHBPosition();
 
-    private void Update()
-    {
-        ChangeHealthByKey();
-      
+        maxHealth = 100f;
+        health = 30f;
+
+        UpdateHBValue();
     }
 
     private void LateUpdate()
     {
-        if (IsUnitNotMove())
+        unitPos = PlayerController.Instance.transform.position;
+        if (IsUnitMove() || IsCameraZoomed())
         {
-            return; // If the unit has not moved, skip the update
+            UpdateHBPosition();
         }
-        healthBarRec.anchoredPosition = WorldToCanvasUsingLocalPoint(unit.transform.position, canvasRec);
     }
 
-    private bool IsUnitNotMove()
+    private void UpdateHBPosition()
     {
-        if (Vector3.SqrMagnitude(unit.transform.position - unitLastPos) < 0.1f)
+        float distance = Vector3.Distance(Camera.main.transform.position, unitPos);
+        scaleFactor = Mathf.Clamp(10f / distance, 0.5f, 2.0f);
+
+        healthBarRec.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+
+        healthBarRec.anchoredPosition = WordToCanvas(unitPos, HealthBarManager.Instance.CanvasRect) 
+                                        + new Vector2(0, aboveYPos*scaleFactor);
+
+    }
+
+    private bool IsCameraZoomed()
+    {
+        if (Mathf.Abs(Camera.main.orthographicSize - lastCameraOrthographicSize) > 0.01f)
         {
-            unitLastPos = unit.transform.position;
+            lastCameraOrthographicSize = Camera.main.orthographicSize;
             return true;
         }
         return false;
     }
 
-    private Vector2 WorldToCanvasUsingLocalPoint(Vector3 unitPos, RectTransform canvasRect)
+    private bool IsUnitMove()
+    {
+        if (Vector3.SqrMagnitude(unitPos - unitLastPos) > 0.1f)
+        {
+            unitLastPos = unitPos;
+            return true;
+        }
+        return false;
+    }
+
+    private Vector2 WordToCanvas(Vector3 unitPos, RectTransform canvasRect)
     {
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, unitPos); // Tra ve dang toa do theo do phan giai
         Vector2 localCanvasPos;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, 
-            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main, out localCanvasPos);
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos,
+            HealthBarManager.Instance.Canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main, out localCanvasPos);
         // Tinh theo toa do Local cua Canvas cha, de che do ScreenSpaceOverlay nen can de null Camera, che do khac thi truyen Camera vao
-        localCanvasPos.y += aboveYPos;
         return localCanvasPos;
     }
 
 
-    private Vector2 WorldToCanvas(Vector2 unitPos, RectTransform canvasRect)
+    private Vector2 WorldToCanvasByViewport(Vector2 unitPos, RectTransform canvasRect)
     {
         Vector2 viewportPos = Camera.main.WorldToViewportPoint(unitPos); // Tra ve dang toa do ty le tu 0 -> 1
         float canvasWidth = canvasRect.sizeDelta.x;
         float canvasHeight = canvasRect.sizeDelta.y;
         float x = (viewportPos.x - 0.5f) * canvasWidth;     // canvas co toa do o giua, nen can tru di nua
-        float y = (viewportPos.y - 0.5f) * canvasHeight + aboveYPos;
+        float y = (viewportPos.y - 0.5f) * canvasHeight;
         return new Vector2(x, y);
     }
-    public void TakeHealth(int health)
+
+    private void UpdateHBValue()
     {
-        currentHealth = Mathf.Clamp(currentHealth + health, 0, maxHealth);
-        UpdateHealthBar();
+        emptyBar.fillAmount = 1 - health / maxHealth;
     }
-
-    private void UpdateHealthBar()
-    {
-        float healthPercentage = currentHealth / maxHealth;
-        hbLeft.fillAmount = healthPercentage;
-        hbRight.fillAmount = 1 - healthPercentage;
-
-    }
-
-    private void ChangeHealthByKey()
-    {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            TakeHealth(-10); // Decrease health by 10 when H is pressed
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            TakeHealth(10); // Increase health by 10 when J is pressed
-        }
-
-    }
-
+    
 }
