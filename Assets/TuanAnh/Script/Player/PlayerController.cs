@@ -45,15 +45,16 @@ public class PlayerController : MonoBehaviour , IUnitController
     public void Awake()
     {
         Instance = this;
-        animator = GetComponent<Animator>();
-        characterController = GetComponent<CharacterController>();
-
-        currentData = inputData.CloneData();
+        
     }
 
 
     public void Init()
     {
+        animator = GetComponent<Animator>();
+        characterController = GetComponent<CharacterController>();
+
+        currentData = inputData.CloneData();
         SetEnterState();
 
 
@@ -231,15 +232,14 @@ public class PlayerController : MonoBehaviour , IUnitController
 
     public void TakeDamage(float damage)
     {
-        currentData.maxHealth -= damage;
-        PlayerOnHealthChanged?.Invoke(currentData.maxHealth); // ? co nguoi nghe ms goi
-        if (currentData.maxHealth <= 0)
+        currentData.currentHealth -= damage;
+        PlayerOnHealthChanged?.Invoke(currentData.currentHealth); // ? co nguoi nghe ms goi
+        if (currentData.currentHealth <= 0)
         {
-            currentData.maxHealth = 0;
+            currentData.currentHealth = 0;
             GM.Instance.GameOver();
             Debug.Log("Player has died.");
         }
-        Debug.Log($"Player took {damage} damage. Remaining health: {currentData.maxHealth}");
 
     }
 

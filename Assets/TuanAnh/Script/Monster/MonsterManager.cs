@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class MonsterManager : MonoBehaviour
@@ -10,17 +11,23 @@ public class MonsterManager : MonoBehaviour
 
     [SerializeField] private GameObject monsterPrefab;
     private List<IMonsterController> monsterList; // dung list nay de su dung cac ham trong game quan ly cho de
-
+    public List<IMonsterController> MonsterList
+    {
+        get => monsterList;
+    }
 
 
     [SerializeField] private GameObject spawnObjectList;
     private List <Vector3> spawnPointsList;
 
-
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     public void Init()
     {
-        SpawnMonster();
+        //SpawnMonster();
     }
 
     void Update()
@@ -39,6 +46,21 @@ public class MonsterManager : MonoBehaviour
             monsterList.Add(monsterController);
         }
     }
+
+    public void AddMonster(IMonsterController monster)
+    {
+        monsterList.Add(monster);
+    }
+
+    public void RemoveMonster(IMonsterController monster)
+    {
+        if (monsterList.Contains(monster))
+        {
+            monsterList.Remove(monster);
+        }
+    }
+
+
 
     private Vector3 RandomSpawnPoint()
     {

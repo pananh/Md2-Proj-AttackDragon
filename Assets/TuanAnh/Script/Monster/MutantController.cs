@@ -29,7 +29,7 @@ public class MutantController : MonoBehaviour, IMonsterController
     public event Action <float, IMonsterController> OnHealthChanged;
 
 
-    void Start()
+    public void Init()
     {
         MonsterInit();
         currentState = new MonsterIdle(); 
@@ -38,6 +38,7 @@ public class MutantController : MonoBehaviour, IMonsterController
 
     void Update()
     {
+
         sqrDistanceToTarget = Vector3.SqrMagnitude(PlayerController.Instance.transform.position - transform.position);
 
         if (sqrDistanceToTarget > sqrMonsterVision)

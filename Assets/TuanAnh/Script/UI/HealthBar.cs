@@ -28,7 +28,7 @@ public class HealthBar : MonoBehaviour
         }
     }
 
-    private UnityEngine.UI.Image emptyBar;
+    [SerializeField] private UnityEngine.UI.Image emptyBar;
     private GameObject unit;
     private Vector3 unitPos;
     public Vector3 UnitPos     {set { unitPos = value; } }
@@ -36,14 +36,16 @@ public class HealthBar : MonoBehaviour
     private float aboveYPos = 90f;
     private float scaleFactor;
 
-    public void Init(GameObject followUnit, float maxHp, float curHp)
+    public void Init(GameObject followUnit, float maxHealth, float currentHealth)
     {
-        emptyBar = GetComponentInChildren<UnityEngine.UI.Image>();
         hpBarRec = GetComponent<RectTransform>();
 
         unit = followUnit;
-        this.maxHealth= maxHp;
-        this.currentHealth = curHp;
+        this.maxHealth= maxHealth;
+        this.currentHealth = currentHealth;
+
+        Debug.Log("HealthBar Init: " + unit.name + " , Max: " + maxHealth + " , Current: " + currentHealth);
+
         UpdateHBValue();
         UpdateHBPosition();
 

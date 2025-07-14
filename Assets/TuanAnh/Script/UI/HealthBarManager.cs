@@ -46,9 +46,16 @@ public class HealthBarManager : MonoBehaviour
     {
         GameObject hbObject = Instantiate(hbPrefabPlayer, canvas.transform);
         playerHb = hbObject.GetComponent<HealthBar>();
-        playerHb.Init(PlayerController.Instance.gameObject, PlayerController.Instance.CurrentPlayerData.maxHealth, PlayerController.Instance.CurrentPlayerData.maxHealth);
        
-        PlayerController.Instance.PlayerOnHealthChanged += PlayerUpdateHb;
+        playerHb.Init(PlayerController.Instance.gameObject, PlayerController.Instance.CurrentPlayerData.maxHealth, 
+            PlayerController.Instance.CurrentPlayerData.maxHealth);
+       
+        PlayerController.Instance.PlayerOnHealthChanged += PlayerUpdateHb;  
+    }
+
+    private void InitMonsterHealthBar()
+    {
+
     }
 
 

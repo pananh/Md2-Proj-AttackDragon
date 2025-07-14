@@ -4855,7 +4855,7 @@ GameObject:
   - component: {fileID: 3547754589942380760}
   - component: {fileID: 1641557097988504430}
   m_Layer: 0
-  m_Name: Yellow Fire Ball
+  m_Name: Yellow Fire Ball Old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

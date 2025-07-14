@@ -7,18 +7,13 @@ using UnityEngine.UI;
 public class UIMinimap : MonoBehaviour
 {
     public static UIMinimap Instance { get; private set; }
-    [SerializeField] Image playerIcon;
-    [SerializeField] GameObject playerObject;
+    [SerializeField] Image playerIconPrefab;
+    private Image playerIcon;
 
-    // Khong dung kieu nay nua vi da dung gameObject
-    //[SerializeField] MonoBehaviour controller;
-    //private IUnitController IUnitControllerReturn
-    //{
-    //    get { return controller as IUnitController; }
-    //}
 
-    [SerializeField] Image monsterIcon;
-    [SerializeField] GameObject monsterObject;
+    [SerializeField] Image mosterIconPrefab;
+    private List<Image> monsterIcons;
+
 
     [SerializeField] RectTransform miniMap;
     [SerializeField] Vector2 worldMin;  // 0.0
@@ -31,22 +26,58 @@ public class UIMinimap : MonoBehaviour
 
     public void Init()
     {
-        playerIcon.enabled = true;
-        monsterIcon.enabled = true;
-        //characterController = IUnitControllerReturn.GetCharacterController;
+        InitPlayerIcon();
+        //InitMonstersIcon();
     }
 
     void LateUpdate()
     {
-        
-        SetIconLocation(playerObject, playerIcon);
-        SetIconLocation(monsterObject, monsterIcon);
+
+        UpdatePlayerLocation();
+        //UpdateMonsterLocation();
+
+
 
     }
 
-    private void SetIconLocation(GameObject sourceObject, Image iconImage)
+
+    private void InitPlayerIcon()
     {
-        Vector3 worldPosition = sourceObject.transform.position;
+        playerIcon = Instantiate(playerIconPrefab, miniMap);
+
+    }
+
+    //private void InitMonstersIcon()
+    //{
+    //    monsterIcons = new List<Image>();
+    //    foreach (IMonsterController monster in MonsterManager.Instance.MonsterList)
+    //    {
+    //        Image singleMonsterIcon = Instantiate(monsterIcon, miniMap);
+    //        singleMonsterIcon.enabled = true;
+    //        monsterIcons.Add(singleMonsterIcon);
+    //    }
+
+    //}
+
+    //private void UpdateMonsterLocation()
+    //{
+    //    for (int i = 0; i < MonsterManager.Instance.MonsterList.Count; i++)
+    //    {
+            
+    //        SetIconLocation(MonsterManager.Instance.MonsterList[i].Transform.position, 
+    //            monsterIcons[i]);
+    //    }
+    //}
+
+    private void UpdatePlayerLocation()
+    {
+        SetIconLocation(PlayerController.Instance.transform.position, playerIcon);
+    }
+
+
+
+    private void SetIconLocation(Vector3 worldPosition, Image iconImage)
+    {
         float xNorm = Mathf.InverseLerp(worldMin.x, worldMax.x, worldPosition.x);
         float yNorm = Mathf.InverseLerp(worldMin.y, worldMax.y, worldPosition.z);
         float xPos = Mathf.Lerp(0, miniMap.rect.width, xNorm);
