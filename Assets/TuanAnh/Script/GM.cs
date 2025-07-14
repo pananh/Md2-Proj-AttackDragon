@@ -21,9 +21,16 @@ public class GM : MonoBehaviour
         
     }
 
-    private void EnterGame()
+    public void EnterGame()
     {
         PlayerController.Instance.Init();
+        UIMinimap.Instance.Init();
+        HealthBarManager.Instance.Init();
+    }
+
+    public void GameOver()
+    {
+        Time.timeScale = 0f;
     }
 
 }

@@ -9,7 +9,7 @@ using static UnityEngine.UI.CanvasScaler;
 public class HealthBar : MonoBehaviour
 {
     private float maxHealth;
-    private float health;
+    private float currentHealth;
     
     public float MaxHealth
     {
@@ -19,45 +19,52 @@ public class HealthBar : MonoBehaviour
             UpdateHBValue();
         }
     }
-    public float Health
+    public float CurrentHealth
     {
         set
         {
-            health = Mathf.Clamp(value, 0, maxHealth);
+            currentHealth = Mathf.Clamp(value, 0, maxHealth);
             UpdateHBValue();
         }
     }
 
     private UnityEngine.UI.Image emptyBar;
+    private GameObject unit;
     private Vector3 unitPos;
     public Vector3 UnitPos     {set { unitPos = value; } }
-    private Vector3 unitLastPos;
-    private float lastCameraOrthographicSize;
-    private RectTransform healthBarRec;
+    private RectTransform hpBarRec;
     private float aboveYPos = 90f;
     private float scaleFactor;
 
-    private void Start()
+    public void Init(GameObject followUnit, float maxHp, float curHp)
     {
         emptyBar = GetComponentInChildren<UnityEngine.UI.Image>();
-        healthBarRec = GetComponent<RectTransform>();
+        hpBarRec = GetComponent<RectTransform>();
 
-        unitPos = PlayerController.Instance.transform.position;
-
-        unitLastPos = unitPos;
-        lastCameraOrthographicSize = Camera.main.orthographicSize;
+        unit = followUnit;
+        this.maxHealth= maxHp;
+        this.currentHealth = curHp;
+        UpdateHBValue();
         UpdateHBPosition();
 
-        maxHealth = 100f;
-        health = 30f;
+    }
 
-        UpdateHBValue();
+
+    private void Start()
+    {
+      
+
     }
 
     private void LateUpdate()
     {
-        unitPos = PlayerController.Instance.transform.position;
-        if (IsUnitMove() || IsCameraZoomed())
+        if ( unit == null )
+        {
+            return; // Neu unit bi huy, thi khong can cap nhat nua, giu lai health bar 
+        }
+        unitPos = unit.transform.position;
+
+        if ( IsHavingChangingCamOrUnit() )
         {
             UpdateHBPosition();
         }
@@ -68,31 +75,16 @@ public class HealthBar : MonoBehaviour
         float distance = Vector3.Distance(Camera.main.transform.position, unitPos);
         scaleFactor = Mathf.Clamp(10f / distance, 0.5f, 2.0f);
 
-        healthBarRec.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+        hpBarRec.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
 
-        healthBarRec.anchoredPosition = WordToCanvas(unitPos, HealthBarManager.Instance.CanvasRect) 
+        hpBarRec.anchoredPosition = WordToCanvas(unitPos, HealthBarManager.Instance.CanvasRect) 
                                         + new Vector2(0, aboveYPos*scaleFactor);
 
     }
 
-    private bool IsCameraZoomed()
+    private bool IsHavingChangingCamOrUnit()
     {
-        if (Mathf.Abs(Camera.main.orthographicSize - lastCameraOrthographicSize) > 0.01f)
-        {
-            lastCameraOrthographicSize = Camera.main.orthographicSize;
-            return true;
-        }
-        return false;
-    }
-
-    private bool IsUnitMove()
-    {
-        if (Vector3.SqrMagnitude(unitPos - unitLastPos) > 0.1f)
-        {
-            unitLastPos = unitPos;
-            return true;
-        }
-        return false;
+        return Vector3.SqrMagnitude(unitPos - Camera.main.transform.position) > 0.01f;
     }
 
     private Vector2 WordToCanvas(Vector3 unitPos, RectTransform canvasRect)
@@ -119,7 +111,7 @@ public class HealthBar : MonoBehaviour
 
     private void UpdateHBValue()
     {
-        emptyBar.fillAmount = 1 - health / maxHealth;
+        emptyBar.fillAmount = 1 - currentHealth / maxHealth;
     }
     
 }

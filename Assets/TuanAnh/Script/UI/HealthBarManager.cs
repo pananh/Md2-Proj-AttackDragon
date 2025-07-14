@@ -9,25 +9,30 @@ public class HealthBarManager : MonoBehaviour
 
     private Canvas canvas;
     public Canvas Canvas => canvas;
+
     private RectTransform canvasRect;
     public RectTransform CanvasRect => canvasRect;
 
+    [SerializeField] private GameObject hbPrefabPlayer;
+    [SerializeField] private GameObject hbPrefabMonster;
+    private HealthBar playerHb;
+    private List<HealthBar> monsterHbList;
 
-    private List<HealthBar> healthBarList;
-    [SerializeField] List<GameObject> gameObjects;
+
+
 
     private void Awake()
     {
         Instance = this;
-        canvas = GetComponent<Canvas>();
-        canvasRect = GetComponent<RectTransform>();
+       
     }
 
-    void Start()
+    public void Init()
     {
-        
+        canvas = GetComponent<Canvas>();
+        canvasRect = GetComponent<RectTransform>();
 
-
+        InitPlayerHealthBar();
 
     }
 
@@ -36,4 +41,21 @@ public class HealthBarManager : MonoBehaviour
     {
         
     }
+
+    private void InitPlayerHealthBar()
+    {
+        GameObject hbObject = Instantiate(hbPrefabPlayer, canvas.transform);
+        playerHb = hbObject.GetComponent<HealthBar>();
+        playerHb.Init(PlayerController.Instance.gameObject, PlayerController.Instance.CurrentPlayerData.maxHealth, PlayerController.Instance.CurrentPlayerData.maxHealth);
+       
+        PlayerController.Instance.PlayerOnHealthChanged += PlayerUpdateHb;
+    }
+
+
+    private void PlayerUpdateHb(float currentHealth)
+    {
+        playerHb.CurrentHealth = currentHealth;
+    }
+
+   
 }

@@ -29,8 +29,17 @@ public class PlayerController : MonoBehaviour , IUnitController
     private Vector3 destination;
     private float towardDistance;
 
-    [SerializeField] private PlayerData inputPlayerData;
-    private PlayerData currentPlayerData;
+    [SerializeField] private PlayerData inputData;
+    private PlayerData currentData;
+    public PlayerData CurrentPlayerData
+    {
+        get => currentData;
+        set => currentData = value;
+    }
+
+
+    public event Action<float> PlayerOnHealthChanged;
+
 
 
     public void Awake()
@@ -39,7 +48,7 @@ public class PlayerController : MonoBehaviour , IUnitController
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
 
-        currentPlayerData = inputPlayerData.CloneData();
+        currentData = inputData.CloneData();
     }
 
 
@@ -220,10 +229,17 @@ public class PlayerController : MonoBehaviour , IUnitController
         notInAnimating = !notInAnimating;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
-        currentPlayerData.health -= damage;
-        Debug.Log($"Player took {damage} damage. Remaining health: {currentPlayerData.health}");
+        currentData.maxHealth -= damage;
+        PlayerOnHealthChanged?.Invoke(currentData.maxHealth); // ? co nguoi nghe ms goi
+        if (currentData.maxHealth <= 0)
+        {
+            currentData.maxHealth = 0;
+            GM.Instance.GameOver();
+            Debug.Log("Player has died.");
+        }
+        Debug.Log($"Player took {damage} damage. Remaining health: {currentData.maxHealth}");
 
     }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -25,20 +26,12 @@ public class MutantController : MonoBehaviour, IMonsterController
     private float thinkTime;
     private MonsterState currentState;
     
+    public event Action <float, IMonsterController> OnHealthChanged;
 
 
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
-
-        monsterData = inputMonData.CloneData();
-        agent.stoppingDistance = monsterData.attackRange;
-        agent.speed = monsterData.speed;
-        sqrMonsterVision = monsterData.visionRange * monsterData.visionRange;
-        sqrAttackRange = monsterData.attackRange * monsterData.attackRange + 0.1f;
-
-        resetThinkTime();
+        MonsterInit();
         currentState = new MonsterIdle(); 
         currentState.Enter(this);
     }
@@ -100,23 +93,44 @@ public class MutantController : MonoBehaviour, IMonsterController
         currentState.Update();
     }
 
-    private void resetThinkTime()
+    private void MonsterInit()
     {
-               thinkTime = monsterData.thinkTime;
+        agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+
+        // Initialize monster data
+        monsterData = inputMonData.CloneData();
+        agent.stoppingDistance = monsterData.attackRange;
+        agent.speed = monsterData.speed;
+        sqrMonsterVision = monsterData.visionRange * monsterData.visionRange;
+        sqrAttackRange = monsterData.attackRange * monsterData.attackRange + 0.1f;
+
+        resetThinkTime();
     }
 
+    private void resetThinkTime()
+    {
+         thinkTime = monsterData.thinkTime;
+    }
+
+
+    private void TakeDamage(float damage)
+    {
+        monsterData.maxHealth -= damage;
+        OnHealthChanged?.Invoke(monsterData.maxHealth, this);
+    }
 
     void OnTriggerEnter(Collider other)
     {
-        
-        
-        //if (other.CompareTag("Player"))
-        //{
-     
-        //    Debug.Log("Player Entered Trigger");
-
-        //}
+        if (other.CompareTag("Player"))
+        {
+            PlayerController.Instance.TakeDamage(monsterData.attack);
+            Debug.Log("Attack Player");
+        }
     }
+
+
+
 
 
     //private bool IsTargetOnNavMesh(Vector3 targetPosition)

@@ -18,8 +18,10 @@ public class MonsterAttack : MonsterState
 
     public override void Update()
     {
-        LookAtPlayer();
-      
+        return; // Do nothing, monster is attacking
+ 
+        //LookAtPlayer();
+
     }
 
 
@@ -29,12 +31,14 @@ public class MonsterAttack : MonsterState
         monster.Agent.isStopped = false;
     }
 
-    private void LookAtPlayer()
-    {
-        Vector3 directionToPlayer = monster.Transform.position - PlayerController.Instance.transform.position;
-        float angle = Vector3.Angle(monster.Transform.forward, directionToPlayer);
-        if (angle < 5f) return;
-        Debug.Log("Monster is looking at player");
-        monster.Transform.LookAt(PlayerController.Instance.transform.position);
-    }
+
+    // Su dung Root Transform Position, va khoa Bake Into Pose nen khong can ham nay nua
+    //private void LookAtPlayer()
+    //{
+    //    Vector3 directionToPlayer = monster.Transform.position - PlayerController.Instance.transform.position;
+    //    float angle = Vector3.Angle(monster.Transform.forward, directionToPlayer);
+    //    if (angle < 2f) return;
+    //    Debug.Log("Monster is looking at player");
+    //    monster.Transform.LookAt(PlayerController.Instance.transform.position);
+    //}
 }

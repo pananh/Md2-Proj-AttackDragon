@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MawMonsterData", menuName = "Game/MawMonsterData", order = 3)]
@@ -8,7 +9,8 @@ public class MonsterData : ScriptableObject
     public int id = 1;
     public string monsterName = "Maw";
     public float level = 1;
-    public float health = 100;
+    public float maxHealth = 100;
+    public float currentHealth = 100;
     public float attack = 5;
     public float speed = 5;
     private float gainExp = 5;
@@ -25,7 +27,8 @@ public class MonsterData : ScriptableObject
         clone.id = this.id;
         clone.monsterName = this.monsterName;
         clone.level = this.level;
-        clone.health = this.health;
+        clone.maxHealth = this.maxHealth;
+        clone.currentHealth = this.currentHealth;
         clone.attack = this.attack;
         clone.speed = this.speed;
         clone.gainExp = this.gainExp;
@@ -51,7 +54,8 @@ public class MonsterData : ScriptableObject
     public void LevelUp(MonsterData currentMonster)
     {
         currentMonster.level++;
-        currentMonster.health *= levelUpFactor;
+        currentMonster.maxHealth *= levelUpFactor;
+        currentMonster.currentHealth = currentMonster.maxHealth;
         currentMonster.attack *= levelUpFactor;
         currentMonster.speed *= levelUpFactor;
         if (currentMonster.speed > 10f)

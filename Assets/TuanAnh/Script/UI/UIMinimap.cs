@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UIMinimap : MonoBehaviour
 {
+    public static UIMinimap Instance { get; private set; }
     [SerializeField] Image playerIcon;
     [SerializeField] GameObject playerObject;
 
@@ -22,8 +23,13 @@ public class UIMinimap : MonoBehaviour
     [SerializeField] RectTransform miniMap;
     [SerializeField] Vector2 worldMin;  // 0.0
     [SerializeField] Vector2 worldMax;  // 200.200
+    
+    private void Awake()
+    {
+        Instance = this;
+    }
 
-    void Start()
+    public void Init()
     {
         playerIcon.enabled = true;
         monsterIcon.enabled = true;

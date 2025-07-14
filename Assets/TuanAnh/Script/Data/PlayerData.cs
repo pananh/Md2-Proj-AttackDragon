@@ -9,7 +9,8 @@ public class PlayerData : ScriptableObject
     public int id = 1;
     public string playerName = "Mage";
     public int level = 1;
-    public float health = 100;
+    public float maxHealth = 100;
+    public float currentHealth = 100;
     public float attack = 5;
     public float speed = 5;
     public float exp = 0;
@@ -23,7 +24,8 @@ public class PlayerData : ScriptableObject
         clone.id = this.id;
         clone.playerName = this.playerName;
         clone.level = this.level;
-        clone.health = this.health;
+        clone.maxHealth = this.maxHealth;
+        clone.currentHealth = this.currentHealth;
         clone.attack = this.attack;
         clone.speed = this.speed;
         clone.exp = this.exp;
@@ -46,7 +48,8 @@ public class PlayerData : ScriptableObject
     public void LevelUp(PlayerData currentPlayer)
     {
         currentPlayer.level++;
-        currentPlayer.health *= levelUpFactor;
+        currentPlayer.maxHealth *= levelUpFactor;
+        currentPlayer.currentHealth = currentPlayer.maxHealth;
         currentPlayer.attack *= levelUpFactor;
         
         if ( (currentPlayer.level % 5) == 0f)
