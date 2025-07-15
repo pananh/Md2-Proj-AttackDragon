@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
@@ -27,7 +27,8 @@ public class MonsterManager : MonoBehaviour
 
     public void Init()
     {
-        //SpawnMonster();
+        SpawnMonster();
+        InitMonster();
     }
 
     void Update()
@@ -35,6 +36,13 @@ public class MonsterManager : MonoBehaviour
         
     }
 
+    private void InitMonster()
+    {
+        foreach (IMonsterController monster in monsterList)
+        {
+            monster.Init();
+        }
+    }
 
     private void SpawnMonster()
     {
@@ -79,5 +87,14 @@ public class MonsterManager : MonoBehaviour
         {  spawnPointsList.Add(spawnObjectList.transform.GetChild(i).position); }
     }
 
+
+//    Dictionary<Collider, IMonsterController> monsterMap = new Dictionary<Collider, IMonsterController>();
+//    // Khi spawn:
+//    monsterMap[monsterCollider] = monsterController;
+//// Khi va chạm:
+//if (monsterMap.TryGetValue(hit.collider, out var controller))
+//{
+//    controller.TakeDamage(1f);
+//}
 
 }

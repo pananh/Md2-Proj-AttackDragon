@@ -29,22 +29,20 @@ public class HealthBar : MonoBehaviour
     }
 
     [SerializeField] private UnityEngine.UI.Image emptyBar;
-    private GameObject unit;
+    private Transform unitTransform;
     private Vector3 unitPos;
-    public Vector3 UnitPos     {set { unitPos = value; } }
     private RectTransform hpBarRec;
     private float aboveYPos = 90f;
     private float scaleFactor;
 
-    public void Init(GameObject followUnit, float maxHealth, float currentHealth)
+
+    public void Init(Transform unitTranformInput, float maxHealth, float currentHealth)
     {
         hpBarRec = GetComponent<RectTransform>();
 
-        unit = followUnit;
-        this.maxHealth= maxHealth;
+        unitTransform = unitTranformInput;
+        this.maxHealth = maxHealth;
         this.currentHealth = currentHealth;
-
-        Debug.Log("HealthBar Init: " + unit.name + " , Max: " + maxHealth + " , Current: " + currentHealth);
 
         UpdateHBValue();
         UpdateHBPosition();
@@ -60,11 +58,11 @@ public class HealthBar : MonoBehaviour
 
     private void LateUpdate()
     {
-        if ( unit == null )
+        if ( unitTransform == null )
         {
             return; // Neu unit bi huy, thi khong can cap nhat nua, giu lai health bar 
         }
-        unitPos = unit.transform.position;
+        unitPos = unitTransform.position;
 
         if ( IsHavingChangingCamOrUnit() )
         {

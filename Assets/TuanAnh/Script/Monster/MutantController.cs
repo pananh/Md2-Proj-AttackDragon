@@ -17,8 +17,11 @@ public class MutantController : MonoBehaviour, IMonsterController
     public Animator Animator => animator;
     public Transform Transform => this.transform;
 
+
     [SerializeField] private MonsterData inputMonData;
     private MonsterData monsterData;
+    public MonsterData MonsterData => monsterData;
+
     private float sqrMonsterVision;
     private float sqrAttackRange;
     private float sqrDistanceToTarget;
@@ -26,7 +29,7 @@ public class MutantController : MonoBehaviour, IMonsterController
     private float thinkTime;
     private MonsterState currentState;
     
-    public event Action <float, IMonsterController> OnHealthChanged;
+    public event Action <float> MonsterOnHealthChanged;
 
 
     public void Init()
@@ -80,7 +83,6 @@ public class MutantController : MonoBehaviour, IMonsterController
             currentState.Enter(this);
         }
         currentState.Update();
-        //agent.SetDestination(PlayerController.Instance.transform.position);
 
     }
     
@@ -117,8 +119,20 @@ public class MutantController : MonoBehaviour, IMonsterController
 
     private void TakeDamage(float damage)
     {
-        monsterData.maxHealth -= damage;
-        OnHealthChanged?.Invoke(monsterData.maxHealth, this);
+        monsterData.currentHealth -= damage;
+        MonsterOnHealthChanged?.Invoke(monsterData.currentHealth); // truyen gia tri curentHealth ra ngoai cho ai su dung
+
+        if (monsterData.currentHealth <= 0)
+        {
+            Die();
+        }
+
+    }
+
+    private void Die()
+    {
+        Debug.Log("Monster died");
+     
     }
 
     void OnTriggerEnter(Collider other)

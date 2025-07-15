@@ -15,8 +15,9 @@ MonoBehaviour:
   id: 1
   monsterName: Maw
   level: 1
-  health: 100
-  attack: 5
+  maxHealth: 100
+  currentHealth: 100
+  attack: 1
   speed: 5
   image: {fileID: 0}
   levelUpFactor: 1.05

@@ -12,7 +12,7 @@ public class UIMinimap : MonoBehaviour
 
 
     [SerializeField] Image mosterIconPrefab;
-    private List<Image> monsterIcons;
+    private List<Image> monsterIconList;
 
 
     [SerializeField] RectTransform miniMap;
@@ -27,17 +27,13 @@ public class UIMinimap : MonoBehaviour
     public void Init()
     {
         InitPlayerIcon();
-        //InitMonstersIcon();
+        InitMonstersIcon();
     }
 
     void LateUpdate()
     {
-
         UpdatePlayerLocation();
-        //UpdateMonsterLocation();
-
-
-
+        UpdateMonsterLocation();
     }
 
 
@@ -47,34 +43,31 @@ public class UIMinimap : MonoBehaviour
 
     }
 
-    //private void InitMonstersIcon()
-    //{
-    //    monsterIcons = new List<Image>();
-    //    foreach (IMonsterController monster in MonsterManager.Instance.MonsterList)
-    //    {
-    //        Image singleMonsterIcon = Instantiate(monsterIcon, miniMap);
-    //        singleMonsterIcon.enabled = true;
-    //        monsterIcons.Add(singleMonsterIcon);
-    //    }
+    private void InitMonstersIcon()
+    {
+        monsterIconList = new List<Image>();
+        foreach (IMonsterController monster in MonsterManager.Instance.MonsterList)
+        {
+            Image singleMonsterIcon = Instantiate(mosterIconPrefab, miniMap);
+            singleMonsterIcon.enabled = true;
+            monsterIconList.Add(singleMonsterIcon);
+        }
 
-    //}
+    }
 
-    //private void UpdateMonsterLocation()
-    //{
-    //    for (int i = 0; i < MonsterManager.Instance.MonsterList.Count; i++)
-    //    {
-            
-    //        SetIconLocation(MonsterManager.Instance.MonsterList[i].Transform.position, 
-    //            monsterIcons[i]);
-    //    }
-    //}
+    private void UpdateMonsterLocation()
+    {
+        for (int i = 0; i < monsterIconList.Count; i++)
+        {
+            SetIconLocation(MonsterManager.Instance.MonsterList[i].Transform.position,
+                monsterIconList[i]);
+        }
+    }
 
     private void UpdatePlayerLocation()
     {
         SetIconLocation(PlayerController.Instance.transform.position, playerIcon);
     }
-
-
 
     private void SetIconLocation(Vector3 worldPosition, Image iconImage)
     {

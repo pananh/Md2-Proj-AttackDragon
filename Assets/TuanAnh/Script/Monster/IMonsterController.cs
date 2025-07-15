@@ -10,6 +10,9 @@ public interface IMonsterController
     NavMeshAgent Agent { get; }
     Transform Transform { get; }
     
-    event Action <float, IMonsterController> OnHealthChanged;
+    event Action <float> MonsterOnHealthChanged;
+    
+    MonsterData MonsterData { get; }
 
+    void Init();
 }

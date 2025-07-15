@@ -18,9 +18,6 @@ public class HealthBarManager : MonoBehaviour
     private HealthBar playerHb;
     private List<HealthBar> monsterHbList;
 
-
-
-
     private void Awake()
     {
         Instance = this;
@@ -33,7 +30,7 @@ public class HealthBarManager : MonoBehaviour
         canvasRect = GetComponent<RectTransform>();
 
         InitPlayerHealthBar();
-
+        InitMonsterHealthBar();
     }
 
     // Update is called once per frame
@@ -47,7 +44,7 @@ public class HealthBarManager : MonoBehaviour
         GameObject hbObject = Instantiate(hbPrefabPlayer, canvas.transform);
         playerHb = hbObject.GetComponent<HealthBar>();
        
-        playerHb.Init(PlayerController.Instance.gameObject, PlayerController.Instance.CurrentPlayerData.maxHealth, 
+        playerHb.Init(PlayerController.Instance.transform, PlayerController.Instance.CurrentPlayerData.maxHealth, 
             PlayerController.Instance.CurrentPlayerData.maxHealth);
        
         PlayerController.Instance.PlayerOnHealthChanged += PlayerUpdateHb;  
@@ -55,7 +52,21 @@ public class HealthBarManager : MonoBehaviour
 
     private void InitMonsterHealthBar()
     {
+        if (monsterHbList == null) monsterHbList = new List<HealthBar>();
+        foreach (IMonsterController monster in MonsterManager.Instance.MonsterList)
+        {
+            GameObject hbObject = Instantiate(hbPrefabMonster, canvas.transform);
+            HealthBar monsterHb = hbObject.GetComponent<HealthBar>();
+            monsterHb.Init(monster.Transform, monster.MonsterData.maxHealth, monster.MonsterData.currentHealth);
+            monsterHbList.Add(monsterHb);
 
+            // Gan dang su kien cho tung con quai, con nao di voi mau con do, truyen currentHealth vao Hb Bar
+            monster.MonsterOnHealthChanged += (currentHealth) => 
+            {
+                monsterHb.CurrentHealth = currentHealth;
+            };
+
+        }
     }
 
 

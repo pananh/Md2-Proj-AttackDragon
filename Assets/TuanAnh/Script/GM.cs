@@ -24,7 +24,7 @@ public class GM : MonoBehaviour
     public void EnterGame()
     {
         PlayerController.Instance.Init();
-        //MonsterManager.Instance.Init();
+        MonsterManager.Instance.Init();
 
         UIMinimap.Instance.Init();
         HealthBarManager.Instance.Init();
