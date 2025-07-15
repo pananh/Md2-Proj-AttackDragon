@@ -10,7 +10,10 @@ public class GMData : MonoBehaviour
     {
         get => gSetting.gameSpeed; 
     }
-
+    public float MAX_SPELL_DISTANCE
+    {
+        get => gSetting.maxSpellDistance;
+    }
     public float RAYCAST_DISTANCE
     {
         get => gSetting.raycastDistance;
@@ -34,9 +37,9 @@ public class GMData : MonoBehaviour
     {   get => gSetting.gravity; 
     }
 
-    public Vector3 MAGIC_BALL_LOCAL_OFFSET
+    public float MAGIC_BALL_OFFSET
     {
-        get => gSetting.magicBallLocalOffset;
+        get => gSetting.magicBallOffset;
     }
 
     public float TIME_DURATION_FOR_SPELL_TARGET

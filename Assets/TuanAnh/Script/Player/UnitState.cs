@@ -16,7 +16,7 @@ public abstract class UnitState: State
 
     }
 
-    public virtual void Enter (IUnitController player, Vector3 targetBall, GameObject magicBall)
+    public virtual void Enter (IUnitController player, GameObject magicBall)
     {
     }
 

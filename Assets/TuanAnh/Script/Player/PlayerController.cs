@@ -117,10 +117,6 @@ public class PlayerController : MonoBehaviour , IUnitController
             return Instance.transform.position;
         }
     }
-    private static Vector3 GetDestinationForSpell(float distance)
-    {
-        return Instance.transform.position + Instance.transform.forward * distance;
-    }
 
     private void GetInputAndChangeStage()
     {
@@ -205,8 +201,7 @@ public class PlayerController : MonoBehaviour , IUnitController
     {
         currentState.Exit();
         currentState = new UnitCastSpell1();
-        destination = GetDestinationForSpell(GMData.Instance.RAYCAST_DISTANCE);
-        currentState.Enter(Instance, destination, magicBallPrefab);
+        currentState.Enter(Instance, magicBallPrefab);
     }
 
     private void IdleToCastSpell2()
