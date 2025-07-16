@@ -17,7 +17,8 @@ public class PlayerController : MonoBehaviour , IUnitController
 
     private Animator animator;
     public Animator GetAnimator { get => animator; }
-    [SerializeField] GameObject magicBallPrefab;
+    [SerializeField] GameObject magicBallPrefab1;
+    [SerializeField] GameObject magicBallPrefab2;
 
     private bool notInAnimating = true;
     public bool NotInAnimating
@@ -209,14 +210,14 @@ public class PlayerController : MonoBehaviour , IUnitController
     {
         currentState.Exit();
         currentState = new UnitCastSpell1();
-        currentState.Enter(Instance, magicBallPrefab);
+        currentState.Enter(Instance, magicBallPrefab1);
     }
 
     private void IdleToCastSpell2()
     {
         currentState.Exit();
         currentState = new UnitCastSpell2();
-        currentState.Enter(Instance);
+        currentState.Enter(Instance, magicBallPrefab2);
     }
 
     private void BackToIdle()

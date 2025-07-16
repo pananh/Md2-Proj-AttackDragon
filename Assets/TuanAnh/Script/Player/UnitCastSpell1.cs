@@ -51,23 +51,23 @@ public class UnitCastSpell1 : UnitState
             isInstated = true;
         }
 
-        if ( (isCastingStage == 0) && !controller.NotInAnimating)
+        if ( (isCastingStage == 0) && !controller.NotInAnimating) // Bat dau lam phep: Chuan bi 
         {
             isCastingStage = 1;
         }
-        else if (isCastingStage == 1 && controller.NotInAnimating)
+        else if (isCastingStage == 1 && controller.NotInAnimating) // Ket thuc chuan bi
         {
             foreach (MagicBall magicBall in magicBallList)
             {
-                magicBall.NeedMoving = true;
+                magicBall.NeedMoving = true;                        // Magic Ball bat dau di chuyen
             }
-            isCastingStage = 2;
+            isCastingStage = 2;                         // Chuyen sang giai doan phep 2
         }
-        else if (isCastingStage == 2 && !controller.NotInAnimating)
+        else if (isCastingStage == 2 && !controller.NotInAnimating) // Bat dau thuc hien giai doan 2.
         {
             isCastingStage = 3;
         }
-        else if (isCastingStage == 3 && controller.NotInAnimating)
+        else if (isCastingStage == 3 && controller.NotInAnimating) // Ket thuc lam phep thuat
         {
             needUpdateState = false;
         }
@@ -98,7 +98,7 @@ public class UnitCastSpell1 : UnitState
         number = Mathf.Clamp(number, 1, 40);
         List<float> angles = GetAngles(number, 5f);
         var result = new List<(Vector3, Vector3, Quaternion)>();
-        Vector3 basePos = characterController.transform.position + Vector3.up * 2f;
+        Vector3 basePos = characterController.transform.position + Vector3.up * 1.5f;
         Vector3 baseDiction = characterController.transform.forward;
         for (int i = 0; i < angles.Count; i++)
         {

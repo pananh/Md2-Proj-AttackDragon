@@ -11,7 +11,7 @@ public class PlayerData : ScriptableObject
     public int level = 1;
     public float maxHealth = 100;
     public float currentHealth = 100;
-    public float attack = 5;
+    public float attack = 20;
     public float attackMagic = 40;
     public float speed = 5;
     public float exp = 0;

@@ -37,7 +37,7 @@ public class MagicBall : MonoBehaviour
         needMoving = false;
         direction = (targetBall - transform.position).normalized;
 
-        AudioSource.PlayClipAtPoint(magicBallSound, Camera.main.transform.position);
+        //AudioSource.PlayClipAtPoint(magicBallSound, Camera.main.transform.position);
     }
 
 
@@ -56,7 +56,7 @@ public class MagicBall : MonoBehaviour
         castDistance = speed * Time.deltaTime;
         if (Physics.SphereCast(transform.position, ballRadius, direction, out RaycastHit hit, castDistance, layerMask))
         {
-            AudioSource.PlayClipAtPoint(hitSound, Camera.main.transform.position);
+            //AudioSource.PlayClipAtPoint(hitSound, Camera.main.transform.position);
 
             if (hit.collider.CompareTag("Player"))
             {
