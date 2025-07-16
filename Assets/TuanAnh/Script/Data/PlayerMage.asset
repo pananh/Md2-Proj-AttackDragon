@@ -15,9 +15,12 @@ MonoBehaviour:
   id: 1
   playerName: Mage
   level: 1
-  health: 100
-  attack: 5
+  maxHealth: 100
+  currentHealth: 100
+  attack: 20
+  attackMagic: 40
   speed: 5
   exp: 0
+  expNextLevel: 100
   image: {fileID: 0}
   levelUpFactor: 1.05

@@ -249,6 +249,8 @@ public class PlayerController : MonoBehaviour , IUnitController
     public void TakeExperience(float exp)
     {
         currentData.exp += exp;
+        Debug.Log($"Player gained {exp} experience points. Total EXP: {currentData.exp} / {currentData.expNextLevel} " );
+        Debug.Log($"Health: {currentData.currentHealth} / {currentData.maxHealth}");
         if (currentData.exp >= currentData.expNextLevel)
             LevelUp();
     }

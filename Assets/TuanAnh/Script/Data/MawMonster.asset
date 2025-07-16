@@ -19,8 +19,9 @@ MonoBehaviour:
   currentHealth: 100
   attack: 1
   speed: 3
+  gainExp: 40
   image: {fileID: 0}
   levelUpFactor: 1.05
   attackRange: 1.5
-  visionRange: 40
+  visionRange: 45
   thinkTime: 1.5

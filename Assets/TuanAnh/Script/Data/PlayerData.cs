@@ -11,8 +11,9 @@ public class PlayerData : ScriptableObject
     public int level = 1;
     public float maxHealth = 100;
     public float currentHealth = 100;
-    public float attack = 20;
+    public float attack = 10;
     public float attackMagic = 40;
+    public float attackMagicRange = 50f; // Khoang cach toi da de danh phep thuat
     public float speed = 5;
     public float exp = 0;
     public float expNextLevel = 100;
@@ -29,6 +30,7 @@ public class PlayerData : ScriptableObject
         clone.currentHealth = this.currentHealth;
         clone.attack = this.attack;
         clone.attackMagic = this.attackMagic;
+        clone.attackMagicRange = this.attackMagicRange;
         clone.speed = this.speed;
         clone.exp = this.exp;
         clone.expNextLevel = this.expNextLevel;
@@ -54,6 +56,12 @@ public class PlayerData : ScriptableObject
         currentPlayer.currentHealth = currentPlayer.maxHealth;
         currentPlayer.attack *= levelUpFactor;
         currentPlayer.attackMagic *= levelUpFactor;
+        currentPlayer.attackMagicRange *= levelUpFactor;
+     
+        if (currentPlayer.attackMagicRange > 50f)
+        {
+            currentPlayer.attackMagicRange = 50f; 
+        }
 
         if ( (currentPlayer.level % 5) == 0f)
         {             currentPlayer.speed *= levelUpFactor;

@@ -4941,4 +4941,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128

@@ -9,7 +9,6 @@ public class GameData : ScriptableObject
 {
     public int gameSpeed = 5;
     public float raycastDistance = 200f;
-    public float maxSpellDistance = 150f;
     public float minMoveDistance = 0.01f;
     public float minMoveSqrDistance = 0.01f;
     public float minStuckDistance = 0.0001f;

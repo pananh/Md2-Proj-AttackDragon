@@ -12,7 +12,6 @@ public class UnitCastSpell2 : UnitState
     private IUnitController controller;
     private Animator animator;
 
-    private float  punchDuration = 3.5f; // Duration of the punch animation
     private GameObject magicBallPrefab;
     private MagicSphere magicSphere;
     private bool isInstated;

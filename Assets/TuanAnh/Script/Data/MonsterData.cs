@@ -13,12 +13,12 @@ public class MonsterData : ScriptableObject
     public float currentHealth = 100;
     public float attack = 5;
     public float speed = 5;
-    private float gainExp = 5;
+    public float gainExp = 40;
     public Sprite image;
     public float levelUpFactor = 1.05f;
     
     public float attackRange = 1.5f;
-    public float visionRange = 30f;
+    public float visionRange = 45f;
     public float thinkTime = 1.5f;
 
     public MonsterData CloneData()

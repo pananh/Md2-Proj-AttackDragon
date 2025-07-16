@@ -10,10 +10,7 @@ public class GMData : MonoBehaviour
     {
         get => gSetting.gameSpeed; 
     }
-    public float MAX_SPELL_DISTANCE
-    {
-        get => gSetting.maxSpellDistance;
-    }
+   
     public float RAYCAST_DISTANCE
     {
         get => gSetting.raycastDistance;

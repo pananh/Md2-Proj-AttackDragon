@@ -10,7 +10,7 @@ public class MonsterDie : MonsterState
         monster.Agent.isStopped = true;
         monster.Agent.enabled = false;
         monster.Animator.SetBool("Die", true);
-
+        PlayerController.Instance.TakeExperience(monster.MonsterData.gainExp);
         HealthBarManager.Instance.RemoveMonsterHealthBar(monster);
         UIMinimap.Instance.RemoveMonsterIcon(monster);
         MonsterManager.Instance.RemoveMonster(monster);

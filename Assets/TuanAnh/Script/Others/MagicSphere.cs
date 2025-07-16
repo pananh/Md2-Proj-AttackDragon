@@ -21,6 +21,7 @@ public class MagicSphere : MonoBehaviour
         set => isExplode = value;
     }
     private float timer;
+    private MeshRenderer parentMeshRenderer;
 
     public void Init()
     {
@@ -30,6 +31,9 @@ public class MagicSphere : MonoBehaviour
         maxRadius = 3f;
         transform.localScale = Vector3.one * minRadius * 2f; 
         timer = 0f;
+
+        parentMeshRenderer = GetComponent<MeshRenderer>();
+        parentMeshRenderer.enabled = false;
     }
 
     void Update()
@@ -38,12 +42,14 @@ public class MagicSphere : MonoBehaviour
         {
             return;
         }
+        parentMeshRenderer.enabled = true;
         timer += Time.deltaTime;
         currentRadius = Mathf.Lerp(minRadius, maxRadius, timer);
         transform.localScale = Vector3.one * currentRadius * 2f;
 
         if (isExplode)
         {
+            isExplode = false;
             Explode();
         }
 
@@ -66,7 +72,7 @@ public class MagicSphere : MonoBehaviour
         {
             if (collider.CompareTag("Monster"))
             {
-                Debug.Log("Hit Monster");
+                Debug.Log("Hit Monster Magic 2");
                 IMonsterController monsterController = collider.GetComponent<IMonsterController>();
                 if (monsterController != null)
                 {

@@ -140,7 +140,7 @@ public class UnitCastSpell1 : UnitState
         GameObject mgBall = GameObject.Instantiate(magicBallPrefab, spawnPos, rotation);
         MagicBall mgBallControl = mgBall.GetComponent<MagicBall>();
         mgBallControl.Init(GMData.Instance.GAME_SPEED, GMData.Instance.GAME_SPEED * 2, 
-            spawnPos + direction * GMData.Instance.MAX_SPELL_DISTANCE);
+            spawnPos + direction * PlayerController.Instance.CurrentPlayerData.attackMagicRange);
         return mgBallControl;
     }
 

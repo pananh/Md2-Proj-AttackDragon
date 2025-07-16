@@ -2024,6 +2024,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8080214883313565353, guid: a74ee3122c5fc164390767d5e04b74b2,
         type: 3}
+    - target: {fileID: 4829723565462683142, guid: db34ee560fe84a341a842d6603951630,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829723565462683142, guid: db34ee560fe84a341a842d6603951630,
+        type: 3}
+      propertyPath: m_Positions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829723565462683142, guid: db34ee560fe84a341a842d6603951630,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7041236615765759916, guid: db34ee560fe84a341a842d6603951630,
         type: 3}
       propertyPath: m_Name
@@ -2034,84 +2049,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db34ee560fe84a341a842d6603951630, type: 3}
---- !u!1001 &7362211552309344149
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2056692285131557607, guid: a74ee3122c5fc164390767d5e04b74b2,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 20.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 2056692285131557607, guid: a74ee3122c5fc164390767d5e04b74b2,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2056692285131557607, guid: a74ee3122c5fc164390767d5e04b74b2,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 21.94
-      objectReference: {fileID: 0}
-    - target: {fileID: 2056692285131557607, guid: a74ee3122c5fc164390767d5e04b74b2,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2056692285131557607, guid: a74ee3122c5fc164390767d5e04b74b2,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2056692285131557607, guid: a74ee3122c5fc164390767d5e04b74b2,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2056692285131557607, guid: a74ee3122c5fc164390767d5e04b74b2,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2056692285131557607, guid: a74ee3122c5fc164390767d5e04b74b2,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2056692285131557607, guid: a74ee3122c5fc164390767d5e04b74b2,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2056692285131557607, guid: a74ee3122c5fc164390767d5e04b74b2,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2305915494146235604, guid: a74ee3122c5fc164390767d5e04b74b2,
-        type: 3}
-      propertyPath: monsterLayer.m_Bits
-      value: 128
-      objectReference: {fileID: 0}
-    - target: {fileID: 8080214883313565353, guid: a74ee3122c5fc164390767d5e04b74b2,
-        type: 3}
-      propertyPath: m_Name
-      value: MagicSphere
-      objectReference: {fileID: 0}
-    - target: {fileID: 8080214883313565353, guid: a74ee3122c5fc164390767d5e04b74b2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a74ee3122c5fc164390767d5e04b74b2, type: 3}
 --- !u!4 &8315818581810473760 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 620269225148297707, guid: db34ee560fe84a341a842d6603951630,
@@ -2131,4 +2068,3 @@ SceneRoots:
   - {fileID: 1260464163}
   - {fileID: 145270117}
   - {fileID: 6494643368261012630}
-  - {fileID: 7362211552309344149}
