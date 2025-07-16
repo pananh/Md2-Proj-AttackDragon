@@ -14,5 +14,8 @@ public interface IMonsterController
     
     MonsterData MonsterData { get; }
 
+    void TakeDamage(float damage);
     void Init();
+    void StartMonsterCoroutine (IEnumerator coroutine);
+
 }

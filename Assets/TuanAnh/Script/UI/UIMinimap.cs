@@ -12,7 +12,7 @@ public class UIMinimap : MonoBehaviour
 
 
     [SerializeField] Image mosterIconPrefab;
-    private List<Image> monsterIconList;
+    private Dictionary <IMonsterController, Image> monsterIconDic;
 
 
     [SerializeField] RectTransform miniMap;
@@ -45,23 +45,29 @@ public class UIMinimap : MonoBehaviour
 
     private void InitMonstersIcon()
     {
-        monsterIconList = new List<Image>();
+        monsterIconDic = new Dictionary<IMonsterController, Image>();
         foreach (IMonsterController monster in MonsterManager.Instance.MonsterList)
         {
             Image singleMonsterIcon = Instantiate(mosterIconPrefab, miniMap);
             singleMonsterIcon.enabled = true;
-            monsterIconList.Add(singleMonsterIcon);
+            monsterIconDic.Add(monster, singleMonsterIcon);
         }
 
     }
 
+    public void RemoveMonsterIcon(IMonsterController monster)
+    {
+        Destroy(monsterIconDic[monster].gameObject);
+        monsterIconDic.Remove(monster);
+    }
+
     private void UpdateMonsterLocation()
     {
-        for (int i = 0; i < monsterIconList.Count; i++)
+        foreach ( var monsterIcon in monsterIconDic)
         {
-            SetIconLocation(MonsterManager.Instance.MonsterList[i].Transform.position,
-                monsterIconList[i]);
+            SetIconLocation(monsterIcon.Key.Transform.position, monsterIcon.Value);
         }
+
     }
 
     private void UpdatePlayerLocation()

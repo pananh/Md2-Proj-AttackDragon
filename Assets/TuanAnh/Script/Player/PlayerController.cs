@@ -157,6 +157,14 @@ public class PlayerController : MonoBehaviour , IUnitController
                 {
                     RunToRun();
                 }
+                else if (Input.GetKeyDown(KeyCode.Q) && notInAnimating)
+                {
+                    IdleToCastSpell1();
+                }
+                else if (Input.GetKeyDown(KeyCode.W) && notInAnimating)
+                {
+                    IdleToCastSpell2();
+                }
                 else if (Input.GetKeyDown(KeyCode.Space) && notInAnimating)
                 {
                     towardDistance = GMData.Instance.GAME_SPEED;
@@ -235,9 +243,19 @@ public class PlayerController : MonoBehaviour , IUnitController
             GM.Instance.GameOver();
             Debug.Log("Player has died.");
         }
-
     }
 
+    public void TakeExperience(float exp)
+    {
+        currentData.exp += exp;
+        if (currentData.exp >= currentData.expNextLevel)
+            LevelUp();
+    }
 
+    private void LevelUp()
+    {
+        currentData.LevelUp(currentData);
+        Debug.Log($"Player leveled up to level {currentData.level}!");
+    }
 }
 

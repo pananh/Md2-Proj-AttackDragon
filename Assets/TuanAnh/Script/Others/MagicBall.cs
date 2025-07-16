@@ -68,6 +68,10 @@ public class MagicBall : MonoBehaviour
             {
                 Debug.Log("Hit Monster");
                 Destroy(gameObject);
+
+                hit.collider.GetComponent<IMonsterController>().TakeDamage(
+                    PlayerController.Instance.CurrentPlayerData.attackMagic);
+
                 return;
             }
             else if (hit.collider.CompareTag("Ground"))

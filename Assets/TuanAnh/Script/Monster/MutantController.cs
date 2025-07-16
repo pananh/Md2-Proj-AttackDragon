@@ -28,7 +28,8 @@ public class MutantController : MonoBehaviour, IMonsterController
     
     private float thinkTime;
     private MonsterState currentState;
-    
+    private bool isDead;
+
     public event Action <float> MonsterOnHealthChanged;
 
 
@@ -41,6 +42,8 @@ public class MutantController : MonoBehaviour, IMonsterController
 
     void Update()
     {
+        if (isDead) 
+            return;
 
         sqrDistanceToTarget = Vector3.SqrMagnitude(PlayerController.Instance.transform.position - transform.position);
 
@@ -98,6 +101,7 @@ public class MutantController : MonoBehaviour, IMonsterController
 
     private void MonsterInit()
     {
+        isDead = false;
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
 
@@ -117,22 +121,26 @@ public class MutantController : MonoBehaviour, IMonsterController
     }
 
 
-    private void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         monsterData.currentHealth -= damage;
         MonsterOnHealthChanged?.Invoke(monsterData.currentHealth); // truyen gia tri curentHealth ra ngoai cho ai su dung
 
         if (monsterData.currentHealth <= 0)
         {
-            Die();
+            MonsterDie();
         }
 
     }
 
-    private void Die()
+    private void MonsterDie()
     {
-        Debug.Log("Monster died");
-     
+        if (isDead)
+            return;
+        isDead = true;
+        currentState.Exit();
+        currentState = new MonsterDie();
+        currentState.Enter(this);
     }
 
     void OnTriggerEnter(Collider other)
@@ -144,7 +152,10 @@ public class MutantController : MonoBehaviour, IMonsterController
         }
     }
 
-
+    public void StartMonsterCoroutine(IEnumerator coroutine)
+    {
+        StartCoroutine(coroutine);
+    }
 
 
 

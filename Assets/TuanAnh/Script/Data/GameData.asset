@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameSpeed: 5
   raycastDistance: 200
+  maxSpellDistance: 50
   minMoveDistance: 0.01
   minMoveSqrDistance: 0.01
   minStuckDistance: 0.0001
   maxMoveDistance: 20
   maxMoveSqrDistance: 400
   gravity: -9.81
-  magicBallLocalOffset: {x: 0, y: 1, z: 2}
+  magicBallOffset: 1
   timeDurationForSpellTarget: 10

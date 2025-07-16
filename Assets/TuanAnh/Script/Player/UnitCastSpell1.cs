@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
+using System.Net.Http.Headers;
+using sc.terrain.proceduralpainter;
 
 public class UnitCastSpell1 : UnitState
 {
@@ -45,7 +47,7 @@ public class UnitCastSpell1 : UnitState
     {
         if (!isInstated)
         {
-            SpawnFireBalls();
+            SpawnFireBalls(9);
             isInstated = true;
         }
 
@@ -78,29 +80,59 @@ public class UnitCastSpell1 : UnitState
         animator.SetBool("Spell1", false);
     }
 
-    private void SpawnFireBalls()
+    private void SpawnFireBalls(int number)
     {
-        // Magic ball 1 (forward)
-        Vector3 spawnPos1 = characterController.transform.position +
-            characterController.transform.forward * GMData.Instance.MAGIC_BALL_OFFSET
-            + Vector3.up * 2f;
-        Vector3 direction1 = characterController.transform.forward;
-        Quaternion rot1 = Quaternion.LookRotation(direction1);
-        magicBallList.Add(MagicBallControll(spawnPos1, direction1, rot1));
+        if (number <= 0) return;
+       
+        List<(Vector3 pos, Vector3 direction, Quaternion rot)> spawnPoints = GetMagicBallSpawnPoints(number);
+        foreach (var spawnPoint in spawnPoints)
+        {
+            MagicBall magicBall = MagicBallControll(spawnPoint.pos, spawnPoint.direction, spawnPoint.rot);
+            magicBallList.Add(magicBall);
+        }
+    }
 
+   
+    private List<(Vector3 pos, Vector3 direction, Quaternion rot)> GetMagicBallSpawnPoints(int number)
+    {
+        number = Mathf.Clamp(number, 1, 40);
+        List<float> angles = GetAngles(number, 5f);
+        var result = new List<(Vector3, Vector3, Quaternion)>();
+        Vector3 basePos = characterController.transform.position + Vector3.up * 2f;
+        Vector3 baseDiction = characterController.transform.forward;
+        for (int i = 0; i < angles.Count; i++)
+        {
+            float angle = angles[i];
+            Vector3 direction = Quaternion.AngleAxis(angle, Vector3.up) * baseDiction;
+            Vector3 pos = basePos + direction * GMData.Instance.MAGIC_BALL_OFFSET;
+            result.Add((pos, direction, Quaternion.LookRotation(direction)));
+        }
+        return result;
+    }
 
-        // Magic ball 2 (right)
-        Vector3  spawnPos2 = spawnPos1 + characterController.transform.right * GMData.Instance.MAGIC_BALL_OFFSET;
-        Vector3 direction2 = Quaternion.AngleAxis(15f, Vector3.up) * direction1;
-        Quaternion rot2 = Quaternion.LookRotation(direction2);
-        magicBallList.Add(MagicBallControll(spawnPos2, direction2, rot2));
-
-        // Magic ball 3 (left)
-        Vector3 spawnPos3 = spawnPos1 - characterController.transform.right * GMData.Instance.MAGIC_BALL_OFFSET;
-        Vector3 direction3 = Quaternion.AngleAxis(-15f, Vector3.up) * direction1;
-        Quaternion rot3 = Quaternion.LookRotation(direction3);
-        magicBallList.Add(MagicBallControll(spawnPos3, direction3, rot3));
-
+    private List <float> GetAngles(int number, float step)
+    {
+        // (0, 5f, -5f, 10f, -10f, 15f, -15f, 20f, -20f, 25f, -25f, 30f, -30f)
+        // (2.5f, -2.5f, 5f, -5f, 7.5f, -7.5f, 10f, -10f, 12.5f, -12.5f, 15f, -15f)
+        List <float> angles = new List<float>();
+        number = Mathf.Clamp(number, 1, 40);
+        if (number % 2 == 1)
+        {   angles.Add(0f);
+            for (int i = 1; i <= number / 2; i++)
+            {
+                angles.Add(i * step);
+                angles.Add(-i * step);
+            }
+        }
+        else
+        {
+            for (int i = 1; i <= number / 2; i++)
+            {
+                angles.Add(i * step - step/2);
+                angles.Add(-i * step + step/2);
+            }
+        }
+        return angles;
     }
 
     private MagicBall MagicBallControll(Vector3 spawnPos, Vector3 direction, Quaternion rotation)

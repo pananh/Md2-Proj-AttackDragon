@@ -12,9 +12,10 @@ public class PlayerData : ScriptableObject
     public float maxHealth = 100;
     public float currentHealth = 100;
     public float attack = 5;
+    public float attackMagic = 40;
     public float speed = 5;
     public float exp = 0;
-    private float expNextLevel = 100;
+    public float expNextLevel = 100;
     public Sprite image;
     public float levelUpFactor = 1.05f;
 
@@ -27,6 +28,7 @@ public class PlayerData : ScriptableObject
         clone.maxHealth = this.maxHealth;
         clone.currentHealth = this.currentHealth;
         clone.attack = this.attack;
+        clone.attackMagic = this.attackMagic;
         clone.speed = this.speed;
         clone.exp = this.exp;
         clone.expNextLevel = this.expNextLevel;
@@ -51,7 +53,8 @@ public class PlayerData : ScriptableObject
         currentPlayer.maxHealth *= levelUpFactor;
         currentPlayer.currentHealth = currentPlayer.maxHealth;
         currentPlayer.attack *= levelUpFactor;
-        
+        currentPlayer.attackMagic *= levelUpFactor;
+
         if ( (currentPlayer.level % 5) == 0f)
         {             currentPlayer.speed *= levelUpFactor;
         }

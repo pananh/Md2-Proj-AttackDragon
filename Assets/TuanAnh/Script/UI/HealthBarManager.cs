@@ -16,7 +16,7 @@ public class HealthBarManager : MonoBehaviour
     [SerializeField] private GameObject hbPrefabPlayer;
     [SerializeField] private GameObject hbPrefabMonster;
     private HealthBar playerHb;
-    private List<HealthBar> monsterHbList;
+    private Dictionary<IMonsterController, HealthBar> monsterHbDict;
 
     private void Awake()
     {
@@ -33,11 +33,6 @@ public class HealthBarManager : MonoBehaviour
         InitMonsterHealthBar();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void InitPlayerHealthBar()
     {
@@ -52,13 +47,14 @@ public class HealthBarManager : MonoBehaviour
 
     private void InitMonsterHealthBar()
     {
-        if (monsterHbList == null) monsterHbList = new List<HealthBar>();
+        if (monsterHbDict == null) monsterHbDict = new Dictionary<IMonsterController, HealthBar>();
+
         foreach (IMonsterController monster in MonsterManager.Instance.MonsterList)
         {
             GameObject hbObject = Instantiate(hbPrefabMonster, canvas.transform);
             HealthBar monsterHb = hbObject.GetComponent<HealthBar>();
             monsterHb.Init(monster.Transform, monster.MonsterData.maxHealth, monster.MonsterData.currentHealth);
-            monsterHbList.Add(monsterHb);
+            monsterHbDict.Add(monster, monsterHb);
 
             // Gan dang su kien cho tung con quai, con nao di voi mau con do, truyen currentHealth vao Hb Bar
             monster.MonsterOnHealthChanged += (currentHealth) => 
@@ -69,6 +65,12 @@ public class HealthBarManager : MonoBehaviour
         }
     }
 
+    public void RemoveMonsterHealthBar(IMonsterController monster)
+    {
+        Destroy(monsterHbDict[monster].gameObject);
+        monsterHbDict.Remove(monster);
+        
+    }
 
     private void PlayerUpdateHb(float currentHealth)
     {
