@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1388,6 +1388,7 @@ GameObject:
   - component: {fileID: 1279876568}
   - component: {fileID: 1279876569}
   - component: {fileID: 1279876570}
+  - component: {fileID: 1279876571}
   m_Layer: 0
   m_Name: GM
   m_TagString: Untagged
@@ -1451,6 +1452,25 @@ MonoBehaviour:
   monsterPrefab: {fileID: 7820921728511371775, guid: 4c5a6bf9cf1efd54c81da09d04c57a44,
     type: 3}
   spawnObjectList: {fileID: 724330724}
+--- !u!114 &1279876571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1279876566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c8575613627857418dd271e6ea1e689, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCastSpell1: {fileID: 8300000, guid: 5fe4bc0609c03e24097e0cb3666a4fb5, type: 3}
+  playerCastSpell2: {fileID: 8300000, guid: 7d156b8a5b340cd46bcf0a76557dd2dd, type: 3}
+  magicBallHitSound: {fileID: 8300000, guid: 986d6b30567e30e428f3f21373fe45ca, type: 3}
+  sphereBallExplosion: {fileID: 8300000, guid: 1fd31868d68903d4f9e2c4a3b7ef98f3, type: 3}
+  playerFooting: {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
+  playerLanding: {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
+  playerJumping: {fileID: 8300000, guid: 1a91fcd19acf1e54bba0945d9f390849, type: 3}
 --- !u!1001 &1290701013
 PrefabInstance:
   m_ObjectHideFlags: 0

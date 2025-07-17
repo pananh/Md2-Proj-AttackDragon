@@ -11,11 +11,13 @@ public class MagicBall : MonoBehaviour
     private float timeFly;
     private float maxTime;
     private Vector3 targetBall;
-    private float ballRadius = 0.5f;
+    private const float ballRadius = 0.5f;
     private Vector3 direction;
     private float castDistance;
     private RaycastHit hit;
     [SerializeField] private LayerMask layerMask;
+
+    [SerializeField] private AudioClip explosionSound;
 
 
     private bool needMoving;
@@ -38,7 +40,6 @@ public class MagicBall : MonoBehaviour
 
     }
 
-
     void Update()
     {
         if (!needMoving)
@@ -48,13 +49,22 @@ public class MagicBall : MonoBehaviour
         MoveForward();
     }
 
+    private void PlayExplosionSound()
+    {
+        float t = Mathf.InverseLerp(1f, 100f, Vector3.SqrMagnitude(transform.position - PlayerController.Instance.transform.position));
+        float volume = Mathf.Lerp(1f, 0.3f, t);
+        AudioSource.PlayClipAtPoint(explosionSound, Camera.main.transform.position, volume);
+        //AudioSource.PlayClipAtPoint(explosionSound, transform.position);
+
+        // tranh bi destroy som lam am thanh bi mat
+    }
     private void MoveForward()
     {
         timeFly += Time.deltaTime;
         castDistance = speed * Time.deltaTime;
         if (Physics.SphereCast(transform.position, ballRadius, direction, out RaycastHit hit, castDistance, layerMask))
         {
-
+            PlayExplosionSound();
             if (hit.collider.CompareTag("Player"))
             {
                 hit.collider.GetComponent<PlayerController>().TakeDamage(1);

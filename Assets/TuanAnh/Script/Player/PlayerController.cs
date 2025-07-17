@@ -39,8 +39,13 @@ public class PlayerController : MonoBehaviour , IUnitController
     }
 
 
-    public event Action< PlayerData > PlayerDataChanged;
-
+    public event Action< PlayerData > EvPlayerDataChanged;
+    public event Action EvPlayerStartRun;
+    public event Action EvPlayerStopRun;
+    public event Action EvPlayerCastSpell1;
+    public event Action EvPlayerCastSpell2;
+    public event Action EvPlayerJump;
+    public event Action EvPlayerLand;
 
 
     public void Awake()
@@ -145,11 +150,11 @@ public class PlayerController : MonoBehaviour , IUnitController
                 }
                 else if (Input.GetKeyDown(KeyCode.Q) && notInAnimating)
                 {
-                    IdleToCastSpell1();
+                    ToCastSpell1();
                 }
                 else if (Input.GetKeyDown(KeyCode.W) && notInAnimating)
                 {
-                    IdleToCastSpell2();
+                    ToCastSpell2();
                 }
                 break;
 
@@ -160,15 +165,18 @@ public class PlayerController : MonoBehaviour , IUnitController
                 }
                 else if (Input.GetKeyDown(KeyCode.Q) && notInAnimating)
                 {
-                    IdleToCastSpell1();
+                    ToCastSpell1();
+                    
                 }
                 else if (Input.GetKeyDown(KeyCode.W) && notInAnimating)
                 {
-                    IdleToCastSpell2();
+                    ToCastSpell2();
+                    
                 }
                 else if (Input.GetKeyDown(KeyCode.Space) && notInAnimating)
                 {
                     towardDistance = GMData.Instance.GAME_SPEED;
+                    EvPlayerStopRun?.Invoke();
                     ToJump();
                 }
                 break;
@@ -178,9 +186,14 @@ public class PlayerController : MonoBehaviour , IUnitController
 
 
     private void ToJump()
-    { 
+    {
+        if (currentState is UnitRun)
+        {
+            EvPlayerStopRun?.Invoke();
+        }
         currentState.Exit();
         currentState = new UnitJump();
+        EvPlayerJump?.Invoke();
         currentState.Enter(Instance, towardDistance);   // Them bien Jump nhay ve toi dau
     }
 
@@ -194,6 +207,7 @@ public class PlayerController : MonoBehaviour , IUnitController
         currentState.Exit();
         currentState = new UnitRun();
         currentState.Enter(Instance, destination);  // Them bien chay den dau
+        EvPlayerStartRun?.Invoke();
     }
 
     private void RunToRun()
@@ -206,22 +220,45 @@ public class PlayerController : MonoBehaviour , IUnitController
         currentState.Enter(Instance, destination);  // Them bien chay den dau
     }
 
-    private void IdleToCastSpell1()
+    private void ToCastSpell1()
     {
+        if (currentState is UnitRun)
+        {
+            EvPlayerStopRun?.Invoke();
+        }
+        
         currentState.Exit();
+        EvPlayerCastSpell1?.Invoke();
         currentState = new UnitCastSpell1();
         currentState.Enter(Instance, magicBallPrefab1);
     }
 
-    private void IdleToCastSpell2()
+    private void ToCastSpell2()
     {
+        if (currentState is UnitRun)
+        {
+            EvPlayerStopRun?.Invoke();
+        }
         currentState.Exit();
+        EvPlayerCastSpell2?.Invoke();
         currentState = new UnitCastSpell2();
         currentState.Enter(Instance, magicBallPrefab2);
     }
 
     private void BackToIdle()
     {
+        if (currentState is UnitRun)
+        {
+            EvPlayerStopRun?.Invoke();
+        }
+        if (currentState is UnitJump)
+        {
+            EvPlayerLand?.Invoke();
+        }
+        if (currentState is UnitIdle)
+        {
+            return; 
+        }
         currentState.Exit();
         currentState = new UnitIdle();
         currentState.Enter(Instance);
@@ -237,7 +274,7 @@ public class PlayerController : MonoBehaviour , IUnitController
     public void TakeDamage(float damage)
     {
         currentData.currentHealth -= damage;
-        PlayerDataChanged?.Invoke(currentData); // ? co nguoi nghe ms goi
+        EvPlayerDataChanged?.Invoke(currentData); // ? co nguoi nghe ms goi
         if (currentData.currentHealth <= 0)
         {
             currentData.currentHealth = 0;
@@ -251,7 +288,7 @@ public class PlayerController : MonoBehaviour , IUnitController
         currentData.exp += exp;
         if (currentData.exp >= currentData.expNextLevel)
             LevelUp();
-        PlayerDataChanged?.Invoke(currentData); // ? co nguoi nghe ms goi
+        EvPlayerDataChanged?.Invoke(currentData); // ? co nguoi nghe ms goi
     }
 
     private void LevelUp()

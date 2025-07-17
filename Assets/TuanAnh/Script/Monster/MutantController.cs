@@ -32,12 +32,17 @@ public class MutantController : MonoBehaviour, IMonsterController
 
     public event Action <float> MonsterOnHealthChanged;
 
+    private AudioSource monsterSound;
+
 
     public void Init()
     {
         MonsterInit();
         currentState = new MonsterIdle(); 
         currentState.Enter(this);
+
+        InitMonsterSound();
+
     }
 
     void Update()
@@ -62,11 +67,59 @@ public class MutantController : MonoBehaviour, IMonsterController
 
     }
 
+    private void PlayMonsterSoundFoot()
+    {
+        if (monsterSound.isPlaying && monsterSound.clip == monsterData.footSteep)
+        {
+            return;
+        }
+        StopMonsterSound();
+        monsterSound.loop = true;
+        monsterSound.volume = 0.5f;
+        monsterSound.clip = monsterData.footSteep;
+        monsterSound.Play();
+    }
+
+
+    private void PlayMonsterSoundAttack()
+    {
+        if (monsterSound.isPlaying && monsterSound.clip == monsterData.attackSound)
+        {
+            return;
+        }
+        StopMonsterSound();
+        monsterSound.loop = true;
+        monsterSound.volume = 1f;
+        monsterSound.clip = monsterData.attackSound;
+        monsterSound.Play();
+    }
+
+
+    private void StopMonsterSound()
+    {
+        if (monsterSound.isPlaying)
+        {
+            monsterSound.Stop();
+        }
+    }
+
+
+
+    private void InitMonsterSound()
+    {
+        if (monsterSound == null)
+        {
+            monsterSound = GetComponent<AudioSource>();
+            if (monsterSound == null)
+                monsterSound = gameObject.AddComponent<AudioSource>();
+        }
+    }
     private void MonsterIdle()
     {
        if (currentState is MonsterIdle)
             return;
         currentState.Exit();
+        StopMonsterSound();
         currentState = new MonsterIdle();
         currentState.Enter(this);
         resetThinkTime();
@@ -83,6 +136,7 @@ public class MutantController : MonoBehaviour, IMonsterController
         {
             currentState.Exit();
             currentState = new MonsterRun();
+            PlayMonsterSoundFoot();
             currentState.Enter(this);
         }
         currentState.Update();
@@ -95,6 +149,7 @@ public class MutantController : MonoBehaviour, IMonsterController
             return;
         currentState.Exit();
         currentState = new MonsterAttack();
+        PlayMonsterSoundAttack();
         currentState.Enter(this);
         currentState.Update();
     }
@@ -139,6 +194,7 @@ public class MutantController : MonoBehaviour, IMonsterController
             return;
         isDead = true;
         currentState.Exit();
+        StopMonsterSound();
         currentState = new MonsterDie();
         currentState.Enter(this);
     }

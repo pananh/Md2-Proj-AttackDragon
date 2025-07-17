@@ -20,6 +20,7 @@ public class MonsterManager : MonoBehaviour
     [SerializeField] private GameObject spawnObjectList;
     private List <Vector3> spawnPointsList;
 
+
     private void Awake()
     {
         Instance = this;

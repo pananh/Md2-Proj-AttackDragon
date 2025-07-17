@@ -18,7 +18,7 @@ public class HealthBar : MonoBehaviour
     private Transform unitTransform;
     private Vector3 unitPos;
     private RectTransform hpBarRec;
-    private float aboveYPos = 90f;
+    private const float aboveYPos = 90f;
     private float scaleFactor;
 
     private void OnEnable()

@@ -43,7 +43,7 @@ public class HealthBarManager : MonoBehaviour
 
         playerHb.SetPosition(PlayerController.Instance.transform);
         UpdatePlayerDataToHealthBar();
-        PlayerController.Instance.PlayerDataChanged += PlayerUpdateData;  
+        PlayerController.Instance.EvPlayerDataChanged += PlayerUpdateData;  
     }
 
     private void InitMonsterHealthBar()

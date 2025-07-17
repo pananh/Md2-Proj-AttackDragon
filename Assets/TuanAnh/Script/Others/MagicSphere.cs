@@ -23,17 +23,20 @@ public class MagicSphere : MonoBehaviour
     private float timer;
     private MeshRenderer parentMeshRenderer;
 
+    [SerializeField] private AudioClip explosionSound;
+
     public void Init()
     {
         isBigger = false;
         isExplode = false;
         minRadius = 0.5f;
         maxRadius = 3f;
-        transform.localScale = Vector3.one * minRadius * 2f; 
+        transform.localScale = Vector3.one * minRadius * 2f;
         timer = 0f;
 
         parentMeshRenderer = GetComponent<MeshRenderer>();
         parentMeshRenderer.enabled = false;
+
     }
 
     void Update()
@@ -55,6 +58,11 @@ public class MagicSphere : MonoBehaviour
 
     }
 
+    private void PlayExplosionSound()
+    {
+        AudioSource.PlayClipAtPoint(explosionSound, Camera.main.transform.position, 1);
+    }
+
     private void Explode()
     {
         if (currentRadius < maxRadius)
@@ -62,6 +70,7 @@ public class MagicSphere : MonoBehaviour
             transform.localScale = Vector3.one * maxRadius * 2f;
         }
         DealDamage();
+        PlayExplosionSound();
         StartCoroutine(DestroyAfterDelay(0.2f));
     }
 

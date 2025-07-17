@@ -21,6 +21,10 @@ public class MonsterData : ScriptableObject
     public float visionRange = 45f;
     public float thinkTime = 1.5f;
 
+    public AudioClip footSteep;
+    public AudioClip attackSound;
+
+
     public MonsterData CloneData()
     {
         MonsterData clone = ScriptableObject.CreateInstance<MonsterData>();
@@ -38,6 +42,8 @@ public class MonsterData : ScriptableObject
         clone.attackRange = this.attackRange;
         clone.visionRange = this.visionRange;
         clone.thinkTime = this.thinkTime;
+        clone.footSteep = this.footSteep;
+        clone.attackSound = this.attackSound;
         return clone;
     }
 

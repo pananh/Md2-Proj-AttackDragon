@@ -16,11 +16,6 @@ public class GM : MonoBehaviour
         EnterGame();
     }
 
-    void Update()
-    {
-        
-    }
-
     public void EnterGame()
     {
         PlayerController.Instance.Init();
@@ -28,6 +23,7 @@ public class GM : MonoBehaviour
 
         UIMinimap.Instance.Init();
         HealthBarManager.Instance.Init();
+        SoundManager.Instance.Init();
     }
 
     public void GameOver()
