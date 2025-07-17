@@ -6,16 +6,17 @@ using UnityEngine;
 public class HealthBarManager : MonoBehaviour
 {
     public static HealthBarManager Instance { get; private set;  }
-
     private Canvas canvas;
     public Canvas Canvas => canvas;
-
     private RectTransform canvasRect;
     public RectTransform CanvasRect => canvasRect;
 
     [SerializeField] private GameObject hbPrefabPlayer;
     [SerializeField] private GameObject hbPrefabMonster;
     private HealthBar playerHb;
+    private PlayerData playerData;
+
+
     private Dictionary<IMonsterController, HealthBar> monsterHbDict;
 
     private void Awake()
@@ -38,11 +39,11 @@ public class HealthBarManager : MonoBehaviour
     {
         GameObject hbObject = Instantiate(hbPrefabPlayer, canvas.transform);
         playerHb = hbObject.GetComponent<HealthBar>();
-       
-        playerHb.Init(PlayerController.Instance.transform, PlayerController.Instance.CurrentPlayerData.maxHealth, 
-            PlayerController.Instance.CurrentPlayerData.maxHealth);
-       
-        PlayerController.Instance.PlayerOnHealthChanged += PlayerUpdateHb;  
+        playerData = PlayerController.Instance.CurrentPlayerData;
+
+        playerHb.SetPosition(PlayerController.Instance.transform);
+        UpdatePlayerDataToHealthBar();
+        PlayerController.Instance.PlayerDataChanged += PlayerUpdateData;  
     }
 
     private void InitMonsterHealthBar()
@@ -53,16 +54,24 @@ public class HealthBarManager : MonoBehaviour
         {
             GameObject hbObject = Instantiate(hbPrefabMonster, canvas.transform);
             HealthBar monsterHb = hbObject.GetComponent<HealthBar>();
-            monsterHb.Init(monster.Transform, monster.MonsterData.maxHealth, monster.MonsterData.currentHealth);
             monsterHbDict.Add(monster, monsterHb);
+            monsterHb.SetPosition(monster.Transform);
+            UpdateMonsterDataToHealthBar(monster);
 
             // Gan dang su kien cho tung con quai, con nao di voi mau con do, truyen currentHealth vao Hb Bar
             monster.MonsterOnHealthChanged += (currentHealth) => 
             {
-                monsterHb.CurrentHealth = currentHealth;
+                monsterHb.SetHealthData(currentHealth, monster.MonsterData.maxHealth);
             };
 
         }
+    }
+
+    private void UpdateMonsterDataToHealthBar(IMonsterController monster)
+    {
+         monsterHbDict[monster].SetHealthData(monster.MonsterData.currentHealth, monster.MonsterData.maxHealth);
+         monsterHbDict[monster].SetLevel(monster.MonsterData.level);
+         monsterHbDict[monster].SetAboveText(monster.MonsterData.monsterName);
     }
 
     public void RemoveMonsterHealthBar(IMonsterController monster)
@@ -72,10 +81,20 @@ public class HealthBarManager : MonoBehaviour
         
     }
 
-    private void PlayerUpdateHb(float currentHealth)
+    private void PlayerUpdateData(PlayerData currentPlayerData)
     {
-        playerHb.CurrentHealth = currentHealth;
+        playerData = currentPlayerData;
+        UpdatePlayerDataToHealthBar();
     }
 
-   
+    private void UpdatePlayerDataToHealthBar()
+    {
+        playerHb.SetHealthData(playerData.currentHealth, playerData.maxHealth);
+        playerHb.SetLevel(playerData.level);
+        playerHb.SetAboveText(playerData.exp + "/" + playerData.expNextLevel);
+    }
+
+    
+
+
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
@@ -15,8 +16,6 @@ public class MagicBall : MonoBehaviour
     private float castDistance;
     private RaycastHit hit;
     [SerializeField] private LayerMask layerMask;
-    [SerializeField] private AudioClip magicBallSound;
-    [SerializeField] private AudioClip hitSound;
 
 
     private bool needMoving;
@@ -37,7 +36,6 @@ public class MagicBall : MonoBehaviour
         needMoving = false;
         direction = (targetBall - transform.position).normalized;
 
-        //AudioSource.PlayClipAtPoint(magicBallSound, Camera.main.transform.position);
     }
 
 
@@ -56,7 +54,6 @@ public class MagicBall : MonoBehaviour
         castDistance = speed * Time.deltaTime;
         if (Physics.SphereCast(transform.position, ballRadius, direction, out RaycastHit hit, castDistance, layerMask))
         {
-            //AudioSource.PlayClipAtPoint(hitSound, Camera.main.transform.position);
 
             if (hit.collider.CompareTag("Player"))
             {
@@ -88,9 +85,5 @@ public class MagicBall : MonoBehaviour
     }
 
 
-    private void playSound( AudioClip clip)
-    {
-        
-    }
 
 }

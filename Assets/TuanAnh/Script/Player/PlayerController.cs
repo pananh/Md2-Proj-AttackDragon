@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour , IUnitController
     }
 
 
-    public event Action<float> PlayerOnHealthChanged;
+    public event Action< PlayerData > PlayerDataChanged;
 
 
 
@@ -237,7 +237,7 @@ public class PlayerController : MonoBehaviour , IUnitController
     public void TakeDamage(float damage)
     {
         currentData.currentHealth -= damage;
-        PlayerOnHealthChanged?.Invoke(currentData.currentHealth); // ? co nguoi nghe ms goi
+        PlayerDataChanged?.Invoke(currentData); // ? co nguoi nghe ms goi
         if (currentData.currentHealth <= 0)
         {
             currentData.currentHealth = 0;
@@ -249,10 +249,9 @@ public class PlayerController : MonoBehaviour , IUnitController
     public void TakeExperience(float exp)
     {
         currentData.exp += exp;
-        Debug.Log($"Player gained {exp} experience points. Total EXP: {currentData.exp} / {currentData.expNextLevel} " );
-        Debug.Log($"Health: {currentData.currentHealth} / {currentData.maxHealth}");
         if (currentData.exp >= currentData.expNextLevel)
             LevelUp();
+        PlayerDataChanged?.Invoke(currentData); // ? co nguoi nghe ms goi
     }
 
     private void LevelUp()

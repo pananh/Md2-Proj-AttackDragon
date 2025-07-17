@@ -67,6 +67,7 @@ public class MagicSphere : MonoBehaviour
 
     private void DealDamage()
     {
+        // co tao mot it luc day len quai vat, tru khi bat isKinematic
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, maxRadius, monsterLayer);
         foreach (Collider collider in hitColliders)
         {
