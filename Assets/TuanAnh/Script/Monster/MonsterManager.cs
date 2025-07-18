@@ -88,14 +88,20 @@ public class MonsterManager : MonoBehaviour
         {  spawnPointsList.Add(spawnObjectList.transform.GetChild(i).position); }
     }
 
+    public void ResetInstance()
+    {
+        monsterList.Clear();
+        spawnPointsList.Clear();
+        Instance = null;
+    }
 
-//    Dictionary<Collider, IMonsterController> monsterMap = new Dictionary<Collider, IMonsterController>();
-//    // Khi spawn:
-//    monsterMap[monsterCollider] = monsterController;
-//// Khi va chạm:
-//if (monsterMap.TryGetValue(hit.collider, out var controller))
-//{
-//    controller.TakeDamage(1f);
-//}
+    //    Dictionary<Collider, IMonsterController> monsterMap = new Dictionary<Collider, IMonsterController>();
+    //    // Khi spawn:
+    //    monsterMap[monsterCollider] = monsterController;
+    //// Khi va chạm:
+    //if (monsterMap.TryGetValue(hit.collider, out var controller))
+    //{
+    //    controller.TakeDamage(1f);
+    //}
 
 }

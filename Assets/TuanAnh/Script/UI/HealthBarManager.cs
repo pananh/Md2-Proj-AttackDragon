@@ -94,7 +94,10 @@ public class HealthBarManager : MonoBehaviour
         playerHb.SetAboveText(playerData.exp + "/" + playerData.expNextLevel);
     }
 
-    
-
+    public void ResetInstance()
+    {
+        monsterHbDict.Clear();
+        Instance = null;
+    }
 
 }

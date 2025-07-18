@@ -47,12 +47,11 @@ public class MutantController : MonoBehaviour, IMonsterController
 
     void Update()
     {
-        if (isDead) 
+        if (isDead || PlayerController.Instance == null)
             return;
-
         sqrDistanceToTarget = Vector3.SqrMagnitude(PlayerController.Instance.transform.position - transform.position);
 
-        if (sqrDistanceToTarget > sqrMonsterVision)
+        if ( (PlayerController.Instance.IsDead) || (sqrDistanceToTarget > sqrMonsterVision) )
         {
             MonsterIdle();
         } 
@@ -112,6 +111,8 @@ public class MutantController : MonoBehaviour, IMonsterController
             monsterSound = GetComponent<AudioSource>();
             if (monsterSound == null)
                 monsterSound = gameObject.AddComponent<AudioSource>();
+
+            SoundManager.Instance.AddAudioSource(monsterSound);
         }
     }
     private void MonsterIdle()
@@ -197,14 +198,15 @@ public class MutantController : MonoBehaviour, IMonsterController
         StopMonsterSound();
         currentState = new MonsterDie();
         currentState.Enter(this);
+
+        SoundManager.Instance.RemoveAudioSource(monsterSound);
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !PlayerController.Instance.IsDead) 
         {
             PlayerController.Instance.TakeDamage(monsterData.attack);
-            Debug.Log("Attack Player");
         }
     }
 
@@ -212,6 +214,7 @@ public class MutantController : MonoBehaviour, IMonsterController
     {
         StartCoroutine(coroutine);
     }
+
 
 
 

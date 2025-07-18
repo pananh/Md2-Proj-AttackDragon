@@ -12,7 +12,11 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip playerLanding;
     [SerializeField] private AudioClip playerJumping;
 
-    private AudioSource playerFootingSource;
+    private AudioSource playerFootingAudioSource;
+    private AudioSource playerGeneralAudioSource;
+
+    private List <AudioSource> allAudioSource;
+
 
     private void Awake()
     {
@@ -21,21 +25,34 @@ public class SoundManager : MonoBehaviour
 
     public void Init()
     {
-        InitPlayerFootingSource();
+        InitPlayerFootingAudioSource();
+        InitPlayerGeneralAudioSource();
+
+    }
+
+    private void InitPlayerGeneralAudioSource()
+    {
+        playerGeneralAudioSource = gameObject.AddComponent<AudioSource>();
+        AddAudioSource(playerGeneralAudioSource);
+        playerGeneralAudioSource.loop = false;
+        playerGeneralAudioSource.spatialBlend = 0f;
+        playerGeneralAudioSource.volume = 1f;
+
         PlayerController.Instance.EvPlayerCastSpell1 += () => PlaySound(playerCastSpell1);  // Do su kien khong tra ve gia tri, nen () =>
         PlayerController.Instance.EvPlayerCastSpell2 += () => PlaySound(playerCastSpell2);
         PlayerController.Instance.EvPlayerJump += () => PlaySound(playerJumping);
         PlayerController.Instance.EvPlayerLand += () => PlaySound(playerLanding);
-
-
+        PlayerController.Instance.EvPlayerDie += () => StopAllSounds(); // Khi player chet, tat het am thanh hien tai
     }
 
-    private void InitPlayerFootingSource()
+    private void InitPlayerFootingAudioSource()
     {
-        playerFootingSource = gameObject.AddComponent<AudioSource>();
-        playerFootingSource.clip = playerFooting;
-        playerFootingSource.loop = true;
-        playerFootingSource.volume = 0.5f; 
+        playerFootingAudioSource = gameObject.AddComponent<AudioSource>();
+        AddAudioSource(playerFootingAudioSource);
+
+        playerFootingAudioSource.clip = playerFooting;
+        playerFootingAudioSource.loop = true;
+        playerFootingAudioSource.volume = 0.5f; 
 
         PlayerController.Instance.EvPlayerStartRun += PlayerFootingSourceOn;
         PlayerController.Instance.EvPlayerStopRun += PlayerFootingSourceOff;
@@ -44,23 +61,62 @@ public class SoundManager : MonoBehaviour
     
     private void PlayerFootingSourceOn()
     {
-        if (playerFootingSource.isPlaying)
+        if (playerFootingAudioSource.isPlaying)
         {
             return;
         }
-        playerFootingSource.Play();
+        playerFootingAudioSource.Play();
     }
 
     private void PlayerFootingSourceOff()
     {
-         playerFootingSource.Stop();
+         playerFootingAudioSource.Stop();
     }
 
 
     public void PlaySound(AudioClip sound)
     {
-        AudioSource.PlayClipAtPoint(sound, Camera.main.transform.position);
+        playerGeneralAudioSource.clip = sound;
+        playerGeneralAudioSource.Play();
     }
+
+    public void AddAudioSource( AudioSource audioSource)
+    {
+        if (allAudioSource == null)
+        {
+            allAudioSource = new List<AudioSource>();
+        }
+        allAudioSource.Add(audioSource);
+    }
+
+    public void RemoveAudioSource(AudioSource audioSource)
+    {
+        if ( audioSource != null)
+        {
+            allAudioSource.Remove(audioSource);
+        }
+    }
+
+    public void StopAllSounds()
+    {
+        if (allAudioSource == null || allAudioSource.Count == 0)
+        {
+            return;
+        }
+        foreach (var audioSource in allAudioSource)
+        {
+            if (audioSource != null)
+            {
+                audioSource.Stop();
+            }
+        }
+    }
+
+    public void ResetInstance()
+    {
+        Instance = null;
+    }
+
 
 }
 

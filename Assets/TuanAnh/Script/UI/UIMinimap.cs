@@ -72,6 +72,8 @@ public class UIMinimap : MonoBehaviour
 
     private void UpdatePlayerLocation()
     {
+        if ( PlayerController.Instance == null || playerIcon == null)
+            return;
         SetIconLocation(PlayerController.Instance.transform.position, playerIcon);
     }
 
@@ -84,5 +86,9 @@ public class UIMinimap : MonoBehaviour
         iconImage.rectTransform.anchoredPosition = new Vector2(xPos, yPos);
     }
 
+    public void ResetInstance()
+    {
+        Instance = null;
+    }
 }
 

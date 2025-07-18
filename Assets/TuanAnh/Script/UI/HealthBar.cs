@@ -85,6 +85,8 @@ public class HealthBar : MonoBehaviour
 
         hpBarRec.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
 
+        if (HealthBarManager.Instance == null) return;
+
         hpBarRec.anchoredPosition = WordToCanvas(unitPos, HealthBarManager.Instance.CanvasRect) 
                                         + new Vector2(0, Mathf.Clamp(aboveYPos*scaleFactor,40f, 120f));
     }

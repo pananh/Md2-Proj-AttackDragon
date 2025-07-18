@@ -82,7 +82,6 @@ public class MagicSphere : MonoBehaviour
         {
             if (collider.CompareTag("Monster"))
             {
-                Debug.Log("Hit Monster Magic 2");
                 IMonsterController monsterController = collider.GetComponent<IMonsterController>();
                 if (monsterController != null)
                 {

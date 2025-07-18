@@ -9,6 +9,7 @@ public interface IUnitController
 
     // Co the dinh nghia kieu ham, neu can xu ly logic
     // Animator GetAnimator()
+    GameObject GetGameObject { get; set; }
 
     CharacterController GetCharacterController { get; }
 

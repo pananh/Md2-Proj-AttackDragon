@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour , IUnitController
     private UnitState currentState;
     private CharacterController characterController;
     public CharacterController GetCharacterController { get => characterController; }
-   
+    public GameObject GetGameObject { get; set; }
 
     private Animator animator;
     public Animator GetAnimator { get => animator; }
@@ -37,6 +37,12 @@ public class PlayerController : MonoBehaviour , IUnitController
         get => currentData;
         set => currentData = value;
     }
+    private bool isDead;
+    public bool IsDead
+    {
+        get => isDead;
+        set => isDead = value;
+    }
 
 
     public event Action< PlayerData > EvPlayerDataChanged;
@@ -46,12 +52,12 @@ public class PlayerController : MonoBehaviour , IUnitController
     public event Action EvPlayerCastSpell2;
     public event Action EvPlayerJump;
     public event Action EvPlayerLand;
-
+    public event Action EvPlayerDie;
 
     public void Awake()
     {
         Instance = this;
-        
+        GetGameObject = this.gameObject;
     }
 
 
@@ -68,7 +74,10 @@ public class PlayerController : MonoBehaviour , IUnitController
 
     void Update()
     {
-
+        if (isDead)
+        {
+            return; 
+        }
         GetInputAndChangeStage();
 
         if (currentState.NeedUpdateState())
@@ -80,6 +89,7 @@ public class PlayerController : MonoBehaviour , IUnitController
 
     private void SetEnterState()
     {
+        isDead = false;
         destination = transform.position;
         if (characterController.isGrounded)
         {
@@ -278,10 +288,22 @@ public class PlayerController : MonoBehaviour , IUnitController
         if (currentData.currentHealth <= 0)
         {
             currentData.currentHealth = 0;
-            GM.Instance.GameOver();
-            Debug.Log("Player has died.");
+            isDead = true;
+            EvPlayerDie?.Invoke();
+            PlayerDie();
         }
     }
+
+    public void PlayerDie()
+    {
+        currentState.Exit();
+        currentState = new UnitDie();
+        currentState.Enter(Instance);
+        GM.Instance.GameOver();
+        Debug.Log("Player has died.");
+
+    }
+
 
     public void TakeExperience(float exp)
     {
@@ -296,5 +318,11 @@ public class PlayerController : MonoBehaviour , IUnitController
         currentData.LevelUp(currentData);
         Debug.Log($"Player leveled up to level {currentData.level}!");
     }
+
+    public void ResetInstance()
+    {
+        Instance = null;
+    }
+
 }
 

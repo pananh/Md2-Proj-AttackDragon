@@ -73,7 +73,6 @@ public class MagicBall : MonoBehaviour
             }
             else if (hit.collider.CompareTag("Monster"))
             {
-                Debug.Log("Hit Monster");
                 Destroy(gameObject);
 
                 hit.collider.GetComponent<IMonsterController>().TakeDamage(
