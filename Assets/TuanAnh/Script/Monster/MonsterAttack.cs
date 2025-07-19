@@ -13,7 +13,7 @@ public class MonsterAttack : MonsterState
         monster = inputMonster;
         monster.Animator.SetBool("Attack", true);
         monster.Agent.isStopped = true;
-
+         
     }
 
     public override void Update()
