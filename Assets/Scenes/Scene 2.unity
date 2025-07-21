@@ -2158,6 +2158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fbb73a5b269ac342b46a9b4cab69f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numberOfMonster: 20
   monsterPrefab: {fileID: 7820921728511371775, guid: 4c5a6bf9cf1efd54c81da09d04c57a44,
     type: 3}
   spawnObjectList: {fileID: 724330724}

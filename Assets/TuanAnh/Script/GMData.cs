@@ -10,7 +10,7 @@ public class GMData : MonoBehaviour
     {
         get => gSetting.gameSpeed; 
     }
-   
+    
     public float RAYCAST_DISTANCE
     {
         get => gSetting.raycastDistance;

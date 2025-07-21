@@ -17,8 +17,8 @@ MonoBehaviour:
   level: 1
   maxHealth: 100
   currentHealth: 100
-  attack: 35
-  attackMagic: 40
+  attack: 40
+  attackMagic: 30
   attackMagicRange: 50
   speed: 5
   exp: 0

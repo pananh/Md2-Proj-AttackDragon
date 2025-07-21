@@ -6,7 +6,7 @@ using UnityEngine;
 public class MonsterManager : MonoBehaviour
 {
     public static MonsterManager Instance { get; private set; }
-    private float numberOfMonster = 12f;
+    [SerializeField] private float numberOfMonster = 15f;
     public float NumberOfMonster { get => numberOfMonster; set => numberOfMonster = value; }
 
     [SerializeField] private GameObject monsterPrefab;
@@ -32,10 +32,7 @@ public class MonsterManager : MonoBehaviour
         InitMonster();
     }
 
-    void Update()
-    {
-        
-    }
+    
 
     private void InitMonster()
     {

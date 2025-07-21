@@ -23,7 +23,7 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: 6a08ec4b334ea1c46b8171679417a74f, type: 3}
   levelUpFactor: 1.05
   attackRange: 1.5
-  visionRange: 45
+  visionRange: 50
   thinkTime: 1.5
   footSteep: {fileID: 8300000, guid: 9b713c76b05f8b04882a23a60605b0d2, type: 3}
   attackSound: {fileID: 8300000, guid: a37f44cbf8c2a7443a3c361efa2f233a, type: 3}
