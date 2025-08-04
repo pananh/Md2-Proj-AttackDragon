@@ -14,17 +14,17 @@ public class PlayerController : MonoBehaviour , IUnitController
     private CharacterController characterController;
     public CharacterController GetCharacterController { get => characterController; }
     public GameObject GetGameObject { get; set; }
-
-    private Animator animator;
+    [SerializeField] private Animator animator;
     public Animator GetAnimator { get => animator; }
     [SerializeField] GameObject magicBallPrefab1;
     [SerializeField] GameObject magicBallPrefab2;
 
-    private bool notInAnimating = true;
+    [SerializeField] private AnimationFlag animationFlag; 
+    //private bool notInAnimating = true;
     public bool NotInAnimating
     {
-        get => notInAnimating;
-        set => notInAnimating = value;
+        get => animationFlag.NotInAnimating;
+        set => animationFlag.NotInAnimating = value;
     }
 
     private Vector3 destination;
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour , IUnitController
 
     public void Init()
     {
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
 
         currentData = inputData.CloneData();
@@ -117,14 +117,14 @@ public class PlayerController : MonoBehaviour , IUnitController
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, GMData.Instance.RAYCAST_DISTANCE))
         {
-            Vector3 vector3 = hit.point - Instance.transform.position;
-            if (vector3.sqrMagnitude < GMData.Instance.MIN_MOVE_SQR_DISTANCE)
+            Vector3 directionFromPlayerToHitpoint = hit.point - Instance.transform.position;
+            if (directionFromPlayerToHitpoint.sqrMagnitude < GMData.Instance.MIN_MOVE_SQR_DISTANCE)
             {
                 return Instance.transform.position;
             }
-            else if (vector3.sqrMagnitude > GMData.Instance.MAX_MOVE_SQR_DISTANCE)
+            else if (directionFromPlayerToHitpoint.sqrMagnitude > GMData.Instance.MAX_MOVE_SQR_DISTANCE)
             {
-                return Instance.transform.position + vector3.normalized * GMData.Instance.MAX_MOVE_SQR_DISTANCE;
+                return Instance.transform.position + directionFromPlayerToHitpoint.normalized * GMData.Instance.MAX_MOVE_SQR_DISTANCE;
             }
             else return hit.point;
         }
@@ -143,47 +143,49 @@ public class PlayerController : MonoBehaviour , IUnitController
                 { 
                     HandleRotatePlayer(); 
                 }
+                if (!animationFlag.NotInAnimating)
+                    return; 
 
-                if ( (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKeyDown(KeyCode.Space) && notInAnimating)
+                if ( (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKeyDown(KeyCode.Space) )
                 {
                     towardDistance = GMData.Instance.GAME_SPEED;
                     ToJump();
                 }
-                else if (Input.GetKeyDown(KeyCode.Space) && notInAnimating)
+                else if (Input.GetKeyDown(KeyCode.Space))
                 {
                     towardDistance = 0;
                     ToJump();
                 }
-                else if (Input.GetMouseButtonDown(1) && notInAnimating)
+                else if (Input.GetMouseButtonDown(1))
                 {
                     IdleToRun();
                 }
-                else if (Input.GetKeyDown(KeyCode.Q) && notInAnimating)
+                else if (Input.GetKeyDown(KeyCode.Q))
                 {
                     ToCastSpell1();
                 }
-                else if (Input.GetKeyDown(KeyCode.W) && notInAnimating)
+                else if (Input.GetKeyDown(KeyCode.W))
                 {
                     ToCastSpell2();
                 }
                 break;
 
             case UnitRun:
-                if (Input.GetMouseButtonDown(1) && notInAnimating )
+                if (Input.GetMouseButtonDown(1))
                 {
                     RunToRun();
                 }
-                else if (Input.GetKeyDown(KeyCode.Q) && notInAnimating)
+                else if (Input.GetKeyDown(KeyCode.Q))
                 {
                     ToCastSpell1();
                     
                 }
-                else if (Input.GetKeyDown(KeyCode.W) && notInAnimating)
+                else if (Input.GetKeyDown(KeyCode.W) )
                 {
                     ToCastSpell2();
                     
                 }
-                else if (Input.GetKeyDown(KeyCode.Space) && notInAnimating)
+                else if (Input.GetKeyDown(KeyCode.Space))
                 {
                     towardDistance = GMData.Instance.GAME_SPEED;
                     EvPlayerStopRun?.Invoke();
@@ -275,11 +277,6 @@ public class PlayerController : MonoBehaviour , IUnitController
                 
     }
 
-    // Goi o Animation Event
-    public void FlagInOutAnimating()
-    {
-        notInAnimating = !notInAnimating;
-    }
 
     public void TakeDamage(float damage)
     {
