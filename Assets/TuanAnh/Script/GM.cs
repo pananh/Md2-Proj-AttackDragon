@@ -68,7 +68,7 @@ public class GM : MonoBehaviour
     public void GameOver()
     {
         SoundManager.Instance.StopAllSounds();
-        
+        Debug.Log("Game Over");
         StartCoroutine(ShowGameOverAfterDelay(5f)); // Show game over after 1 second delay
     }
 
